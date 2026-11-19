@@ -1,0 +1,99 @@
+match_id,player,opponent_player,opportunities,successes,score
+shuttle-1,Kento MOMOTA,CHOU Tien Chen,113,59,59
+shuttle-1,CHOU Tien Chen,Kento MOMOTA,113,54,54
+shuttle-2,CHEN Long,CHOU Tien Chen,76,42,42
+shuttle-2,CHOU Tien Chen,CHEN Long,76,34,34
+shuttle-3,Kento MOMOTA,CHOU Tien Chen,78,42,42
+shuttle-3,CHOU Tien Chen,Kento MOMOTA,78,36,36
+shuttle-4,CHEN Long,CHOU Tien Chen,76,42,42
+shuttle-4,CHOU Tien Chen,CHEN Long,76,34,34
+shuttle-5,Kento MOMOTA,CHOU Tien Chen,103,53,53
+shuttle-5,CHOU Tien Chen,Kento MOMOTA,103,50,50
+shuttle-6,Kento MOMOTA,CHOU Tien Chen,115,59,59
+shuttle-6,CHOU Tien Chen,Kento MOMOTA,115,56,56
+shuttle-7,Kento MOMOTA,CHOU Tien Chen,72,42,42
+shuttle-7,CHOU Tien Chen,Kento MOMOTA,72,30,30
+shuttle-8,CHOU Tien Chen,Anders ANTONSEN,64,42,42
+shuttle-8,Anders ANTONSEN,CHOU Tien Chen,64,22,22
+shuttle-9,CHOU Tien Chen,Jonatan CHRISTIE,66,42,42
+shuttle-9,Jonatan CHRISTIE,CHOU Tien Chen,66,24,24
+shuttle-10,CHOU Tien Chen,NG Ka Long Angus,72,42,42
+shuttle-10,NG Ka Long Angus,CHOU Tien Chen,72,30,30
+shuttle-11,CHOU Tien Chen,Jonatan CHRISTIE,111,58,58
+shuttle-11,Jonatan CHRISTIE,CHOU Tien Chen,111,53,53
+shuttle-12,NG Ka Long Angus,SHI Yuqi,79,42,42
+shuttle-12,SHI Yuqi,NG Ka Long Angus,79,37,37
+shuttle-15,Anthony Sinisuka GINTING,Anders ANTONSEN,104,59,59
+shuttle-15,Anders ANTONSEN,Anthony Sinisuka GINTING,104,45,45
+shuttle-17,NG Ka Long Angus,Jonatan CHRISTIE,108,57,57
+shuttle-17,Jonatan CHRISTIE,NG Ka Long Angus,108,51,51
+shuttle-19,Viktor AXELSEN,CHEN Long,107,55,55
+shuttle-19,CHEN Long,Viktor AXELSEN,107,52,52
+shuttle-23,NG Ka Long Angus,LEE Cheuk Yiu,71,42,42
+shuttle-23,LEE Cheuk Yiu,NG Ka Long Angus,71,29,29
+shuttle-26,Viktor AXELSEN,Jonatan CHRISTIE,61,42,42
+shuttle-26,Jonatan CHRISTIE,Viktor AXELSEN,61,19,19
+shuttle-28,Viktor AXELSEN,NG Ka Long Angus,70,42,42
+shuttle-28,NG Ka Long Angus,Viktor AXELSEN,70,28,28
+shuttle-30,Anders ANTONSEN,Sameer VERMA,116,62,62
+shuttle-30,Sameer VERMA,Anders ANTONSEN,116,54,54
+shuttle-32,Hans-Kristian Solberg VITTINGHUS,LEE Cheuk Yiu,115,62,62
+shuttle-32,LEE Cheuk Yiu,Hans-Kristian Solberg VITTINGHUS,115,53,53
+shuttle-33,Viktor AXELSEN,LIEW Daren,73,42,42
+shuttle-33,LIEW Daren,Viktor AXELSEN,73,31,31
+shuttle-36,Hans-Kristian Solberg VITTINGHUS,Anders ANTONSEN,69,42,42
+shuttle-36,Anders ANTONSEN,Hans-Kristian Solberg VITTINGHUS,69,27,27
+shuttle-39,Anthony Sinisuka GINTING,LEE Zii Jia,103,57,57
+shuttle-39,LEE Zii Jia,Anthony Sinisuka GINTING,103,46,46
+shuttle-41,NG Ka Long Angus,KIDAMBI Srikanth,112,54,54
+shuttle-41,KIDAMBI Srikanth,NG Ka Long Angus,112,58,58
+shuttle22-8,Lakshya SEN,LOH Kean Yew,84,45,45
+shuttle22-8,LOH Kean Yew,Lakshya SEN,84,39,39
+shuttle22-9,Kunlavut VITIDSARN,LEE Zii Jia,67,42,42
+shuttle22-9,LEE Zii Jia,Kunlavut VITIDSARN,67,25,25
+shuttle22-11,Viktor AXELSEN,Lakshya SEN,67,42,42
+shuttle22-11,Lakshya SEN,Viktor AXELSEN,67,25,25
+shuttle22-14,LEE Zii Jia,Kento MOMOTA,67,42,42
+shuttle22-14,Kento MOMOTA,LEE Zii Jia,67,25,25
+shuttle22-16,Viktor AXELSEN,Anthony Sinisuka GINTING,72,42,42
+shuttle22-16,Anthony Sinisuka GINTING,Viktor AXELSEN,72,30,30
+shuttle22-19,Viktor AXELSEN,LEE Zii Jia,116,63,63
+shuttle22-19,LEE Zii Jia,Viktor AXELSEN,116,53,53
+shuttle22-20,Kento MOMOTA,Kunlavut VITIDSARN,65,42,42
+shuttle22-20,Kunlavut VITIDSARN,Kento MOMOTA,65,23,23
+shuttle22-21,Viktor AXELSEN,Jonatan CHRISTIE,110,62,62
+shuttle22-21,Jonatan CHRISTIE,Viktor AXELSEN,110,48,48
+shuttle22-22,Viktor AXELSEN,Kento MOMOTA,53,42,42
+shuttle22-22,Kento MOMOTA,Viktor AXELSEN,53,11,11
+shuttle22-25,Chico Aura DWI WARDOYO,LU Guang Zu,126,64,64
+shuttle22-25,LU Guang Zu,Chico Aura DWI WARDOYO,126,62,62
+shuttle22-26,Chico Aura DWI WARDOYO,NG Ka Long Angus,78,43,43
+shuttle22-26,NG Ka Long Angus,Chico Aura DWI WARDOYO,78,35,35
+shuttle22-29,ZHAO Jun Peng,PRANNOY H. S.,73,42,42
+shuttle22-29,PRANNOY H. S.,ZHAO Jun Peng,73,31,31
+shuttle22-30,Kunlavut VITIDSARN,ZHAO Jun Peng,69,43,43
+shuttle22-30,ZHAO Jun Peng,Kunlavut VITIDSARN,69,26,26
+shuttle22-32,Viktor AXELSEN,Kunlavut VITIDSARN,63,42,42
+shuttle22-32,Kunlavut VITIDSARN,Viktor AXELSEN,63,21,21
+shuttle22-34,Kenta NISHIMOTO,Anders ANTONSEN,82,43,43
+shuttle22-34,Anders ANTONSEN,Kenta NISHIMOTO,82,39,39
+shuttle22-38,Lakshya SEN,LEE Zii Jia,107,54,54
+shuttle22-38,LEE Zii Jia,Lakshya SEN,107,53,53
+shuttle22-39,Jonatan CHRISTIE,KIDAMBI Srikanth,77,42,42
+shuttle22-39,KIDAMBI Srikanth,Jonatan CHRISTIE,77,35,35
+shuttle22-42,LEE Zii Jia,LI Shi Feng,114,61,61
+shuttle22-42,LI Shi Feng,LEE Zii Jia,114,53,53
+shuttle22-43,LI Shi Feng,Kodai NARAOKA,117,58,58
+shuttle22-43,Kodai NARAOKA,LI Shi Feng,117,59,59
+shuttle22-44,SHI Yuqi,LEE Zii Jia,109,58,58
+shuttle22-44,LEE Zii Jia,SHI Yuqi,109,51,51
+shuttle22-45,LEE Zii Jia,LIEW Daren,106,55,55
+shuttle22-45,LIEW Daren,LEE Zii Jia,106,51,51
+shuttle22-46,LEE Zii Jia,LOH Kean Yew,75,42,42
+shuttle22-46,LOH Kean Yew,LEE Zii Jia,75,33,33
+shuttle22-50,Viktor AXELSEN,Rasmus GEMKE,71,42,42
+shuttle22-50,Rasmus GEMKE,Viktor AXELSEN,71,29,29
+shuttle22-51,Viktor AXELSEN,Kodai NARAOKA,62,42,42
+shuttle22-51,Kodai NARAOKA,Viktor AXELSEN,62,20,20
+shuttle22-55,Viktor AXELSEN,ZHAO Jun Peng,61,42,42
+shuttle22-55,ZHAO Jun Peng,Viktor AXELSEN,61,19,19

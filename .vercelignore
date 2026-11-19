@@ -1,0 +1,16 @@
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.cache/
+models/
+artifacts/
+tests/
+data/real/cricket_global/
+data/local/
+.git/
+.claude/
+docs/
+data/raw/*
+!data/raw/tennis_tour/

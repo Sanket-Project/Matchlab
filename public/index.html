@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#143e32">
+  <title>MatchLab · Sports predictions</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to dashboard</a>
+  <header class="topnav">
+    <a class="brand" href="/" aria-label="MatchLab home"><span class="brand-mark" data-icon="mark"></span>MatchLab<span class="brand-dot">.</span></a>
+    <nav aria-label="Main navigation">
+      <button class="nav-item active" data-view="overview"><span data-icon="spark"></span>Predict</button>
+      <button class="nav-item" data-view="players"><span data-icon="users"></span>Players</button>
+      <button class="nav-item" data-view="models"><span data-icon="layers"></span>Settings</button>
+    </nav>
+  </header>
+  <div class="app-shell">
+    <main id="main">
+      <div class="page-heading"><div><h1 id="page-title">Who's going to win?</h1><p id="page-subtitle">Pick a sport and two sides. You get the likely winner, the expected score and the players to watch.</p></div></div>
+      <div id="error" class="error-banner" role="alert" hidden></div>
+      <div class="predict-layout" id="predict-layout">
+      <div class="predict-main">
+      <section id="query-section" class="card pick-card" aria-labelledby="query-title">
+        <div class="step-title"><h2 id="query-title">Pick a match</h2><span id="inference-status" role="status" aria-live="polite"></span></div>
+        <div class="sport-chips" id="sport-chips" role="group" aria-label="Sport"></div>
+        <form id="query-form" class="query-card">
+          <div class="field sport-field sr-only"><label for="sport">Sport</label><select id="sport" name="sport" tabindex="-1"></select></div>
+          <div class="field team-field" data-match-field><label for="team" id="team-label">Team</label><select id="team" name="team"></select></div>
+          <span class="pick-vs" data-match-field aria-hidden="true">vs</span>
+          <div class="field opponent-field" data-match-field><label for="opponent">Opponent</label><select id="opponent" name="opponent"></select></div>
+          <div class="field race-season-field" data-race-field hidden><label for="race-season">Season</label><select id="race-season"></select></div>
+          <div class="field race-round-field" data-race-field hidden><label for="race-round">Grand Prix</label><select id="race-round"></select></div>
+          <div class="field race-stage-field" data-race-field hidden><label for="race-stage">When</label><select id="race-stage"><option value="pre_weekend">Before the weekend</option><option value="post_qualifying">After qualifying</option></select></div>
+          <button class="button primary analyze-button" type="submit" id="analyze-button"><span data-icon="spark"></span>Predict</button>
+          <details class="more-options" data-match-field>
+            <summary>More options</summary>
+            <div class="more-options-grid">
+              <div class="field date-field"><label for="cutoff">Match date</label><input type="date" id="cutoff" name="cutoff" required></div>
+              <div class="field window-field"><label for="window">Recent form to use</label><select id="window" name="window"><option value="5">Last 5 matches</option><option value="10">Last 10 matches</option><option value="15">Last 15 matches</option><option value="30">Last 30 matches</option></select></div>
+              <div class="field venue-field"><label for="venue">Where it is played</label><select id="venue" name="venue"><option value="neutral">Neutral ground</option><option value="home">First side at home</option><option value="away">First side away</option></select></div>
+            </div>
+            <div id="match-picker" class="match-picker" hidden>
+              <div class="card-heading"><div><h3 id="match-picker-title">Matches available on this date</h3><p id="match-picker-note">Select a recorded matchup to prefill the analysis.</p></div><span class="badge" id="match-picker-badge"></span></div>
+              <div id="match-picker-list" class="match-picker-list"></div>
+            </div>
+          </details>
+        </form>
+        <details class="details-toggle forecast-inputs" id="cricket-toss" hidden>
+          <summary>Know the toss and playing XIs? Add them</summary>
+          <p class="note" id="cricket-toss-help">Starting XIs come from each team's last completed match. Enter the toss and confirm both XIs to run the post-toss forecast.</p>
+          <div class="forecast-input-grid">
+            <div class="field"><label for="toss-winner">Toss winner</label><select id="toss-winner"></select></div>
+            <div class="field"><label for="toss-decision">Toss decision</label><select id="toss-decision"><option value="">Select decision</option><option value="bat">Bat</option><option value="field">Field</option></select></div>
+            <div class="field"><label id="team-xi-label" for="team-xi">Team starting XI</label><textarea id="team-xi" rows="11" aria-describedby="cricket-toss-help" spellcheck="false"></textarea></div>
+            <div class="field"><label id="opponent-xi-label" for="opponent-xi">Opponent starting XI</label><textarea id="opponent-xi" rows="11" aria-describedby="cricket-toss-help" spellcheck="false"></textarea></div>
+          </div>
+          <p class="note" id="cricket-xi-status" role="status">Enter one player per line.</p>
+          <button type="button" class="button secondary" id="cricket-run-toss">Use toss and XIs</button>
+          <button type="button" class="button secondary" id="cricket-reset-toss" hidden>Return to pre-toss</button>
+        </details>
+        <details class="details-toggle forecast-inputs" id="race-grid-editor" hidden>
+          <summary>Starting grid</summary>
+          <p class="note" id="race-grid-status" role="status">Enter one position per driver. Use 0 for a pit-lane start.</p>
+          <button type="button" class="button secondary" id="race-grid-refresh">Check updates</button>
+          <div class="race-grid-list" id="race-grid-list"></div>
+        </details>
+      </section>
+
+      <section id="overview-view" class="view" aria-label="Match overview"><div id="overview-content" class="loading-placeholder">Working out the prediction…</div></section>
+      <section id="players-view" class="view" aria-label="Player matchups" hidden>
+        <div class="section-heading"><div><h2>Compare two players</h2><p>Pick one player from each side to see how they have done against each other.</p></div><span class="badge" id="player-unit-badge"></span></div>
+        <form class="player-query card" id="player-form"><div class="field player-field"><label for="player">Player</label><select id="player"></select></div><span class="versus-label">VS</span><div class="field opponent-player-field"><label for="opponent-player">Opposing player</label><select id="opponent-player"></select></div><button class="button primary" type="submit">Compare</button></form>
+        <div id="player-content"></div>
+      </section>
+      </div>
+      <aside id="today-matches-section" class="card today-matches-card" aria-labelledby="today-matches-title">
+        <div class="today-head">
+          <h2 id="today-matches-title"><span class="status-dot live-dot"></span>Today's matches</h2>
+          <button id="refresh-today-btn" class="button secondary btn-compact" type="button"><span data-icon="refresh"></span>Refresh</button>
+        </div>
+        <p class="today-sub"><span id="today-matches-badge">Loading…</span></p>
+        <p id="today-status-note" class="today-status-note" role="status" aria-live="polite" hidden></p>
+        <input type="search" id="today-match-search" class="today-search-input" placeholder="Search a team or league…" aria-label="Filter today matches">
+        <div class="today-sport-tabs" id="today-sport-tabs" role="tablist"></div>
+        <div id="today-matches-grid" class="today-matches-grid">
+          <div class="loading-placeholder">Loading today's match schedule…</div>
+        </div>
+        <label class="auto-refresh-label">Auto-update <select id="auto-refresh-select" class="auto-refresh-select" title="Auto-refresh matches interval">
+          <option value="0">off</option>
+          <option value="15">every 15 min</option>
+          <option value="30">every 30 min</option>
+        </select></label>
+      </aside>
+      </div>
+      <section id="models-view" class="view" aria-label="Data and models" hidden>
+        <div class="section-heading"><div><h2>Your data and models</h2><p>Everything runs from files on this computer.</p></div><div class="heading-actions"><button class="button secondary" id="export-button"><span data-icon="download"></span>Export last prediction</button><button id="reload-button" class="button secondary"><span data-icon="refresh"></span>Reload local files</button></div></div>
+        <section class="card" id="openrouter-settings" aria-labelledby="openrouter-heading">
+          <div class="card-heading">
+            <div><h3 id="openrouter-heading">OpenRouter cricket summaries</h3><p id="openrouter-help">Clicking Analyze for cricket sends fixture details, relevant match records and model estimates to a free OpenRouter model.</p></div>
+            <span class="badge" id="openrouter-badge">No key saved</span>
+          </div>
+          <form id="openrouter-form" class="openrouter-form">
+            <div class="field"><label for="openrouter-key">OpenRouter API key</label><input id="openrouter-key" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="sk-or-v1-…" aria-describedby="openrouter-help" required></div>
+            <button class="button primary" id="openrouter-save" type="submit">Save key</button>
+            <button class="button secondary" id="openrouter-remove" type="button" hidden>Remove key</button>
+          </form>
+          <p class="note" id="openrouter-feedback" role="status"></p>
+        </section>
+        <div id="model-content"></div>
+        <div class="card config-card"><div class="card-heading"><div><h3>Workspace configuration</h3><p>Paths may be absolute or relative to this project. Changes apply to this running session.</p></div><span class="badge">JSON</span></div><label for="config-editor" class="sr-only">Workspace JSON configuration</label><textarea id="config-editor" spellcheck="false" rows="16"></textarea><div class="config-actions"><span id="config-feedback" role="status">Export the configuration as config.local.json to reuse it on startup.</span><button id="download-config" class="button secondary">Export config</button><button id="apply-config" class="button primary">Validate &amp; apply</button></div></div>
+        <details class="card feature-details"><summary>Available numeric features &amp; model contract</summary><p>Feature names and order must match training exactly. Missing features stay missing and block affected inference. Models must include their original preprocessing.</p><div id="feature-list"></div></details>
+      <details class="card details-toggle guide-details" id="guide-view"><summary>How the predictions work</summary>
+        <div class="guide-intro"><div class="eyebrow">TRANSPARENT BY DESIGN</div><h2>Know what is behind<br>every number.</h2><p>Statistical forecasts run on your machine. Cricket summaries use OpenRouter with the fixture and relevant archive evidence.</p></div>
+        <div class="guide-grid"><article class="card"><span class="step">01</span><h3>Choose your sport</h3><p>Football, cricket, tennis, badminton, baseball, and rugby each have their own score units and player threat definition. Keep different leagues, formats, and scoring conventions in separate datasets.</p></article><article class="card"><span class="step">02</span><h3>Frozen local models</h3><p>TabICLv2 uses causal historical examples for opponent-adjusted outcomes, scores and interaction rates. Its official fit() prepares context without updating pretrained weights. Chronos-Bolt Small forecasts scoring form separately. Both run on CPU with local weights and automatic downloads disabled.</p></article><article class="card"><span class="step">03</span><h3>Set the information cutoff</h3><p>Every historical example uses only information available before that match. Results dated on or after the query cutoff are excluded. Tennis results become available conservatively 14 days after tournament start. Missing player or interaction data produces an unavailable state.</p></article></div>
+        <div class="card method-card"><h3>Reference estimates are historical arithmetic</h3><p>When explicitly enabled, the reference team score is 55% recent scoring average + 30% opponent's recent conceded average + 15% head-to-head scoring average. Without meetings, the final 15% uses recent form.</p><p>Winner reference shares pool the selected side's wins with the opponent's losses, add one pseudocount to each allowed outcome, and normalize. They are not calibrated win probabilities. Player scores use 75% recent average + 25% average against that opponent (recent average if absent). Player threat uses direct successes divided by opportunities.</p><p>A configured model that fails never falls back to reference estimates. Every output identifies its source. Historical score ranges describe observed results, not prediction intervals. Assess real forecast accuracy on held-out historical data before relying on a model.</p></div>
+        <div class="card"><h3>Bring your data</h3><p>Each sport uses matches.csv, optional players.csv, and optional interactions.csv in one local folder. Exact column definitions and configuration examples are included in the project's README.md. Singles competitors use the team/opponent columns as their two match sides.</p><p>Local dates use YYYY-MM-DD. The match outcome is explicit, so a win is never inferred from an inappropriate score aggregate. Tennis uses sets, badminton uses games, and continuous predictions represent expected scores.</p></div>
+      </details>
+      </section>
+      <footer class="footer"><span><span class="status-dot"></span>Local statistical forecasts</span><span id="data-footer">MatchLab / Local sports intelligence</span></footer>
+    </main>
+  </div>
+  <dialog id="cricket-preview-dialog" class="preview-dialog" aria-labelledby="cricket-preview-title">
+    <header class="preview-heading">
+      <div><p class="eyebrow">Cricket analysis</p><h2 id="cricket-preview-title"></h2><p id="cricket-preview-meta"></p></div>
+      <form method="dialog"><button type="submit" class="button secondary" autofocus>Close</button></form>
+    </header>
+    <section class="preview-controls" aria-label="AI summary settings">
+      <button id="cricket-preview-generate" class="button primary" type="button"><span data-icon="spark"></span>Generate AI summary</button>
+      <button id="cricket-preview-key" class="button secondary" type="button" hidden>Set up OpenRouter</button>
+    </section>
+    <p id="cricket-preview-status" class="note" role="status"></p>
+    <div id="cricket-preview-evidence"></div>
+    <section id="cricket-preview-report" class="preview-section" aria-label="AI summary" hidden></section>
+  </dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{
+  "source": "Jolpica F1 public delayed CSV database dump (Ergast successor)",
+  "url": "https://github.com/jolpica/jolpica-f1/blob/main/docs/database_dumps.md",
+  "license": "CC BY-NC-SA 4.0 (noncommercial use)",
+  "sport": "f1",
+  "synthetic": false,
+  "archive_sha256": "3154f289f6e8979dd0e42818bf06211568fc8e43af23a4ee4a1dc3daafa790d0",
+  "files": {
+    "races.csv": "1a9fd2e555ad9674d7454a2e4d05c33aab5ff78580bb512cd1ddfb4d2c5627f8",
+    "entries.csv": "0057494adc88bd8e78f5986677a085b0e2d8bb819b9790ba1b413e173d43a1ea",
+    "sprints.csv": "d93e4d6c47a56069e78fda16bf0cd330ee0e0f74b9d549a82da9eec91bf25aae",
+    "rosters.csv": "603ea03c2b10c71ac350ef0948f68832de09fc630541b0c54f94973f99263d07"
+  },
+  "races": 270,
+  "entries": 5501,
+  "sprints": 30,
+  "earliest": "2014-03-16",
+  "latest": "2026-10-25",
+  "limitations": [
+    "Completed Grands Prix from 2014 onward. Sprint results contribute only to prior form and standings.",
+    "The public dump is delayed. Upcoming driver fields use the listed entries or the latest available same-season field.",
+    "Jolpica combines mechanical and other retirements. Unspecified causes remain unknown.",
+    "A recorded grid of zero denotes a driver without a regular grid slot. Top ten is the points proxy."
+  ]
+}

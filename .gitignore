@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+config.local.json
+data/local/
+models/
+artifacts/
+.pytest_cache/
+.cache/
+data/real/cricket_global/
+data/raw/*
+!data/raw/tennis_tour/

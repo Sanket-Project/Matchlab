@@ -1,0 +1,1141 @@
+match_id,date,team,opponent,team_score,opponent_score,outcome,venue,pre_match_date,competition
+epl-2021-22-0,2021-08-13,Brentford FC,Arsenal FC,2,0,team,home,2021-08-13,EPL
+epl-2021-22-1,2021-08-14,Manchester United FC,Leeds United FC,5,1,team,home,2021-08-14,EPL
+epl-2021-22-2,2021-08-14,Watford FC,Aston Villa FC,3,2,team,home,2021-08-14,EPL
+epl-2021-22-3,2021-08-14,Leicester City FC,Wolverhampton Wanderers FC,1,0,team,home,2021-08-14,EPL
+epl-2021-22-4,2021-08-14,Everton FC,Southampton FC,3,1,team,home,2021-08-14,EPL
+epl-2021-22-5,2021-08-14,Chelsea FC,Crystal Palace FC,3,0,team,home,2021-08-14,EPL
+epl-2021-22-6,2021-08-14,Burnley FC,Brighton & Hove Albion FC,1,2,opponent,home,2021-08-14,EPL
+epl-2021-22-7,2021-08-14,Norwich City FC,Liverpool FC,0,3,opponent,home,2021-08-14,EPL
+epl-2021-22-8,2021-08-15,Newcastle United FC,West Ham United FC,2,4,opponent,home,2021-08-15,EPL
+epl-2021-22-9,2021-08-15,Tottenham Hotspur FC,Manchester City FC,1,0,team,home,2021-08-15,EPL
+epl-2021-22-10,2021-08-21,Liverpool FC,Burnley FC,2,0,team,home,2021-08-21,EPL
+epl-2021-22-11,2021-08-21,Manchester City FC,Norwich City FC,5,0,team,home,2021-08-21,EPL
+epl-2021-22-12,2021-08-21,Leeds United FC,Everton FC,2,2,draw,home,2021-08-21,EPL
+epl-2021-22-13,2021-08-21,Crystal Palace FC,Brentford FC,0,0,draw,home,2021-08-21,EPL
+epl-2021-22-14,2021-08-21,Aston Villa FC,Newcastle United FC,2,0,team,home,2021-08-21,EPL
+epl-2021-22-15,2021-08-21,Brighton & Hove Albion FC,Watford FC,2,0,team,home,2021-08-21,EPL
+epl-2021-22-16,2021-08-22,Wolverhampton Wanderers FC,Tottenham Hotspur FC,0,1,opponent,home,2021-08-22,EPL
+epl-2021-22-17,2021-08-22,Southampton FC,Manchester United FC,1,1,draw,home,2021-08-22,EPL
+epl-2021-22-18,2021-08-22,Arsenal FC,Chelsea FC,0,2,opponent,home,2021-08-22,EPL
+epl-2021-22-19,2021-08-23,West Ham United FC,Leicester City FC,4,1,team,home,2021-08-23,EPL
+epl-2021-22-20,2021-08-28,Manchester City FC,Arsenal FC,5,0,team,home,2021-08-28,EPL
+epl-2021-22-21,2021-08-28,West Ham United FC,Crystal Palace FC,2,2,draw,home,2021-08-28,EPL
+epl-2021-22-22,2021-08-28,Norwich City FC,Leicester City FC,1,2,opponent,home,2021-08-28,EPL
+epl-2021-22-23,2021-08-28,Newcastle United FC,Southampton FC,2,2,draw,home,2021-08-28,EPL
+epl-2021-22-24,2021-08-28,Brighton & Hove Albion FC,Everton FC,0,2,opponent,home,2021-08-28,EPL
+epl-2021-22-25,2021-08-28,Aston Villa FC,Brentford FC,1,1,draw,home,2021-08-28,EPL
+epl-2021-22-26,2021-08-28,Liverpool FC,Chelsea FC,1,1,draw,home,2021-08-28,EPL
+epl-2021-22-27,2021-08-29,Tottenham Hotspur FC,Watford FC,1,0,team,home,2021-08-29,EPL
+epl-2021-22-28,2021-08-29,Burnley FC,Leeds United FC,1,1,draw,home,2021-08-29,EPL
+epl-2021-22-29,2021-08-29,Wolverhampton Wanderers FC,Manchester United FC,0,1,opponent,home,2021-08-29,EPL
+epl-2021-22-30,2021-09-11,Crystal Palace FC,Tottenham Hotspur FC,3,0,team,home,2021-09-11,EPL
+epl-2021-22-31,2021-09-11,Watford FC,Wolverhampton Wanderers FC,0,2,opponent,home,2021-09-11,EPL
+epl-2021-22-32,2021-09-11,Southampton FC,West Ham United FC,0,0,draw,home,2021-09-11,EPL
+epl-2021-22-33,2021-09-11,Manchester United FC,Newcastle United FC,4,1,team,home,2021-09-11,EPL
+epl-2021-22-34,2021-09-11,Leicester City FC,Manchester City FC,0,1,opponent,home,2021-09-11,EPL
+epl-2021-22-35,2021-09-11,Brentford FC,Brighton & Hove Albion FC,0,1,opponent,home,2021-09-11,EPL
+epl-2021-22-36,2021-09-11,Arsenal FC,Norwich City FC,1,0,team,home,2021-09-11,EPL
+epl-2021-22-37,2021-09-11,Chelsea FC,Aston Villa FC,3,0,team,home,2021-09-11,EPL
+epl-2021-22-38,2021-09-12,Leeds United FC,Liverpool FC,0,3,opponent,home,2021-09-12,EPL
+epl-2021-22-39,2021-09-13,Everton FC,Burnley FC,3,1,team,home,2021-09-13,EPL
+epl-2021-22-40,2021-09-17,Newcastle United FC,Leeds United FC,1,1,draw,home,2021-09-17,EPL
+epl-2021-22-41,2021-09-18,Wolverhampton Wanderers FC,Brentford FC,0,2,opponent,home,2021-09-18,EPL
+epl-2021-22-42,2021-09-18,Norwich City FC,Watford FC,1,3,opponent,home,2021-09-18,EPL
+epl-2021-22-43,2021-09-18,Manchester City FC,Southampton FC,0,0,draw,home,2021-09-18,EPL
+epl-2021-22-44,2021-09-18,Liverpool FC,Crystal Palace FC,3,0,team,home,2021-09-18,EPL
+epl-2021-22-45,2021-09-18,Burnley FC,Arsenal FC,0,1,opponent,home,2021-09-18,EPL
+epl-2021-22-46,2021-09-18,Aston Villa FC,Everton FC,3,0,team,home,2021-09-18,EPL
+epl-2021-22-47,2021-09-19,West Ham United FC,Manchester United FC,1,2,opponent,home,2021-09-19,EPL
+epl-2021-22-48,2021-09-19,Brighton & Hove Albion FC,Leicester City FC,2,1,team,home,2021-09-19,EPL
+epl-2021-22-49,2021-09-19,Tottenham Hotspur FC,Chelsea FC,0,3,opponent,home,2021-09-19,EPL
+epl-2021-22-50,2021-09-25,Manchester United FC,Aston Villa FC,0,1,opponent,home,2021-09-25,EPL
+epl-2021-22-51,2021-09-25,Chelsea FC,Manchester City FC,0,1,opponent,home,2021-09-25,EPL
+epl-2021-22-52,2021-09-25,Watford FC,Newcastle United FC,1,1,draw,home,2021-09-25,EPL
+epl-2021-22-53,2021-09-25,Leicester City FC,Burnley FC,2,2,draw,home,2021-09-25,EPL
+epl-2021-22-54,2021-09-25,Leeds United FC,West Ham United FC,1,2,opponent,home,2021-09-25,EPL
+epl-2021-22-55,2021-09-25,Everton FC,Norwich City FC,2,0,team,home,2021-09-25,EPL
+epl-2021-22-56,2021-09-25,Brentford FC,Liverpool FC,3,3,draw,home,2021-09-25,EPL
+epl-2021-22-57,2021-09-26,Southampton FC,Wolverhampton Wanderers FC,0,1,opponent,home,2021-09-26,EPL
+epl-2021-22-58,2021-09-26,Arsenal FC,Tottenham Hotspur FC,3,1,team,home,2021-09-26,EPL
+epl-2021-22-59,2021-09-27,Crystal Palace FC,Brighton & Hove Albion FC,1,1,draw,home,2021-09-27,EPL
+epl-2021-22-60,2021-10-02,Manchester United FC,Everton FC,1,1,draw,home,2021-10-02,EPL
+epl-2021-22-61,2021-10-02,Wolverhampton Wanderers FC,Newcastle United FC,2,1,team,home,2021-10-02,EPL
+epl-2021-22-62,2021-10-02,Leeds United FC,Watford FC,1,0,team,home,2021-10-02,EPL
+epl-2021-22-63,2021-10-02,Chelsea FC,Southampton FC,3,1,team,home,2021-10-02,EPL
+epl-2021-22-64,2021-10-02,Burnley FC,Norwich City FC,0,0,draw,home,2021-10-02,EPL
+epl-2021-22-65,2021-10-02,Brighton & Hove Albion FC,Arsenal FC,0,0,draw,home,2021-10-02,EPL
+epl-2021-22-66,2021-10-03,West Ham United FC,Brentford FC,1,2,opponent,home,2021-10-03,EPL
+epl-2021-22-67,2021-10-03,Tottenham Hotspur FC,Aston Villa FC,2,1,team,home,2021-10-03,EPL
+epl-2021-22-68,2021-10-03,Crystal Palace FC,Leicester City FC,2,2,draw,home,2021-10-03,EPL
+epl-2021-22-69,2021-10-03,Liverpool FC,Manchester City FC,2,2,draw,home,2021-10-03,EPL
+epl-2021-22-70,2021-10-16,Watford FC,Liverpool FC,0,5,opponent,home,2021-10-16,EPL
+epl-2021-22-71,2021-10-16,Southampton FC,Leeds United FC,1,0,team,home,2021-10-16,EPL
+epl-2021-22-72,2021-10-16,Norwich City FC,Brighton & Hove Albion FC,0,0,draw,home,2021-10-16,EPL
+epl-2021-22-73,2021-10-16,Manchester City FC,Burnley FC,2,0,team,home,2021-10-16,EPL
+epl-2021-22-74,2021-10-16,Leicester City FC,Manchester United FC,4,2,team,home,2021-10-16,EPL
+epl-2021-22-75,2021-10-16,Aston Villa FC,Wolverhampton Wanderers FC,2,3,opponent,home,2021-10-16,EPL
+epl-2021-22-76,2021-10-16,Brentford FC,Chelsea FC,0,1,opponent,home,2021-10-16,EPL
+epl-2021-22-77,2021-10-17,Everton FC,West Ham United FC,0,1,opponent,home,2021-10-17,EPL
+epl-2021-22-78,2021-10-17,Newcastle United FC,Tottenham Hotspur FC,2,3,opponent,home,2021-10-17,EPL
+epl-2021-22-79,2021-10-18,Arsenal FC,Crystal Palace FC,2,2,draw,home,2021-10-18,EPL
+epl-2021-22-80,2021-10-22,Arsenal FC,Aston Villa FC,3,1,team,home,2021-10-22,EPL
+epl-2021-22-81,2021-10-23,Chelsea FC,Norwich City FC,7,0,team,home,2021-10-23,EPL
+epl-2021-22-82,2021-10-23,Southampton FC,Burnley FC,2,2,draw,home,2021-10-23,EPL
+epl-2021-22-83,2021-10-23,Leeds United FC,Wolverhampton Wanderers FC,1,1,draw,home,2021-10-23,EPL
+epl-2021-22-84,2021-10-23,Everton FC,Watford FC,2,5,opponent,home,2021-10-23,EPL
+epl-2021-22-85,2021-10-23,Crystal Palace FC,Newcastle United FC,1,1,draw,home,2021-10-23,EPL
+epl-2021-22-86,2021-10-23,Brighton & Hove Albion FC,Manchester City FC,1,4,opponent,home,2021-10-23,EPL
+epl-2021-22-87,2021-10-24,West Ham United FC,Tottenham Hotspur FC,1,0,team,home,2021-10-24,EPL
+epl-2021-22-88,2021-10-24,Brentford FC,Leicester City FC,1,2,opponent,home,2021-10-24,EPL
+epl-2021-22-89,2021-10-24,Manchester United FC,Liverpool FC,0,5,opponent,home,2021-10-24,EPL
+epl-2021-22-90,2021-10-30,Leicester City FC,Arsenal FC,0,2,opponent,home,2021-10-30,EPL
+epl-2021-22-91,2021-10-30,Watford FC,Southampton FC,0,1,opponent,home,2021-10-30,EPL
+epl-2021-22-92,2021-10-30,Newcastle United FC,Chelsea FC,0,3,opponent,home,2021-10-30,EPL
+epl-2021-22-93,2021-10-30,Manchester City FC,Crystal Palace FC,0,2,opponent,home,2021-10-30,EPL
+epl-2021-22-94,2021-10-30,Liverpool FC,Brighton & Hove Albion FC,2,2,draw,home,2021-10-30,EPL
+epl-2021-22-95,2021-10-30,Burnley FC,Brentford FC,3,1,team,home,2021-10-30,EPL
+epl-2021-22-96,2021-10-30,Tottenham Hotspur FC,Manchester United FC,0,3,opponent,home,2021-10-30,EPL
+epl-2021-22-97,2021-10-31,Norwich City FC,Leeds United FC,1,2,opponent,home,2021-10-31,EPL
+epl-2021-22-98,2021-10-31,Aston Villa FC,West Ham United FC,1,4,opponent,home,2021-10-31,EPL
+epl-2021-22-99,2021-11-01,Wolverhampton Wanderers FC,Everton FC,2,1,team,home,2021-11-01,EPL
+epl-2021-22-100,2021-11-05,Southampton FC,Aston Villa FC,1,0,team,home,2021-11-05,EPL
+epl-2021-22-101,2021-11-06,Manchester United FC,Manchester City FC,0,2,opponent,home,2021-11-06,EPL
+epl-2021-22-102,2021-11-06,Crystal Palace FC,Wolverhampton Wanderers FC,2,0,team,home,2021-11-06,EPL
+epl-2021-22-103,2021-11-06,Chelsea FC,Burnley FC,1,1,draw,home,2021-11-06,EPL
+epl-2021-22-104,2021-11-06,Brentford FC,Norwich City FC,1,2,opponent,home,2021-11-06,EPL
+epl-2021-22-105,2021-11-06,Brighton & Hove Albion FC,Newcastle United FC,1,1,draw,home,2021-11-06,EPL
+epl-2021-22-106,2021-11-07,Leeds United FC,Leicester City FC,1,1,draw,home,2021-11-07,EPL
+epl-2021-22-107,2021-11-07,Everton FC,Tottenham Hotspur FC,0,0,draw,home,2021-11-07,EPL
+epl-2021-22-108,2021-11-07,Arsenal FC,Watford FC,1,0,team,home,2021-11-07,EPL
+epl-2021-22-109,2021-11-07,West Ham United FC,Liverpool FC,3,2,team,home,2021-11-07,EPL
+epl-2021-22-110,2021-11-20,Leicester City FC,Chelsea FC,0,3,opponent,home,2021-11-20,EPL
+epl-2021-22-111,2021-11-20,Wolverhampton Wanderers FC,West Ham United FC,1,0,team,home,2021-11-20,EPL
+epl-2021-22-112,2021-11-20,Watford FC,Manchester United FC,4,1,team,home,2021-11-20,EPL
+epl-2021-22-113,2021-11-20,Norwich City FC,Southampton FC,2,1,team,home,2021-11-20,EPL
+epl-2021-22-114,2021-11-20,Newcastle United FC,Brentford FC,3,3,draw,home,2021-11-20,EPL
+epl-2021-22-115,2021-11-20,Burnley FC,Crystal Palace FC,3,3,draw,home,2021-11-20,EPL
+epl-2021-22-116,2021-11-20,Aston Villa FC,Brighton & Hove Albion FC,2,0,team,home,2021-11-20,EPL
+epl-2021-22-117,2021-11-20,Liverpool FC,Arsenal FC,4,0,team,home,2021-11-20,EPL
+epl-2021-22-118,2021-11-21,Manchester City FC,Everton FC,3,0,team,home,2021-11-21,EPL
+epl-2021-22-119,2021-11-21,Tottenham Hotspur FC,Leeds United FC,2,1,team,home,2021-11-21,EPL
+epl-2021-22-120,2021-11-27,Arsenal FC,Newcastle United FC,2,0,team,home,2021-11-27,EPL
+epl-2021-22-121,2021-11-27,Norwich City FC,Wolverhampton Wanderers FC,0,0,draw,home,2021-11-27,EPL
+epl-2021-22-122,2021-11-27,Liverpool FC,Southampton FC,4,0,team,home,2021-11-27,EPL
+epl-2021-22-123,2021-11-27,Crystal Palace FC,Aston Villa FC,1,2,opponent,home,2021-11-27,EPL
+epl-2021-22-124,2021-11-27,Brighton & Hove Albion FC,Leeds United FC,0,0,draw,home,2021-11-27,EPL
+epl-2021-22-125,2021-11-28,Manchester City FC,West Ham United FC,2,1,team,home,2021-11-28,EPL
+epl-2021-22-126,2021-11-28,Leicester City FC,Watford FC,4,2,team,home,2021-11-28,EPL
+epl-2021-22-127,2021-11-28,Brentford FC,Everton FC,1,0,team,home,2021-11-28,EPL
+epl-2021-22-128,2021-11-28,Chelsea FC,Manchester United FC,1,1,draw,home,2021-11-28,EPL
+epl-2021-22-129,2021-11-30,Newcastle United FC,Norwich City FC,1,1,draw,home,2021-11-30,EPL
+epl-2021-22-130,2021-11-30,Leeds United FC,Crystal Palace FC,1,0,team,home,2021-11-30,EPL
+epl-2021-22-131,2021-12-01,Southampton FC,Leicester City FC,2,2,draw,home,2021-12-01,EPL
+epl-2021-22-132,2021-12-01,Wolverhampton Wanderers FC,Burnley FC,0,0,draw,home,2021-12-01,EPL
+epl-2021-22-133,2021-12-01,West Ham United FC,Brighton & Hove Albion FC,1,1,draw,home,2021-12-01,EPL
+epl-2021-22-134,2021-12-01,Watford FC,Chelsea FC,1,2,opponent,home,2021-12-01,EPL
+epl-2021-22-135,2021-12-01,Everton FC,Liverpool FC,1,4,opponent,home,2021-12-01,EPL
+epl-2021-22-136,2021-12-01,Aston Villa FC,Manchester City FC,1,2,opponent,home,2021-12-01,EPL
+epl-2021-22-137,2021-12-02,Tottenham Hotspur FC,Brentford FC,2,0,team,home,2021-12-02,EPL
+epl-2021-22-138,2021-12-02,Manchester United FC,Arsenal FC,3,2,team,home,2021-12-02,EPL
+epl-2021-22-139,2021-12-04,West Ham United FC,Chelsea FC,3,2,team,home,2021-12-04,EPL
+epl-2021-22-140,2021-12-04,Wolverhampton Wanderers FC,Liverpool FC,0,1,opponent,home,2021-12-04,EPL
+epl-2021-22-141,2021-12-04,Southampton FC,Brighton & Hove Albion FC,1,1,draw,home,2021-12-04,EPL
+epl-2021-22-142,2021-12-04,Newcastle United FC,Burnley FC,1,0,team,home,2021-12-04,EPL
+epl-2021-22-143,2021-12-04,Watford FC,Manchester City FC,1,3,opponent,home,2021-12-04,EPL
+epl-2021-22-144,2021-12-05,Tottenham Hotspur FC,Norwich City FC,3,0,team,home,2021-12-05,EPL
+epl-2021-22-145,2021-12-05,Manchester United FC,Crystal Palace FC,1,0,team,home,2021-12-05,EPL
+epl-2021-22-146,2021-12-05,Leeds United FC,Brentford FC,2,2,draw,home,2021-12-05,EPL
+epl-2021-22-147,2021-12-05,Aston Villa FC,Leicester City FC,2,1,team,home,2021-12-05,EPL
+epl-2021-22-148,2021-12-06,Everton FC,Arsenal FC,2,1,team,home,2021-12-06,EPL
+epl-2021-22-149,2021-12-10,Brentford FC,Watford FC,2,1,team,home,2021-12-10,EPL
+epl-2021-22-150,2021-12-11,Manchester City FC,Wolverhampton Wanderers FC,1,0,team,home,2021-12-11,EPL
+epl-2021-22-151,2021-12-11,Liverpool FC,Aston Villa FC,1,0,team,home,2021-12-11,EPL
+epl-2021-22-152,2021-12-11,Chelsea FC,Leeds United FC,3,2,team,home,2021-12-11,EPL
+epl-2021-22-153,2021-12-11,Arsenal FC,Southampton FC,3,0,team,home,2021-12-11,EPL
+epl-2021-22-154,2021-12-11,Norwich City FC,Manchester United FC,0,1,opponent,home,2021-12-11,EPL
+epl-2021-22-155,2021-12-12,Leicester City FC,Newcastle United FC,4,0,team,home,2021-12-12,EPL
+epl-2021-22-156,2021-12-12,Burnley FC,West Ham United FC,0,0,draw,home,2021-12-12,EPL
+epl-2021-22-157,2021-12-12,Crystal Palace FC,Everton FC,3,1,team,home,2021-12-12,EPL
+epl-2021-22-158,2021-12-14,Norwich City FC,Aston Villa FC,0,2,opponent,home,2021-12-14,EPL
+epl-2021-22-159,2021-12-14,Manchester City FC,Leeds United FC,7,0,team,home,2021-12-14,EPL
+epl-2021-22-160,2021-12-15,Crystal Palace FC,Southampton FC,2,2,draw,home,2021-12-15,EPL
+epl-2021-22-161,2021-12-15,Brighton & Hove Albion FC,Wolverhampton Wanderers FC,0,1,opponent,home,2021-12-15,EPL
+epl-2021-22-162,2021-12-15,Arsenal FC,West Ham United FC,2,0,team,home,2021-12-15,EPL
+epl-2021-22-163,2021-12-16,Chelsea FC,Everton FC,1,1,draw,home,2021-12-16,EPL
+epl-2021-22-164,2021-12-16,Liverpool FC,Newcastle United FC,3,1,team,home,2021-12-16,EPL
+epl-2021-22-165,2021-12-18,Leeds United FC,Arsenal FC,1,4,opponent,home,2021-12-18,EPL
+epl-2021-22-166,2021-12-19,Wolverhampton Wanderers FC,Chelsea FC,0,0,draw,home,2021-12-19,EPL
+epl-2021-22-167,2021-12-19,Newcastle United FC,Manchester City FC,0,4,opponent,home,2021-12-19,EPL
+epl-2021-22-168,2021-12-19,Tottenham Hotspur FC,Liverpool FC,2,2,draw,home,2021-12-19,EPL
+epl-2021-22-169,2021-12-26,West Ham United FC,Southampton FC,2,3,opponent,home,2021-12-26,EPL
+epl-2021-22-170,2021-12-26,Tottenham Hotspur FC,Crystal Palace FC,3,0,team,home,2021-12-26,EPL
+epl-2021-22-171,2021-12-26,Norwich City FC,Arsenal FC,0,5,opponent,home,2021-12-26,EPL
+epl-2021-22-172,2021-12-26,Manchester City FC,Leicester City FC,6,3,team,home,2021-12-26,EPL
+epl-2021-22-173,2021-12-26,Aston Villa FC,Chelsea FC,1,3,opponent,home,2021-12-26,EPL
+epl-2021-22-174,2021-12-26,Brighton & Hove Albion FC,Brentford FC,2,0,team,home,2021-12-26,EPL
+epl-2021-22-175,2021-12-27,Newcastle United FC,Manchester United FC,1,1,draw,home,2021-12-27,EPL
+epl-2021-22-176,2021-12-28,Crystal Palace FC,Norwich City FC,3,0,team,home,2021-12-28,EPL
+epl-2021-22-177,2021-12-28,Watford FC,West Ham United FC,1,4,opponent,home,2021-12-28,EPL
+epl-2021-22-178,2021-12-28,Southampton FC,Tottenham Hotspur FC,1,1,draw,home,2021-12-28,EPL
+epl-2021-22-179,2021-12-28,Leicester City FC,Liverpool FC,1,0,team,home,2021-12-28,EPL
+epl-2021-22-180,2021-12-29,Chelsea FC,Brighton & Hove Albion FC,1,1,draw,home,2021-12-29,EPL
+epl-2021-22-181,2021-12-29,Brentford FC,Manchester City FC,0,1,opponent,home,2021-12-29,EPL
+epl-2021-22-182,2021-12-30,Manchester United FC,Burnley FC,3,1,team,home,2021-12-30,EPL
+epl-2021-22-183,2022-01-01,Arsenal FC,Manchester City FC,1,2,opponent,home,2022-01-01,EPL
+epl-2021-22-184,2022-01-01,Watford FC,Tottenham Hotspur FC,0,1,opponent,home,2022-01-01,EPL
+epl-2021-22-185,2022-01-01,Crystal Palace FC,West Ham United FC,2,3,opponent,home,2022-01-01,EPL
+epl-2021-22-186,2022-01-02,Leeds United FC,Burnley FC,3,1,team,home,2022-01-02,EPL
+epl-2021-22-187,2022-01-02,Everton FC,Brighton & Hove Albion FC,2,3,opponent,home,2022-01-02,EPL
+epl-2021-22-188,2022-01-02,Brentford FC,Aston Villa FC,2,1,team,home,2022-01-02,EPL
+epl-2021-22-189,2022-01-02,Chelsea FC,Liverpool FC,2,2,draw,home,2022-01-02,EPL
+epl-2021-22-190,2022-01-03,Manchester United FC,Wolverhampton Wanderers FC,0,1,opponent,home,2022-01-03,EPL
+epl-2021-22-191,2022-01-11,Southampton FC,Brentford FC,4,1,team,home,2022-01-11,EPL
+epl-2021-22-192,2022-01-12,West Ham United FC,Norwich City FC,2,0,team,home,2022-01-12,EPL
+epl-2021-22-193,2022-01-14,Brighton & Hove Albion FC,Crystal Palace FC,1,1,draw,home,2022-01-14,EPL
+epl-2021-22-194,2022-01-15,Manchester City FC,Chelsea FC,1,0,team,home,2022-01-15,EPL
+epl-2021-22-195,2022-01-15,Wolverhampton Wanderers FC,Southampton FC,3,1,team,home,2022-01-15,EPL
+epl-2021-22-196,2022-01-15,Norwich City FC,Everton FC,2,1,team,home,2022-01-15,EPL
+epl-2021-22-197,2022-01-15,Newcastle United FC,Watford FC,1,1,draw,home,2022-01-15,EPL
+epl-2021-22-198,2022-01-15,Aston Villa FC,Manchester United FC,2,2,draw,home,2022-01-15,EPL
+epl-2021-22-199,2022-01-16,West Ham United FC,Leeds United FC,2,3,opponent,home,2022-01-16,EPL
+epl-2021-22-200,2022-01-16,Liverpool FC,Brentford FC,3,0,team,home,2022-01-16,EPL
+epl-2021-22-201,2022-01-18,Brighton & Hove Albion FC,Chelsea FC,1,1,draw,home,2022-01-18,EPL
+epl-2021-22-202,2022-01-19,Leicester City FC,Tottenham Hotspur FC,2,3,opponent,home,2022-01-19,EPL
+epl-2021-22-203,2022-01-19,Brentford FC,Manchester United FC,1,3,opponent,home,2022-01-19,EPL
+epl-2021-22-204,2022-01-21,Watford FC,Norwich City FC,0,3,opponent,home,2022-01-21,EPL
+epl-2021-22-205,2022-01-22,Everton FC,Aston Villa FC,0,1,opponent,home,2022-01-22,EPL
+epl-2021-22-206,2022-01-22,Manchester United FC,West Ham United FC,1,0,team,home,2022-01-22,EPL
+epl-2021-22-207,2022-01-22,Leeds United FC,Newcastle United FC,0,1,opponent,home,2022-01-22,EPL
+epl-2021-22-208,2022-01-22,Brentford FC,Wolverhampton Wanderers FC,1,2,opponent,home,2022-01-22,EPL
+epl-2021-22-209,2022-01-22,Southampton FC,Manchester City FC,1,1,draw,home,2022-01-22,EPL
+epl-2021-22-210,2022-01-23,Leicester City FC,Brighton & Hove Albion FC,1,1,draw,home,2022-01-23,EPL
+epl-2021-22-211,2022-01-23,Crystal Palace FC,Liverpool FC,1,3,opponent,home,2022-01-23,EPL
+epl-2021-22-212,2022-01-23,Arsenal FC,Burnley FC,0,0,draw,home,2022-01-23,EPL
+epl-2021-22-213,2022-01-23,Chelsea FC,Tottenham Hotspur FC,2,0,team,home,2022-01-23,EPL
+epl-2021-22-214,2022-02-05,Burnley FC,Watford FC,0,0,draw,home,2022-02-05,EPL
+epl-2021-22-215,2022-02-08,Newcastle United FC,Everton FC,3,1,team,home,2022-02-08,EPL
+epl-2021-22-216,2022-02-08,West Ham United FC,Watford FC,1,0,team,home,2022-02-08,EPL
+epl-2021-22-217,2022-02-08,Burnley FC,Manchester United FC,1,1,draw,home,2022-02-08,EPL
+epl-2021-22-218,2022-02-09,Manchester City FC,Brentford FC,2,0,team,home,2022-02-09,EPL
+epl-2021-22-219,2022-02-09,Tottenham Hotspur FC,Southampton FC,2,3,opponent,home,2022-02-09,EPL
+epl-2021-22-220,2022-02-09,Norwich City FC,Crystal Palace FC,1,1,draw,home,2022-02-09,EPL
+epl-2021-22-221,2022-02-09,Aston Villa FC,Leeds United FC,3,3,draw,home,2022-02-09,EPL
+epl-2021-22-222,2022-02-10,Liverpool FC,Leicester City FC,2,0,team,home,2022-02-10,EPL
+epl-2021-22-223,2022-02-10,Wolverhampton Wanderers FC,Arsenal FC,0,1,opponent,home,2022-02-10,EPL
+epl-2021-22-224,2022-02-12,Manchester United FC,Southampton FC,1,1,draw,home,2022-02-12,EPL
+epl-2021-22-225,2022-02-12,Watford FC,Brighton & Hove Albion FC,0,2,opponent,home,2022-02-12,EPL
+epl-2021-22-226,2022-02-12,Everton FC,Leeds United FC,3,0,team,home,2022-02-12,EPL
+epl-2021-22-227,2022-02-12,Brentford FC,Crystal Palace FC,0,0,draw,home,2022-02-12,EPL
+epl-2021-22-228,2022-02-12,Norwich City FC,Manchester City FC,0,4,opponent,home,2022-02-12,EPL
+epl-2021-22-229,2022-02-13,Tottenham Hotspur FC,Wolverhampton Wanderers FC,0,2,opponent,home,2022-02-13,EPL
+epl-2021-22-230,2022-02-13,Newcastle United FC,Aston Villa FC,1,0,team,home,2022-02-13,EPL
+epl-2021-22-231,2022-02-13,Burnley FC,Liverpool FC,0,1,opponent,home,2022-02-13,EPL
+epl-2021-22-232,2022-02-13,Leicester City FC,West Ham United FC,2,2,draw,home,2022-02-13,EPL
+epl-2021-22-233,2022-02-15,Manchester United FC,Brighton & Hove Albion FC,2,0,team,home,2022-02-15,EPL
+epl-2021-22-234,2022-02-19,West Ham United FC,Newcastle United FC,1,1,draw,home,2022-02-19,EPL
+epl-2021-22-235,2022-02-19,Southampton FC,Everton FC,2,0,team,home,2022-02-19,EPL
+epl-2021-22-236,2022-02-19,Liverpool FC,Norwich City FC,3,1,team,home,2022-02-19,EPL
+epl-2021-22-237,2022-02-19,Crystal Palace FC,Chelsea FC,0,1,opponent,home,2022-02-19,EPL
+epl-2021-22-238,2022-02-19,Brighton & Hove Albion FC,Burnley FC,0,3,opponent,home,2022-02-19,EPL
+epl-2021-22-239,2022-02-19,Aston Villa FC,Watford FC,0,1,opponent,home,2022-02-19,EPL
+epl-2021-22-240,2022-02-19,Arsenal FC,Brentford FC,2,1,team,home,2022-02-19,EPL
+epl-2021-22-241,2022-02-19,Manchester City FC,Tottenham Hotspur FC,2,3,opponent,home,2022-02-19,EPL
+epl-2021-22-242,2022-02-20,Leeds United FC,Manchester United FC,2,4,opponent,home,2022-02-20,EPL
+epl-2021-22-243,2022-02-20,Wolverhampton Wanderers FC,Leicester City FC,2,1,team,home,2022-02-20,EPL
+epl-2021-22-244,2022-02-23,Watford FC,Crystal Palace FC,1,4,opponent,home,2022-02-23,EPL
+epl-2021-22-245,2022-02-23,Burnley FC,Tottenham Hotspur FC,1,0,team,home,2022-02-23,EPL
+epl-2021-22-246,2022-02-23,Liverpool FC,Leeds United FC,6,0,team,home,2022-02-23,EPL
+epl-2021-22-247,2022-02-24,Arsenal FC,Wolverhampton Wanderers FC,2,1,team,home,2022-02-24,EPL
+epl-2021-22-248,2022-02-25,Southampton FC,Norwich City FC,2,0,team,home,2022-02-25,EPL
+epl-2021-22-249,2022-02-26,Leeds United FC,Tottenham Hotspur FC,0,4,opponent,home,2022-02-26,EPL
+epl-2021-22-250,2022-02-26,Manchester United FC,Watford FC,0,0,draw,home,2022-02-26,EPL
+epl-2021-22-251,2022-02-26,Crystal Palace FC,Burnley FC,1,1,draw,home,2022-02-26,EPL
+epl-2021-22-252,2022-02-26,Brentford FC,Newcastle United FC,0,2,opponent,home,2022-02-26,EPL
+epl-2021-22-253,2022-02-26,Brighton & Hove Albion FC,Aston Villa FC,0,2,opponent,home,2022-02-26,EPL
+epl-2021-22-254,2022-02-26,Everton FC,Manchester City FC,0,1,opponent,home,2022-02-26,EPL
+epl-2021-22-255,2022-02-27,West Ham United FC,Wolverhampton Wanderers FC,1,0,team,home,2022-02-27,EPL
+epl-2021-22-256,2022-03-01,Burnley FC,Leicester City FC,0,2,opponent,home,2022-03-01,EPL
+epl-2021-22-257,2022-03-05,Leicester City FC,Leeds United FC,1,0,team,home,2022-03-05,EPL
+epl-2021-22-258,2022-03-05,Wolverhampton Wanderers FC,Crystal Palace FC,0,2,opponent,home,2022-03-05,EPL
+epl-2021-22-259,2022-03-05,Norwich City FC,Brentford FC,1,3,opponent,home,2022-03-05,EPL
+epl-2021-22-260,2022-03-05,Newcastle United FC,Brighton & Hove Albion FC,2,1,team,home,2022-03-05,EPL
+epl-2021-22-261,2022-03-05,Burnley FC,Chelsea FC,0,4,opponent,home,2022-03-05,EPL
+epl-2021-22-262,2022-03-05,Aston Villa FC,Southampton FC,4,0,team,home,2022-03-05,EPL
+epl-2021-22-263,2022-03-05,Liverpool FC,West Ham United FC,1,0,team,home,2022-03-05,EPL
+epl-2021-22-264,2022-03-06,Watford FC,Arsenal FC,2,3,opponent,home,2022-03-06,EPL
+epl-2021-22-265,2022-03-06,Manchester City FC,Manchester United FC,4,1,team,home,2022-03-06,EPL
+epl-2021-22-266,2022-03-07,Tottenham Hotspur FC,Everton FC,5,0,team,home,2022-03-07,EPL
+epl-2021-22-267,2022-03-10,Wolverhampton Wanderers FC,Watford FC,4,0,team,home,2022-03-10,EPL
+epl-2021-22-268,2022-03-10,Norwich City FC,Chelsea FC,1,3,opponent,home,2022-03-10,EPL
+epl-2021-22-269,2022-03-10,Southampton FC,Newcastle United FC,1,2,opponent,home,2022-03-10,EPL
+epl-2021-22-270,2022-03-10,Leeds United FC,Aston Villa FC,0,3,opponent,home,2022-03-10,EPL
+epl-2021-22-271,2022-03-12,Brighton & Hove Albion FC,Liverpool FC,0,2,opponent,home,2022-03-12,EPL
+epl-2021-22-272,2022-03-12,Brentford FC,Burnley FC,2,0,team,home,2022-03-12,EPL
+epl-2021-22-273,2022-03-12,Manchester United FC,Tottenham Hotspur FC,3,2,team,home,2022-03-12,EPL
+epl-2021-22-274,2022-03-13,West Ham United FC,Aston Villa FC,2,1,team,home,2022-03-13,EPL
+epl-2021-22-275,2022-03-13,Southampton FC,Watford FC,1,2,opponent,home,2022-03-13,EPL
+epl-2021-22-276,2022-03-13,Leeds United FC,Norwich City FC,2,1,team,home,2022-03-13,EPL
+epl-2021-22-277,2022-03-13,Everton FC,Wolverhampton Wanderers FC,0,1,opponent,home,2022-03-13,EPL
+epl-2021-22-278,2022-03-13,Chelsea FC,Newcastle United FC,1,0,team,home,2022-03-13,EPL
+epl-2021-22-279,2022-03-13,Arsenal FC,Leicester City FC,2,0,team,home,2022-03-13,EPL
+epl-2021-22-280,2022-03-14,Crystal Palace FC,Manchester City FC,0,0,draw,home,2022-03-14,EPL
+epl-2021-22-281,2022-03-16,Brighton & Hove Albion FC,Tottenham Hotspur FC,0,2,opponent,home,2022-03-16,EPL
+epl-2021-22-282,2022-03-16,Arsenal FC,Liverpool FC,0,2,opponent,home,2022-03-16,EPL
+epl-2021-22-283,2022-03-17,Everton FC,Newcastle United FC,1,0,team,home,2022-03-17,EPL
+epl-2021-22-284,2022-03-18,Wolverhampton Wanderers FC,Leeds United FC,2,3,opponent,home,2022-03-18,EPL
+epl-2021-22-285,2022-03-19,Aston Villa FC,Arsenal FC,0,1,opponent,home,2022-03-19,EPL
+epl-2021-22-286,2022-03-20,Leicester City FC,Brentford FC,2,1,team,home,2022-03-20,EPL
+epl-2021-22-287,2022-03-20,Tottenham Hotspur FC,West Ham United FC,3,1,team,home,2022-03-20,EPL
+epl-2021-22-288,2022-04-02,Liverpool FC,Watford FC,2,0,team,home,2022-04-02,EPL
+epl-2021-22-289,2022-04-02,Brighton & Hove Albion FC,Norwich City FC,0,0,draw,home,2022-04-02,EPL
+epl-2021-22-290,2022-04-02,Burnley FC,Manchester City FC,0,2,opponent,home,2022-04-02,EPL
+epl-2021-22-291,2022-04-02,Chelsea FC,Brentford FC,1,4,opponent,home,2022-04-02,EPL
+epl-2021-22-292,2022-04-02,Leeds United FC,Southampton FC,1,1,draw,home,2022-04-02,EPL
+epl-2021-22-293,2022-04-02,Wolverhampton Wanderers FC,Aston Villa FC,2,1,team,home,2022-04-02,EPL
+epl-2021-22-294,2022-04-02,Manchester United FC,Leicester City FC,1,1,draw,home,2022-04-02,EPL
+epl-2021-22-295,2022-04-03,West Ham United FC,Everton FC,2,1,team,home,2022-04-03,EPL
+epl-2021-22-296,2022-04-03,Tottenham Hotspur FC,Newcastle United FC,5,1,team,home,2022-04-03,EPL
+epl-2021-22-297,2022-04-04,Crystal Palace FC,Arsenal FC,3,0,team,home,2022-04-04,EPL
+epl-2021-22-298,2022-04-06,Burnley FC,Everton FC,3,2,team,home,2022-04-06,EPL
+epl-2021-22-299,2022-04-08,Newcastle United FC,Wolverhampton Wanderers FC,1,0,team,home,2022-04-08,EPL
+epl-2021-22-300,2022-04-09,Everton FC,Manchester United FC,1,0,team,home,2022-04-09,EPL
+epl-2021-22-301,2022-04-09,Arsenal FC,Brighton & Hove Albion FC,1,2,opponent,home,2022-04-09,EPL
+epl-2021-22-302,2022-04-09,Southampton FC,Chelsea FC,0,6,opponent,home,2022-04-09,EPL
+epl-2021-22-303,2022-04-09,Watford FC,Leeds United FC,0,3,opponent,home,2022-04-09,EPL
+epl-2021-22-304,2022-04-09,Aston Villa FC,Tottenham Hotspur FC,0,4,opponent,home,2022-04-09,EPL
+epl-2021-22-305,2022-04-10,Brentford FC,West Ham United FC,2,0,team,home,2022-04-10,EPL
+epl-2021-22-306,2022-04-10,Leicester City FC,Crystal Palace FC,2,1,team,home,2022-04-10,EPL
+epl-2021-22-307,2022-04-10,Norwich City FC,Burnley FC,2,0,team,home,2022-04-10,EPL
+epl-2021-22-308,2022-04-10,Manchester City FC,Liverpool FC,2,2,draw,home,2022-04-10,EPL
+epl-2021-22-309,2022-04-16,Tottenham Hotspur FC,Brighton & Hove Albion FC,0,1,opponent,home,2022-04-16,EPL
+epl-2021-22-310,2022-04-16,Manchester United FC,Norwich City FC,3,2,team,home,2022-04-16,EPL
+epl-2021-22-311,2022-04-16,Southampton FC,Arsenal FC,1,0,team,home,2022-04-16,EPL
+epl-2021-22-312,2022-04-16,Watford FC,Brentford FC,1,2,opponent,home,2022-04-16,EPL
+epl-2021-22-313,2022-04-17,Newcastle United FC,Leicester City FC,2,1,team,home,2022-04-17,EPL
+epl-2021-22-314,2022-04-17,West Ham United FC,Burnley FC,1,1,draw,home,2022-04-17,EPL
+epl-2021-22-315,2022-04-19,Liverpool FC,Manchester United FC,4,0,team,home,2022-04-19,EPL
+epl-2021-22-316,2022-04-20,Everton FC,Leicester City FC,1,1,draw,home,2022-04-20,EPL
+epl-2021-22-317,2022-04-20,Newcastle United FC,Crystal Palace FC,1,0,team,home,2022-04-20,EPL
+epl-2021-22-318,2022-04-20,Chelsea FC,Arsenal FC,2,4,opponent,home,2022-04-20,EPL
+epl-2021-22-319,2022-04-20,Manchester City FC,Brighton & Hove Albion FC,3,0,team,home,2022-04-20,EPL
+epl-2021-22-320,2022-04-21,Burnley FC,Southampton FC,2,0,team,home,2022-04-21,EPL
+epl-2021-22-321,2022-04-23,Arsenal FC,Manchester United FC,3,1,team,home,2022-04-23,EPL
+epl-2021-22-322,2022-04-23,Leicester City FC,Aston Villa FC,0,0,draw,home,2022-04-23,EPL
+epl-2021-22-323,2022-04-23,Manchester City FC,Watford FC,5,1,team,home,2022-04-23,EPL
+epl-2021-22-324,2022-04-23,Norwich City FC,Newcastle United FC,0,3,opponent,home,2022-04-23,EPL
+epl-2021-22-325,2022-04-23,Brentford FC,Tottenham Hotspur FC,0,0,draw,home,2022-04-23,EPL
+epl-2021-22-326,2022-04-24,Brighton & Hove Albion FC,Southampton FC,2,2,draw,home,2022-04-24,EPL
+epl-2021-22-327,2022-04-24,Burnley FC,Wolverhampton Wanderers FC,1,0,team,home,2022-04-24,EPL
+epl-2021-22-328,2022-04-24,Chelsea FC,West Ham United FC,1,0,team,home,2022-04-24,EPL
+epl-2021-22-329,2022-04-24,Liverpool FC,Everton FC,2,0,team,home,2022-04-24,EPL
+epl-2021-22-330,2022-04-25,Crystal Palace FC,Leeds United FC,0,0,draw,home,2022-04-25,EPL
+epl-2021-22-331,2022-04-28,Manchester United FC,Chelsea FC,1,1,draw,home,2022-04-28,EPL
+epl-2021-22-332,2022-04-30,Newcastle United FC,Liverpool FC,0,1,opponent,home,2022-04-30,EPL
+epl-2021-22-333,2022-04-30,Aston Villa FC,Norwich City FC,2,0,team,home,2022-04-30,EPL
+epl-2021-22-334,2022-04-30,Southampton FC,Crystal Palace FC,1,2,opponent,home,2022-04-30,EPL
+epl-2021-22-335,2022-04-30,Watford FC,Burnley FC,1,2,opponent,home,2022-04-30,EPL
+epl-2021-22-336,2022-04-30,Wolverhampton Wanderers FC,Brighton & Hove Albion FC,0,3,opponent,home,2022-04-30,EPL
+epl-2021-22-337,2022-04-30,Leeds United FC,Manchester City FC,0,4,opponent,home,2022-04-30,EPL
+epl-2021-22-338,2022-05-01,Everton FC,Chelsea FC,1,0,team,home,2022-05-01,EPL
+epl-2021-22-339,2022-05-01,Tottenham Hotspur FC,Leicester City FC,3,1,team,home,2022-05-01,EPL
+epl-2021-22-340,2022-05-01,West Ham United FC,Arsenal FC,1,2,opponent,home,2022-05-01,EPL
+epl-2021-22-341,2022-05-02,Manchester United FC,Brentford FC,3,0,team,home,2022-05-02,EPL
+epl-2021-22-342,2022-05-07,Brentford FC,Southampton FC,3,0,team,home,2022-05-07,EPL
+epl-2021-22-343,2022-05-07,Burnley FC,Aston Villa FC,1,3,opponent,home,2022-05-07,EPL
+epl-2021-22-344,2022-05-07,Chelsea FC,Wolverhampton Wanderers FC,2,2,draw,home,2022-05-07,EPL
+epl-2021-22-345,2022-05-07,Crystal Palace FC,Watford FC,1,0,team,home,2022-05-07,EPL
+epl-2021-22-346,2022-05-07,Brighton & Hove Albion FC,Manchester United FC,4,0,team,home,2022-05-07,EPL
+epl-2021-22-347,2022-05-07,Liverpool FC,Tottenham Hotspur FC,1,1,draw,home,2022-05-07,EPL
+epl-2021-22-348,2022-05-08,Arsenal FC,Leeds United FC,2,1,team,home,2022-05-08,EPL
+epl-2021-22-349,2022-05-08,Leicester City FC,Everton FC,1,2,opponent,home,2022-05-08,EPL
+epl-2021-22-350,2022-05-08,Norwich City FC,West Ham United FC,0,4,opponent,home,2022-05-08,EPL
+epl-2021-22-351,2022-05-08,Manchester City FC,Newcastle United FC,5,0,team,home,2022-05-08,EPL
+epl-2021-22-352,2022-05-10,Aston Villa FC,Liverpool FC,1,2,opponent,home,2022-05-10,EPL
+epl-2021-22-353,2022-05-11,Leeds United FC,Chelsea FC,0,3,opponent,home,2022-05-11,EPL
+epl-2021-22-354,2022-05-11,Watford FC,Everton FC,0,0,draw,home,2022-05-11,EPL
+epl-2021-22-355,2022-05-11,Leicester City FC,Norwich City FC,3,0,team,home,2022-05-11,EPL
+epl-2021-22-356,2022-05-11,Wolverhampton Wanderers FC,Manchester City FC,1,5,opponent,home,2022-05-11,EPL
+epl-2021-22-357,2022-05-12,Tottenham Hotspur FC,Arsenal FC,3,0,team,home,2022-05-12,EPL
+epl-2021-22-358,2022-05-15,Tottenham Hotspur FC,Burnley FC,1,0,team,home,2022-05-15,EPL
+epl-2021-22-359,2022-05-15,Aston Villa FC,Crystal Palace FC,1,1,draw,home,2022-05-15,EPL
+epl-2021-22-360,2022-05-15,Leeds United FC,Brighton & Hove Albion FC,1,1,draw,home,2022-05-15,EPL
+epl-2021-22-361,2022-05-15,Watford FC,Leicester City FC,1,5,opponent,home,2022-05-15,EPL
+epl-2021-22-362,2022-05-15,West Ham United FC,Manchester City FC,2,2,draw,home,2022-05-15,EPL
+epl-2021-22-363,2022-05-15,Wolverhampton Wanderers FC,Norwich City FC,1,1,draw,home,2022-05-15,EPL
+epl-2021-22-364,2022-05-15,Everton FC,Brentford FC,2,3,opponent,home,2022-05-15,EPL
+epl-2021-22-365,2022-05-16,Newcastle United FC,Arsenal FC,2,0,team,home,2022-05-16,EPL
+epl-2021-22-366,2022-05-17,Southampton FC,Liverpool FC,1,2,opponent,home,2022-05-17,EPL
+epl-2021-22-367,2022-05-19,Everton FC,Crystal Palace FC,3,2,team,home,2022-05-19,EPL
+epl-2021-22-368,2022-05-19,Aston Villa FC,Burnley FC,1,1,draw,home,2022-05-19,EPL
+epl-2021-22-369,2022-05-19,Chelsea FC,Leicester City FC,1,1,draw,home,2022-05-19,EPL
+epl-2021-22-370,2022-05-22,Norwich City FC,Tottenham Hotspur FC,0,5,opponent,home,2022-05-22,EPL
+epl-2021-22-371,2022-05-22,Manchester City FC,Aston Villa FC,3,2,team,home,2022-05-22,EPL
+epl-2021-22-372,2022-05-22,Liverpool FC,Wolverhampton Wanderers FC,3,1,team,home,2022-05-22,EPL
+epl-2021-22-373,2022-05-22,Leicester City FC,Southampton FC,4,1,team,home,2022-05-22,EPL
+epl-2021-22-374,2022-05-22,Crystal Palace FC,Manchester United FC,1,0,team,home,2022-05-22,EPL
+epl-2021-22-375,2022-05-22,Chelsea FC,Watford FC,2,1,team,home,2022-05-22,EPL
+epl-2021-22-376,2022-05-22,Burnley FC,Newcastle United FC,1,2,opponent,home,2022-05-22,EPL
+epl-2021-22-377,2022-05-22,Brighton & Hove Albion FC,West Ham United FC,3,1,team,home,2022-05-22,EPL
+epl-2021-22-378,2022-05-22,Brentford FC,Leeds United FC,1,2,opponent,home,2022-05-22,EPL
+epl-2021-22-379,2022-05-22,Arsenal FC,Everton FC,5,1,team,home,2022-05-22,EPL
+epl-2022-23-0,2022-08-05,Crystal Palace FC,Arsenal FC,0,2,opponent,home,2022-08-05,EPL
+epl-2022-23-1,2022-08-06,Fulham FC,Liverpool FC,2,2,draw,home,2022-08-06,EPL
+epl-2022-23-2,2022-08-06,Tottenham Hotspur FC,Southampton FC,4,1,team,home,2022-08-06,EPL
+epl-2022-23-3,2022-08-06,Newcastle United FC,Nottingham Forest FC,2,0,team,home,2022-08-06,EPL
+epl-2022-23-4,2022-08-06,Leeds United FC,Wolverhampton Wanderers FC,2,1,team,home,2022-08-06,EPL
+epl-2022-23-5,2022-08-06,AFC Bournemouth,Aston Villa FC,2,0,team,home,2022-08-06,EPL
+epl-2022-23-6,2022-08-06,Everton FC,Chelsea FC,0,1,opponent,home,2022-08-06,EPL
+epl-2022-23-7,2022-08-07,Manchester United FC,Brighton & Hove Albion FC,1,2,opponent,home,2022-08-07,EPL
+epl-2022-23-8,2022-08-07,Leicester City FC,Brentford FC,2,2,draw,home,2022-08-07,EPL
+epl-2022-23-9,2022-08-07,West Ham United FC,Manchester City FC,0,2,opponent,home,2022-08-07,EPL
+epl-2022-23-10,2022-08-13,Aston Villa FC,Everton FC,2,1,team,home,2022-08-13,EPL
+epl-2022-23-11,2022-08-13,Wolverhampton Wanderers FC,Fulham FC,0,0,draw,home,2022-08-13,EPL
+epl-2022-23-12,2022-08-13,Southampton FC,Leeds United FC,2,2,draw,home,2022-08-13,EPL
+epl-2022-23-13,2022-08-13,Manchester City FC,AFC Bournemouth,4,0,team,home,2022-08-13,EPL
+epl-2022-23-14,2022-08-13,Brighton & Hove Albion FC,Newcastle United FC,0,0,draw,home,2022-08-13,EPL
+epl-2022-23-15,2022-08-13,Arsenal FC,Leicester City FC,4,2,team,home,2022-08-13,EPL
+epl-2022-23-16,2022-08-13,Brentford FC,Manchester United FC,4,0,team,home,2022-08-13,EPL
+epl-2022-23-17,2022-08-14,Nottingham Forest FC,West Ham United FC,1,0,team,home,2022-08-14,EPL
+epl-2022-23-18,2022-08-14,Chelsea FC,Tottenham Hotspur FC,2,2,draw,home,2022-08-14,EPL
+epl-2022-23-19,2022-08-15,Liverpool FC,Crystal Palace FC,1,1,draw,home,2022-08-15,EPL
+epl-2022-23-20,2022-08-20,Tottenham Hotspur FC,Wolverhampton Wanderers FC,1,0,team,home,2022-08-20,EPL
+epl-2022-23-21,2022-08-20,Leicester City FC,Southampton FC,1,2,opponent,home,2022-08-20,EPL
+epl-2022-23-22,2022-08-20,Fulham FC,Brentford FC,3,2,team,home,2022-08-20,EPL
+epl-2022-23-23,2022-08-20,Everton FC,Nottingham Forest FC,1,1,draw,home,2022-08-20,EPL
+epl-2022-23-24,2022-08-20,Crystal Palace FC,Aston Villa FC,3,1,team,home,2022-08-20,EPL
+epl-2022-23-25,2022-08-20,AFC Bournemouth,Arsenal FC,0,3,opponent,home,2022-08-20,EPL
+epl-2022-23-26,2022-08-21,West Ham United FC,Brighton & Hove Albion FC,0,2,opponent,home,2022-08-21,EPL
+epl-2022-23-27,2022-08-21,Leeds United FC,Chelsea FC,3,0,team,home,2022-08-21,EPL
+epl-2022-23-28,2022-08-21,Newcastle United FC,Manchester City FC,3,3,draw,home,2022-08-21,EPL
+epl-2022-23-29,2022-08-22,Manchester United FC,Liverpool FC,2,1,team,home,2022-08-22,EPL
+epl-2022-23-30,2022-08-27,Southampton FC,Manchester United FC,0,1,opponent,home,2022-08-27,EPL
+epl-2022-23-31,2022-08-27,Manchester City FC,Crystal Palace FC,4,2,team,home,2022-08-27,EPL
+epl-2022-23-32,2022-08-27,Liverpool FC,AFC Bournemouth,9,0,team,home,2022-08-27,EPL
+epl-2022-23-33,2022-08-27,Chelsea FC,Leicester City FC,2,1,team,home,2022-08-27,EPL
+epl-2022-23-34,2022-08-27,Brighton & Hove Albion FC,Leeds United FC,1,0,team,home,2022-08-27,EPL
+epl-2022-23-35,2022-08-27,Brentford FC,Everton FC,1,1,draw,home,2022-08-27,EPL
+epl-2022-23-36,2022-08-27,Arsenal FC,Fulham FC,2,1,team,home,2022-08-27,EPL
+epl-2022-23-37,2022-08-28,Wolverhampton Wanderers FC,Newcastle United FC,1,1,draw,home,2022-08-28,EPL
+epl-2022-23-38,2022-08-28,Aston Villa FC,West Ham United FC,0,1,opponent,home,2022-08-28,EPL
+epl-2022-23-39,2022-08-28,Nottingham Forest FC,Tottenham Hotspur FC,0,2,opponent,home,2022-08-28,EPL
+epl-2022-23-40,2022-08-30,Crystal Palace FC,Brentford FC,1,1,draw,home,2022-08-30,EPL
+epl-2022-23-41,2022-08-30,Fulham FC,Brighton & Hove Albion FC,2,1,team,home,2022-08-30,EPL
+epl-2022-23-42,2022-08-30,Southampton FC,Chelsea FC,2,1,team,home,2022-08-30,EPL
+epl-2022-23-43,2022-08-30,Leeds United FC,Everton FC,1,1,draw,home,2022-08-30,EPL
+epl-2022-23-44,2022-08-31,Manchester City FC,Nottingham Forest FC,6,0,team,home,2022-08-31,EPL
+epl-2022-23-45,2022-08-31,AFC Bournemouth,Wolverhampton Wanderers FC,0,0,draw,home,2022-08-31,EPL
+epl-2022-23-46,2022-08-31,Arsenal FC,Aston Villa FC,2,1,team,home,2022-08-31,EPL
+epl-2022-23-47,2022-08-31,West Ham United FC,Tottenham Hotspur FC,1,1,draw,home,2022-08-31,EPL
+epl-2022-23-48,2022-08-31,Liverpool FC,Newcastle United FC,2,1,team,home,2022-08-31,EPL
+epl-2022-23-49,2022-09-01,Leicester City FC,Manchester United FC,0,1,opponent,home,2022-09-01,EPL
+epl-2022-23-50,2022-09-03,Everton FC,Liverpool FC,0,0,draw,home,2022-09-03,EPL
+epl-2022-23-51,2022-09-03,Wolverhampton Wanderers FC,Southampton FC,1,0,team,home,2022-09-03,EPL
+epl-2022-23-52,2022-09-03,Tottenham Hotspur FC,Fulham FC,2,1,team,home,2022-09-03,EPL
+epl-2022-23-53,2022-09-03,Nottingham Forest FC,AFC Bournemouth,2,3,opponent,home,2022-09-03,EPL
+epl-2022-23-54,2022-09-03,Newcastle United FC,Crystal Palace FC,0,0,draw,home,2022-09-03,EPL
+epl-2022-23-55,2022-09-03,Chelsea FC,West Ham United FC,2,1,team,home,2022-09-03,EPL
+epl-2022-23-56,2022-09-03,Brentford FC,Leeds United FC,5,2,team,home,2022-09-03,EPL
+epl-2022-23-57,2022-09-03,Aston Villa FC,Manchester City FC,1,1,draw,home,2022-09-03,EPL
+epl-2022-23-58,2022-09-04,Brighton & Hove Albion FC,Leicester City FC,5,2,team,home,2022-09-04,EPL
+epl-2022-23-59,2022-09-04,Manchester United FC,Arsenal FC,3,1,team,home,2022-09-04,EPL
+epl-2022-23-60,2022-09-16,Nottingham Forest FC,Fulham FC,2,3,opponent,home,2022-09-16,EPL
+epl-2022-23-61,2022-09-16,Aston Villa FC,Southampton FC,1,0,team,home,2022-09-16,EPL
+epl-2022-23-62,2022-09-17,Wolverhampton Wanderers FC,Manchester City FC,0,3,opponent,home,2022-09-17,EPL
+epl-2022-23-63,2022-09-17,Newcastle United FC,AFC Bournemouth,1,1,draw,home,2022-09-17,EPL
+epl-2022-23-64,2022-09-17,Tottenham Hotspur FC,Leicester City FC,6,2,team,home,2022-09-17,EPL
+epl-2022-23-65,2022-09-18,Brentford FC,Arsenal FC,0,3,opponent,home,2022-09-18,EPL
+epl-2022-23-66,2022-09-18,Everton FC,West Ham United FC,1,0,team,home,2022-09-18,EPL
+epl-2022-23-67,2022-10-01,Arsenal FC,Tottenham Hotspur FC,3,1,team,home,2022-10-01,EPL
+epl-2022-23-68,2022-10-01,Southampton FC,Everton FC,1,2,opponent,home,2022-10-01,EPL
+epl-2022-23-69,2022-10-01,Liverpool FC,Brighton & Hove Albion FC,3,3,draw,home,2022-10-01,EPL
+epl-2022-23-70,2022-10-01,Fulham FC,Newcastle United FC,1,4,opponent,home,2022-10-01,EPL
+epl-2022-23-71,2022-10-01,Crystal Palace FC,Chelsea FC,1,2,opponent,home,2022-10-01,EPL
+epl-2022-23-72,2022-10-01,AFC Bournemouth,Brentford FC,0,0,draw,home,2022-10-01,EPL
+epl-2022-23-73,2022-10-01,West Ham United FC,Wolverhampton Wanderers FC,2,0,team,home,2022-10-01,EPL
+epl-2022-23-74,2022-10-02,Manchester City FC,Manchester United FC,6,3,team,home,2022-10-02,EPL
+epl-2022-23-75,2022-10-02,Leeds United FC,Aston Villa FC,0,0,draw,home,2022-10-02,EPL
+epl-2022-23-76,2022-10-03,Leicester City FC,Nottingham Forest FC,4,0,team,home,2022-10-03,EPL
+epl-2022-23-77,2022-10-08,Newcastle United FC,Brentford FC,5,1,team,home,2022-10-08,EPL
+epl-2022-23-78,2022-10-08,Manchester City FC,Southampton FC,4,0,team,home,2022-10-08,EPL
+epl-2022-23-79,2022-10-08,Chelsea FC,Wolverhampton Wanderers FC,3,0,team,home,2022-10-08,EPL
+epl-2022-23-80,2022-10-08,AFC Bournemouth,Leicester City FC,2,1,team,home,2022-10-08,EPL
+epl-2022-23-81,2022-10-08,Brighton & Hove Albion FC,Tottenham Hotspur FC,0,1,opponent,home,2022-10-08,EPL
+epl-2022-23-82,2022-10-09,West Ham United FC,Fulham FC,3,1,team,home,2022-10-09,EPL
+epl-2022-23-83,2022-10-09,Crystal Palace FC,Leeds United FC,2,1,team,home,2022-10-09,EPL
+epl-2022-23-84,2022-10-09,Arsenal FC,Liverpool FC,3,2,team,home,2022-10-09,EPL
+epl-2022-23-85,2022-10-09,Everton FC,Manchester United FC,1,2,opponent,home,2022-10-09,EPL
+epl-2022-23-86,2022-10-10,Nottingham Forest FC,Aston Villa FC,1,1,draw,home,2022-10-10,EPL
+epl-2022-23-87,2022-10-14,Brentford FC,Brighton & Hove Albion FC,2,0,team,home,2022-10-14,EPL
+epl-2022-23-88,2022-10-15,Leicester City FC,Crystal Palace FC,0,0,draw,home,2022-10-15,EPL
+epl-2022-23-89,2022-10-15,Wolverhampton Wanderers FC,Nottingham Forest FC,1,0,team,home,2022-10-15,EPL
+epl-2022-23-90,2022-10-15,Fulham FC,AFC Bournemouth,2,2,draw,home,2022-10-15,EPL
+epl-2022-23-91,2022-10-15,Tottenham Hotspur FC,Everton FC,2,0,team,home,2022-10-15,EPL
+epl-2022-23-92,2022-10-16,Southampton FC,West Ham United FC,1,1,draw,home,2022-10-16,EPL
+epl-2022-23-93,2022-10-16,Manchester United FC,Newcastle United FC,0,0,draw,home,2022-10-16,EPL
+epl-2022-23-94,2022-10-16,Leeds United FC,Arsenal FC,0,1,opponent,home,2022-10-16,EPL
+epl-2022-23-95,2022-10-16,Aston Villa FC,Chelsea FC,0,2,opponent,home,2022-10-16,EPL
+epl-2022-23-96,2022-10-16,Liverpool FC,Manchester City FC,1,0,team,home,2022-10-16,EPL
+epl-2022-23-97,2022-10-18,Brighton & Hove Albion FC,Nottingham Forest FC,0,0,draw,home,2022-10-18,EPL
+epl-2022-23-98,2022-10-18,Crystal Palace FC,Wolverhampton Wanderers FC,2,1,team,home,2022-10-18,EPL
+epl-2022-23-99,2022-10-19,Liverpool FC,West Ham United FC,1,0,team,home,2022-10-19,EPL
+epl-2022-23-100,2022-10-19,Newcastle United FC,Everton FC,1,0,team,home,2022-10-19,EPL
+epl-2022-23-101,2022-10-19,Brentford FC,Chelsea FC,0,0,draw,home,2022-10-19,EPL
+epl-2022-23-102,2022-10-19,AFC Bournemouth,Southampton FC,0,1,opponent,home,2022-10-19,EPL
+epl-2022-23-103,2022-10-19,Manchester United FC,Tottenham Hotspur FC,2,0,team,home,2022-10-19,EPL
+epl-2022-23-104,2022-10-20,Fulham FC,Aston Villa FC,3,0,team,home,2022-10-20,EPL
+epl-2022-23-105,2022-10-20,Leicester City FC,Leeds United FC,2,0,team,home,2022-10-20,EPL
+epl-2022-23-106,2022-10-22,Nottingham Forest FC,Liverpool FC,1,0,team,home,2022-10-22,EPL
+epl-2022-23-107,2022-10-22,Manchester City FC,Brighton & Hove Albion FC,3,1,team,home,2022-10-22,EPL
+epl-2022-23-108,2022-10-22,Everton FC,Crystal Palace FC,3,0,team,home,2022-10-22,EPL
+epl-2022-23-109,2022-10-22,Chelsea FC,Manchester United FC,1,1,draw,home,2022-10-22,EPL
+epl-2022-23-110,2022-10-23,Southampton FC,Arsenal FC,1,1,draw,home,2022-10-23,EPL
+epl-2022-23-111,2022-10-23,Leeds United FC,Fulham FC,2,3,opponent,home,2022-10-23,EPL
+epl-2022-23-112,2022-10-23,Aston Villa FC,Brentford FC,4,0,team,home,2022-10-23,EPL
+epl-2022-23-113,2022-10-23,Wolverhampton Wanderers FC,Leicester City FC,0,4,opponent,home,2022-10-23,EPL
+epl-2022-23-114,2022-10-23,Tottenham Hotspur FC,Newcastle United FC,1,2,opponent,home,2022-10-23,EPL
+epl-2022-23-115,2022-10-24,West Ham United FC,AFC Bournemouth,2,0,team,home,2022-10-24,EPL
+epl-2022-23-116,2022-10-29,Leicester City FC,Manchester City FC,0,1,opponent,home,2022-10-29,EPL
+epl-2022-23-117,2022-10-29,Newcastle United FC,Aston Villa FC,4,0,team,home,2022-10-29,EPL
+epl-2022-23-118,2022-10-29,Crystal Palace FC,Southampton FC,1,0,team,home,2022-10-29,EPL
+epl-2022-23-119,2022-10-29,Brighton & Hove Albion FC,Chelsea FC,4,1,team,home,2022-10-29,EPL
+epl-2022-23-120,2022-10-29,Brentford FC,Wolverhampton Wanderers FC,1,1,draw,home,2022-10-29,EPL
+epl-2022-23-121,2022-10-29,AFC Bournemouth,Tottenham Hotspur FC,2,3,opponent,home,2022-10-29,EPL
+epl-2022-23-122,2022-10-29,Fulham FC,Everton FC,0,0,draw,home,2022-10-29,EPL
+epl-2022-23-123,2022-10-29,Liverpool FC,Leeds United FC,1,2,opponent,home,2022-10-29,EPL
+epl-2022-23-124,2022-10-30,Arsenal FC,Nottingham Forest FC,5,0,team,home,2022-10-30,EPL
+epl-2022-23-125,2022-10-30,Manchester United FC,West Ham United FC,1,0,team,home,2022-10-30,EPL
+epl-2022-23-126,2022-11-05,Wolverhampton Wanderers FC,Brighton & Hove Albion FC,2,3,opponent,home,2022-11-05,EPL
+epl-2022-23-127,2022-11-05,Nottingham Forest FC,Brentford FC,2,2,draw,home,2022-11-05,EPL
+epl-2022-23-128,2022-11-05,Manchester City FC,Fulham FC,2,1,team,home,2022-11-05,EPL
+epl-2022-23-129,2022-11-05,Leeds United FC,AFC Bournemouth,4,3,team,home,2022-11-05,EPL
+epl-2022-23-130,2022-11-05,Everton FC,Leicester City FC,0,2,opponent,home,2022-11-05,EPL
+epl-2022-23-131,2022-11-06,Chelsea FC,Arsenal FC,0,1,opponent,home,2022-11-06,EPL
+epl-2022-23-132,2022-11-06,West Ham United FC,Crystal Palace FC,1,2,opponent,home,2022-11-06,EPL
+epl-2022-23-133,2022-11-06,Southampton FC,Newcastle United FC,1,4,opponent,home,2022-11-06,EPL
+epl-2022-23-134,2022-11-06,Aston Villa FC,Manchester United FC,3,1,team,home,2022-11-06,EPL
+epl-2022-23-135,2022-11-06,Tottenham Hotspur FC,Liverpool FC,1,2,opponent,home,2022-11-06,EPL
+epl-2022-23-136,2022-11-12,Manchester City FC,Brentford FC,1,2,opponent,home,2022-11-12,EPL
+epl-2022-23-137,2022-11-12,West Ham United FC,Leicester City FC,0,2,opponent,home,2022-11-12,EPL
+epl-2022-23-138,2022-11-12,Tottenham Hotspur FC,Leeds United FC,4,3,team,home,2022-11-12,EPL
+epl-2022-23-139,2022-11-12,Nottingham Forest FC,Crystal Palace FC,1,0,team,home,2022-11-12,EPL
+epl-2022-23-140,2022-11-12,Liverpool FC,Southampton FC,3,1,team,home,2022-11-12,EPL
+epl-2022-23-141,2022-11-12,AFC Bournemouth,Everton FC,3,0,team,home,2022-11-12,EPL
+epl-2022-23-142,2022-11-12,Newcastle United FC,Chelsea FC,1,0,team,home,2022-11-12,EPL
+epl-2022-23-143,2022-11-12,Wolverhampton Wanderers FC,Arsenal FC,0,2,opponent,home,2022-11-12,EPL
+epl-2022-23-144,2022-11-13,Brighton & Hove Albion FC,Aston Villa FC,1,2,opponent,home,2022-11-13,EPL
+epl-2022-23-145,2022-11-13,Fulham FC,Manchester United FC,1,2,opponent,home,2022-11-13,EPL
+epl-2022-23-146,2022-12-26,Brentford FC,Tottenham Hotspur FC,2,2,draw,home,2022-12-26,EPL
+epl-2022-23-147,2022-12-26,Southampton FC,Brighton & Hove Albion FC,1,3,opponent,home,2022-12-26,EPL
+epl-2022-23-148,2022-12-26,Leicester City FC,Newcastle United FC,0,3,opponent,home,2022-12-26,EPL
+epl-2022-23-149,2022-12-26,Everton FC,Wolverhampton Wanderers FC,1,2,opponent,home,2022-12-26,EPL
+epl-2022-23-150,2022-12-26,Crystal Palace FC,Fulham FC,0,3,opponent,home,2022-12-26,EPL
+epl-2022-23-151,2022-12-26,Aston Villa FC,Liverpool FC,1,3,opponent,home,2022-12-26,EPL
+epl-2022-23-152,2022-12-26,Arsenal FC,West Ham United FC,3,1,team,home,2022-12-26,EPL
+epl-2022-23-153,2022-12-27,Chelsea FC,AFC Bournemouth,2,0,team,home,2022-12-27,EPL
+epl-2022-23-154,2022-12-27,Manchester United FC,Nottingham Forest FC,3,0,team,home,2022-12-27,EPL
+epl-2022-23-155,2022-12-28,Leeds United FC,Manchester City FC,1,3,opponent,home,2022-12-28,EPL
+epl-2022-23-156,2022-12-30,West Ham United FC,Brentford FC,0,2,opponent,home,2022-12-30,EPL
+epl-2022-23-157,2022-12-30,Liverpool FC,Leicester City FC,2,1,team,home,2022-12-30,EPL
+epl-2022-23-158,2022-12-31,Wolverhampton Wanderers FC,Manchester United FC,0,1,opponent,home,2022-12-31,EPL
+epl-2022-23-159,2022-12-31,Newcastle United FC,Leeds United FC,0,0,draw,home,2022-12-31,EPL
+epl-2022-23-160,2022-12-31,Manchester City FC,Everton FC,1,1,draw,home,2022-12-31,EPL
+epl-2022-23-161,2022-12-31,Fulham FC,Southampton FC,2,1,team,home,2022-12-31,EPL
+epl-2022-23-162,2022-12-31,AFC Bournemouth,Crystal Palace FC,0,2,opponent,home,2022-12-31,EPL
+epl-2022-23-163,2022-12-31,Brighton & Hove Albion FC,Arsenal FC,2,4,opponent,home,2022-12-31,EPL
+epl-2022-23-164,2023-01-01,Tottenham Hotspur FC,Aston Villa FC,0,2,opponent,home,2023-01-01,EPL
+epl-2022-23-165,2023-01-01,Nottingham Forest FC,Chelsea FC,1,1,draw,home,2023-01-01,EPL
+epl-2022-23-166,2023-01-02,Brentford FC,Liverpool FC,3,1,team,home,2023-01-02,EPL
+epl-2022-23-167,2023-01-03,Leicester City FC,Fulham FC,0,1,opponent,home,2023-01-03,EPL
+epl-2022-23-168,2023-01-03,Everton FC,Brighton & Hove Albion FC,1,4,opponent,home,2023-01-03,EPL
+epl-2022-23-169,2023-01-03,Arsenal FC,Newcastle United FC,0,0,draw,home,2023-01-03,EPL
+epl-2022-23-170,2023-01-03,Manchester United FC,AFC Bournemouth,3,0,team,home,2023-01-03,EPL
+epl-2022-23-171,2023-01-04,Southampton FC,Nottingham Forest FC,0,1,opponent,home,2023-01-04,EPL
+epl-2022-23-172,2023-01-04,Leeds United FC,West Ham United FC,2,2,draw,home,2023-01-04,EPL
+epl-2022-23-173,2023-01-04,Crystal Palace FC,Tottenham Hotspur FC,0,4,opponent,home,2023-01-04,EPL
+epl-2022-23-174,2023-01-04,Aston Villa FC,Wolverhampton Wanderers FC,1,1,draw,home,2023-01-04,EPL
+epl-2022-23-175,2023-01-05,Chelsea FC,Manchester City FC,0,1,opponent,home,2023-01-05,EPL
+epl-2022-23-176,2023-01-12,Fulham FC,Chelsea FC,2,1,team,home,2023-01-12,EPL
+epl-2022-23-177,2023-01-13,Aston Villa FC,Leeds United FC,2,1,team,home,2023-01-13,EPL
+epl-2022-23-178,2023-01-14,Manchester United FC,Manchester City FC,2,1,team,home,2023-01-14,EPL
+epl-2022-23-179,2023-01-14,Wolverhampton Wanderers FC,West Ham United FC,1,0,team,home,2023-01-14,EPL
+epl-2022-23-180,2023-01-14,Nottingham Forest FC,Leicester City FC,2,0,team,home,2023-01-14,EPL
+epl-2022-23-181,2023-01-14,Everton FC,Southampton FC,1,2,opponent,home,2023-01-14,EPL
+epl-2022-23-182,2023-01-14,Brighton & Hove Albion FC,Liverpool FC,3,0,team,home,2023-01-14,EPL
+epl-2022-23-183,2023-01-14,Brentford FC,AFC Bournemouth,2,0,team,home,2023-01-14,EPL
+epl-2022-23-184,2023-01-15,Newcastle United FC,Fulham FC,1,0,team,home,2023-01-15,EPL
+epl-2022-23-185,2023-01-15,Chelsea FC,Crystal Palace FC,1,0,team,home,2023-01-15,EPL
+epl-2022-23-186,2023-01-15,Tottenham Hotspur FC,Arsenal FC,0,2,opponent,home,2023-01-15,EPL
+epl-2022-23-187,2023-01-18,Crystal Palace FC,Manchester United FC,1,1,draw,home,2023-01-18,EPL
+epl-2022-23-188,2023-01-19,Manchester City FC,Tottenham Hotspur FC,4,2,team,home,2023-01-19,EPL
+epl-2022-23-189,2023-01-21,Liverpool FC,Chelsea FC,0,0,draw,home,2023-01-21,EPL
+epl-2022-23-190,2023-01-21,West Ham United FC,Everton FC,2,0,team,home,2023-01-21,EPL
+epl-2022-23-191,2023-01-21,Southampton FC,Aston Villa FC,0,1,opponent,home,2023-01-21,EPL
+epl-2022-23-192,2023-01-21,Leicester City FC,Brighton & Hove Albion FC,2,2,draw,home,2023-01-21,EPL
+epl-2022-23-193,2023-01-21,AFC Bournemouth,Nottingham Forest FC,1,1,draw,home,2023-01-21,EPL
+epl-2022-23-194,2023-01-21,Crystal Palace FC,Newcastle United FC,0,0,draw,home,2023-01-21,EPL
+epl-2022-23-195,2023-01-22,Manchester City FC,Wolverhampton Wanderers FC,3,0,team,home,2023-01-22,EPL
+epl-2022-23-196,2023-01-22,Leeds United FC,Brentford FC,0,0,draw,home,2023-01-22,EPL
+epl-2022-23-197,2023-01-22,Arsenal FC,Manchester United FC,3,2,team,home,2023-01-22,EPL
+epl-2022-23-198,2023-01-23,Fulham FC,Tottenham Hotspur FC,0,1,opponent,home,2023-01-23,EPL
+epl-2022-23-199,2023-02-03,Chelsea FC,Fulham FC,0,0,draw,home,2023-02-03,EPL
+epl-2022-23-200,2023-02-04,Everton FC,Arsenal FC,1,0,team,home,2023-02-04,EPL
+epl-2022-23-201,2023-02-04,Wolverhampton Wanderers FC,Liverpool FC,3,0,team,home,2023-02-04,EPL
+epl-2022-23-202,2023-02-04,Manchester United FC,Crystal Palace FC,2,1,team,home,2023-02-04,EPL
+epl-2022-23-203,2023-02-04,Brighton & Hove Albion FC,AFC Bournemouth,1,0,team,home,2023-02-04,EPL
+epl-2022-23-204,2023-02-04,Brentford FC,Southampton FC,3,0,team,home,2023-02-04,EPL
+epl-2022-23-205,2023-02-04,Aston Villa FC,Leicester City FC,2,4,opponent,home,2023-02-04,EPL
+epl-2022-23-206,2023-02-04,Newcastle United FC,West Ham United FC,1,1,draw,home,2023-02-04,EPL
+epl-2022-23-207,2023-02-05,Nottingham Forest FC,Leeds United FC,1,0,team,home,2023-02-05,EPL
+epl-2022-23-208,2023-02-05,Tottenham Hotspur FC,Manchester City FC,1,0,team,home,2023-02-05,EPL
+epl-2022-23-209,2023-02-08,Manchester United FC,Leeds United FC,2,2,draw,home,2023-02-08,EPL
+epl-2022-23-210,2023-02-11,West Ham United FC,Chelsea FC,1,1,draw,home,2023-02-11,EPL
+epl-2022-23-211,2023-02-11,Southampton FC,Wolverhampton Wanderers FC,1,2,opponent,home,2023-02-11,EPL
+epl-2022-23-212,2023-02-11,Leicester City FC,Tottenham Hotspur FC,4,1,team,home,2023-02-11,EPL
+epl-2022-23-213,2023-02-11,Fulham FC,Nottingham Forest FC,2,0,team,home,2023-02-11,EPL
+epl-2022-23-214,2023-02-11,Crystal Palace FC,Brighton & Hove Albion FC,1,1,draw,home,2023-02-11,EPL
+epl-2022-23-215,2023-02-11,Arsenal FC,Brentford FC,1,1,draw,home,2023-02-11,EPL
+epl-2022-23-216,2023-02-11,AFC Bournemouth,Newcastle United FC,1,1,draw,home,2023-02-11,EPL
+epl-2022-23-217,2023-02-12,Leeds United FC,Manchester United FC,0,2,opponent,home,2023-02-12,EPL
+epl-2022-23-218,2023-02-12,Manchester City FC,Aston Villa FC,3,1,team,home,2023-02-12,EPL
+epl-2022-23-219,2023-02-13,Liverpool FC,Everton FC,2,0,team,home,2023-02-13,EPL
+epl-2022-23-220,2023-02-15,Arsenal FC,Manchester City FC,1,3,opponent,home,2023-02-15,EPL
+epl-2022-23-221,2023-02-18,Aston Villa FC,Arsenal FC,2,4,opponent,home,2023-02-18,EPL
+epl-2022-23-222,2023-02-18,Wolverhampton Wanderers FC,AFC Bournemouth,0,1,opponent,home,2023-02-18,EPL
+epl-2022-23-223,2023-02-18,Nottingham Forest FC,Manchester City FC,1,1,draw,home,2023-02-18,EPL
+epl-2022-23-224,2023-02-18,Everton FC,Leeds United FC,1,0,team,home,2023-02-18,EPL
+epl-2022-23-225,2023-02-18,Chelsea FC,Southampton FC,0,1,opponent,home,2023-02-18,EPL
+epl-2022-23-226,2023-02-18,Brighton & Hove Albion FC,Fulham FC,0,1,opponent,home,2023-02-18,EPL
+epl-2022-23-227,2023-02-18,Brentford FC,Crystal Palace FC,1,1,draw,home,2023-02-18,EPL
+epl-2022-23-228,2023-02-18,Newcastle United FC,Liverpool FC,0,2,opponent,home,2023-02-18,EPL
+epl-2022-23-229,2023-02-19,Manchester United FC,Leicester City FC,3,0,team,home,2023-02-19,EPL
+epl-2022-23-230,2023-02-19,Tottenham Hotspur FC,West Ham United FC,2,0,team,home,2023-02-19,EPL
+epl-2022-23-231,2023-02-24,Fulham FC,Wolverhampton Wanderers FC,1,1,draw,home,2023-02-24,EPL
+epl-2022-23-232,2023-02-25,West Ham United FC,Nottingham Forest FC,4,0,team,home,2023-02-25,EPL
+epl-2022-23-233,2023-02-25,Leicester City FC,Arsenal FC,0,1,opponent,home,2023-02-25,EPL
+epl-2022-23-234,2023-02-25,Leeds United FC,Southampton FC,1,0,team,home,2023-02-25,EPL
+epl-2022-23-235,2023-02-25,Everton FC,Aston Villa FC,0,2,opponent,home,2023-02-25,EPL
+epl-2022-23-236,2023-02-25,AFC Bournemouth,Manchester City FC,1,4,opponent,home,2023-02-25,EPL
+epl-2022-23-237,2023-02-25,Crystal Palace FC,Liverpool FC,0,0,draw,home,2023-02-25,EPL
+epl-2022-23-238,2023-02-26,Tottenham Hotspur FC,Chelsea FC,2,0,team,home,2023-02-26,EPL
+epl-2022-23-239,2023-03-01,Arsenal FC,Everton FC,4,0,team,home,2023-03-01,EPL
+epl-2022-23-240,2023-03-01,Liverpool FC,Wolverhampton Wanderers FC,2,0,team,home,2023-03-01,EPL
+epl-2022-23-241,2023-03-04,Manchester City FC,Newcastle United FC,2,0,team,home,2023-03-04,EPL
+epl-2022-23-242,2023-03-04,Wolverhampton Wanderers FC,Tottenham Hotspur FC,1,0,team,home,2023-03-04,EPL
+epl-2022-23-243,2023-03-04,Chelsea FC,Leeds United FC,1,0,team,home,2023-03-04,EPL
+epl-2022-23-244,2023-03-04,Brighton & Hove Albion FC,West Ham United FC,4,0,team,home,2023-03-04,EPL
+epl-2022-23-245,2023-03-04,Aston Villa FC,Crystal Palace FC,1,0,team,home,2023-03-04,EPL
+epl-2022-23-246,2023-03-04,Arsenal FC,AFC Bournemouth,3,2,team,home,2023-03-04,EPL
+epl-2022-23-247,2023-03-04,Southampton FC,Leicester City FC,1,0,team,home,2023-03-04,EPL
+epl-2022-23-248,2023-03-05,Nottingham Forest FC,Everton FC,2,2,draw,home,2023-03-05,EPL
+epl-2022-23-249,2023-03-05,Liverpool FC,Manchester United FC,7,0,team,home,2023-03-05,EPL
+epl-2022-23-250,2023-03-06,Brentford FC,Fulham FC,3,2,team,home,2023-03-06,EPL
+epl-2022-23-251,2023-03-11,AFC Bournemouth,Liverpool FC,1,0,team,home,2023-03-11,EPL
+epl-2022-23-252,2023-03-11,Tottenham Hotspur FC,Nottingham Forest FC,3,1,team,home,2023-03-11,EPL
+epl-2022-23-253,2023-03-11,Leicester City FC,Chelsea FC,1,3,opponent,home,2023-03-11,EPL
+epl-2022-23-254,2023-03-11,Leeds United FC,Brighton & Hove Albion FC,2,2,draw,home,2023-03-11,EPL
+epl-2022-23-255,2023-03-11,Everton FC,Brentford FC,1,0,team,home,2023-03-11,EPL
+epl-2022-23-256,2023-03-11,Crystal Palace FC,Manchester City FC,0,1,opponent,home,2023-03-11,EPL
+epl-2022-23-257,2023-03-12,West Ham United FC,Aston Villa FC,1,1,draw,home,2023-03-12,EPL
+epl-2022-23-258,2023-03-12,Manchester United FC,Southampton FC,0,0,draw,home,2023-03-12,EPL
+epl-2022-23-259,2023-03-12,Fulham FC,Arsenal FC,0,3,opponent,home,2023-03-12,EPL
+epl-2022-23-260,2023-03-12,Newcastle United FC,Wolverhampton Wanderers FC,2,1,team,home,2023-03-12,EPL
+epl-2022-23-261,2023-03-15,Brighton & Hove Albion FC,Crystal Palace FC,1,0,team,home,2023-03-15,EPL
+epl-2022-23-262,2023-03-15,Southampton FC,Brentford FC,0,2,opponent,home,2023-03-15,EPL
+epl-2022-23-263,2023-03-17,Nottingham Forest FC,Newcastle United FC,1,2,opponent,home,2023-03-17,EPL
+epl-2022-23-264,2023-03-18,Wolverhampton Wanderers FC,Leeds United FC,2,4,opponent,home,2023-03-18,EPL
+epl-2022-23-265,2023-03-18,Southampton FC,Tottenham Hotspur FC,3,3,draw,home,2023-03-18,EPL
+epl-2022-23-266,2023-03-18,Brentford FC,Leicester City FC,1,1,draw,home,2023-03-18,EPL
+epl-2022-23-267,2023-03-18,Aston Villa FC,AFC Bournemouth,3,0,team,home,2023-03-18,EPL
+epl-2022-23-268,2023-03-18,Chelsea FC,Everton FC,2,2,draw,home,2023-03-18,EPL
+epl-2022-23-269,2023-03-19,Arsenal FC,Crystal Palace FC,4,1,team,home,2023-03-19,EPL
+epl-2022-23-270,2023-04-01,Manchester City FC,Liverpool FC,4,1,team,home,2023-04-01,EPL
+epl-2022-23-271,2023-04-01,Nottingham Forest FC,Wolverhampton Wanderers FC,1,1,draw,home,2023-04-01,EPL
+epl-2022-23-272,2023-04-01,Crystal Palace FC,Leicester City FC,2,1,team,home,2023-04-01,EPL
+epl-2022-23-273,2023-04-01,Brighton & Hove Albion FC,Brentford FC,3,3,draw,home,2023-04-01,EPL
+epl-2022-23-274,2023-04-01,AFC Bournemouth,Fulham FC,2,1,team,home,2023-04-01,EPL
+epl-2022-23-275,2023-04-01,Arsenal FC,Leeds United FC,4,1,team,home,2023-04-01,EPL
+epl-2022-23-276,2023-04-01,Chelsea FC,Aston Villa FC,0,2,opponent,home,2023-04-01,EPL
+epl-2022-23-277,2023-04-02,West Ham United FC,Southampton FC,1,0,team,home,2023-04-02,EPL
+epl-2022-23-278,2023-04-02,Newcastle United FC,Manchester United FC,2,0,team,home,2023-04-02,EPL
+epl-2022-23-279,2023-04-03,Everton FC,Tottenham Hotspur FC,1,1,draw,home,2023-04-03,EPL
+epl-2022-23-280,2023-04-04,Leicester City FC,Aston Villa FC,1,2,opponent,home,2023-04-04,EPL
+epl-2022-23-281,2023-04-04,Leeds United FC,Nottingham Forest FC,2,1,team,home,2023-04-04,EPL
+epl-2022-23-282,2023-04-04,AFC Bournemouth,Brighton & Hove Albion FC,0,2,opponent,home,2023-04-04,EPL
+epl-2022-23-283,2023-04-04,Chelsea FC,Liverpool FC,0,0,draw,home,2023-04-04,EPL
+epl-2022-23-284,2023-04-05,West Ham United FC,Newcastle United FC,1,5,opponent,home,2023-04-05,EPL
+epl-2022-23-285,2023-04-05,Manchester United FC,Brentford FC,1,0,team,home,2023-04-05,EPL
+epl-2022-23-286,2023-04-08,Manchester United FC,Everton FC,2,0,team,home,2023-04-08,EPL
+epl-2022-23-287,2023-04-08,Wolverhampton Wanderers FC,Chelsea FC,1,0,team,home,2023-04-08,EPL
+epl-2022-23-288,2023-04-08,Tottenham Hotspur FC,Brighton & Hove Albion FC,2,1,team,home,2023-04-08,EPL
+epl-2022-23-289,2023-04-08,Leicester City FC,AFC Bournemouth,0,1,opponent,home,2023-04-08,EPL
+epl-2022-23-290,2023-04-08,Fulham FC,West Ham United FC,0,1,opponent,home,2023-04-08,EPL
+epl-2022-23-291,2023-04-08,Brentford FC,Newcastle United FC,1,2,opponent,home,2023-04-08,EPL
+epl-2022-23-292,2023-04-08,Aston Villa FC,Nottingham Forest FC,2,0,team,home,2023-04-08,EPL
+epl-2022-23-293,2023-04-08,Southampton FC,Manchester City FC,1,4,opponent,home,2023-04-08,EPL
+epl-2022-23-294,2023-04-09,Leeds United FC,Crystal Palace FC,1,5,opponent,home,2023-04-09,EPL
+epl-2022-23-295,2023-04-09,Liverpool FC,Arsenal FC,2,2,draw,home,2023-04-09,EPL
+epl-2022-23-296,2023-04-15,Aston Villa FC,Newcastle United FC,3,0,team,home,2023-04-15,EPL
+epl-2022-23-297,2023-04-15,Wolverhampton Wanderers FC,Brentford FC,2,0,team,home,2023-04-15,EPL
+epl-2022-23-298,2023-04-15,Southampton FC,Crystal Palace FC,0,2,opponent,home,2023-04-15,EPL
+epl-2022-23-299,2023-04-15,Everton FC,Fulham FC,1,3,opponent,home,2023-04-15,EPL
+epl-2022-23-300,2023-04-15,Chelsea FC,Brighton & Hove Albion FC,1,2,opponent,home,2023-04-15,EPL
+epl-2022-23-301,2023-04-15,Tottenham Hotspur FC,AFC Bournemouth,2,3,opponent,home,2023-04-15,EPL
+epl-2022-23-302,2023-04-15,Manchester City FC,Leicester City FC,3,1,team,home,2023-04-15,EPL
+epl-2022-23-303,2023-04-16,West Ham United FC,Arsenal FC,2,2,draw,home,2023-04-16,EPL
+epl-2022-23-304,2023-04-16,Nottingham Forest FC,Manchester United FC,0,2,opponent,home,2023-04-16,EPL
+epl-2022-23-305,2023-04-17,Leeds United FC,Liverpool FC,1,6,opponent,home,2023-04-17,EPL
+epl-2022-23-306,2023-04-21,Arsenal FC,Southampton FC,3,3,draw,home,2023-04-21,EPL
+epl-2022-23-307,2023-04-22,Fulham FC,Leeds United FC,2,1,team,home,2023-04-22,EPL
+epl-2022-23-308,2023-04-22,Liverpool FC,Nottingham Forest FC,3,2,team,home,2023-04-22,EPL
+epl-2022-23-309,2023-04-22,Leicester City FC,Wolverhampton Wanderers FC,2,1,team,home,2023-04-22,EPL
+epl-2022-23-310,2023-04-22,Crystal Palace FC,Everton FC,0,0,draw,home,2023-04-22,EPL
+epl-2022-23-311,2023-04-22,Brentford FC,Aston Villa FC,1,1,draw,home,2023-04-22,EPL
+epl-2022-23-312,2023-04-23,Newcastle United FC,Tottenham Hotspur FC,6,1,team,home,2023-04-23,EPL
+epl-2022-23-313,2023-04-23,AFC Bournemouth,West Ham United FC,0,4,opponent,home,2023-04-23,EPL
+epl-2022-23-314,2023-04-25,Wolverhampton Wanderers FC,Crystal Palace FC,2,0,team,home,2023-04-25,EPL
+epl-2022-23-315,2023-04-25,Aston Villa FC,Fulham FC,1,0,team,home,2023-04-25,EPL
+epl-2022-23-316,2023-04-25,Leeds United FC,Leicester City FC,1,1,draw,home,2023-04-25,EPL
+epl-2022-23-317,2023-04-26,Nottingham Forest FC,Brighton & Hove Albion FC,3,1,team,home,2023-04-26,EPL
+epl-2022-23-318,2023-04-26,Chelsea FC,Brentford FC,0,2,opponent,home,2023-04-26,EPL
+epl-2022-23-319,2023-04-26,West Ham United FC,Liverpool FC,1,2,opponent,home,2023-04-26,EPL
+epl-2022-23-320,2023-04-26,Manchester City FC,Arsenal FC,4,1,team,home,2023-04-26,EPL
+epl-2022-23-321,2023-04-27,Southampton FC,AFC Bournemouth,0,1,opponent,home,2023-04-27,EPL
+epl-2022-23-322,2023-04-27,Everton FC,Newcastle United FC,1,4,opponent,home,2023-04-27,EPL
+epl-2022-23-323,2023-04-27,Tottenham Hotspur FC,Manchester United FC,2,2,draw,home,2023-04-27,EPL
+epl-2022-23-324,2023-04-29,Crystal Palace FC,West Ham United FC,4,3,team,home,2023-04-29,EPL
+epl-2022-23-325,2023-04-29,Brighton & Hove Albion FC,Wolverhampton Wanderers FC,6,0,team,home,2023-04-29,EPL
+epl-2022-23-326,2023-04-29,Brentford FC,Nottingham Forest FC,2,1,team,home,2023-04-29,EPL
+epl-2022-23-327,2023-04-30,Newcastle United FC,Southampton FC,3,1,team,home,2023-04-30,EPL
+epl-2022-23-328,2023-04-30,Manchester United FC,Aston Villa FC,1,0,team,home,2023-04-30,EPL
+epl-2022-23-329,2023-04-30,Fulham FC,Manchester City FC,1,2,opponent,home,2023-04-30,EPL
+epl-2022-23-330,2023-04-30,AFC Bournemouth,Leeds United FC,4,1,team,home,2023-04-30,EPL
+epl-2022-23-331,2023-04-30,Liverpool FC,Tottenham Hotspur FC,4,3,team,home,2023-04-30,EPL
+epl-2022-23-332,2023-05-01,Leicester City FC,Everton FC,2,2,draw,home,2023-05-01,EPL
+epl-2022-23-333,2023-05-02,Arsenal FC,Chelsea FC,3,1,team,home,2023-05-02,EPL
+epl-2022-23-334,2023-05-03,Manchester City FC,West Ham United FC,3,0,team,home,2023-05-03,EPL
+epl-2022-23-335,2023-05-03,Liverpool FC,Fulham FC,1,0,team,home,2023-05-03,EPL
+epl-2022-23-336,2023-05-04,Brighton & Hove Albion FC,Manchester United FC,1,0,team,home,2023-05-04,EPL
+epl-2022-23-337,2023-05-06,Wolverhampton Wanderers FC,Aston Villa FC,1,0,team,home,2023-05-06,EPL
+epl-2022-23-338,2023-05-06,Tottenham Hotspur FC,Crystal Palace FC,1,0,team,home,2023-05-06,EPL
+epl-2022-23-339,2023-05-06,Manchester City FC,Leeds United FC,2,1,team,home,2023-05-06,EPL
+epl-2022-23-340,2023-05-06,AFC Bournemouth,Chelsea FC,1,3,opponent,home,2023-05-06,EPL
+epl-2022-23-341,2023-05-06,Liverpool FC,Brentford FC,1,0,team,home,2023-05-06,EPL
+epl-2022-23-342,2023-05-07,Newcastle United FC,Arsenal FC,0,2,opponent,home,2023-05-07,EPL
+epl-2022-23-343,2023-05-07,West Ham United FC,Manchester United FC,1,0,team,home,2023-05-07,EPL
+epl-2022-23-344,2023-05-08,Fulham FC,Leicester City FC,5,3,team,home,2023-05-08,EPL
+epl-2022-23-345,2023-05-08,Brighton & Hove Albion FC,Everton FC,1,5,opponent,home,2023-05-08,EPL
+epl-2022-23-346,2023-05-08,Nottingham Forest FC,Southampton FC,4,3,team,home,2023-05-08,EPL
+epl-2022-23-347,2023-05-13,Leeds United FC,Newcastle United FC,2,2,draw,home,2023-05-13,EPL
+epl-2022-23-348,2023-05-13,Southampton FC,Fulham FC,0,2,opponent,home,2023-05-13,EPL
+epl-2022-23-349,2023-05-13,Manchester United FC,Wolverhampton Wanderers FC,2,0,team,home,2023-05-13,EPL
+epl-2022-23-350,2023-05-13,Crystal Palace FC,AFC Bournemouth,2,0,team,home,2023-05-13,EPL
+epl-2022-23-351,2023-05-13,Chelsea FC,Nottingham Forest FC,2,2,draw,home,2023-05-13,EPL
+epl-2022-23-352,2023-05-13,Aston Villa FC,Tottenham Hotspur FC,2,1,team,home,2023-05-13,EPL
+epl-2022-23-353,2023-05-14,Everton FC,Manchester City FC,0,3,opponent,home,2023-05-14,EPL
+epl-2022-23-354,2023-05-14,Brentford FC,West Ham United FC,2,0,team,home,2023-05-14,EPL
+epl-2022-23-355,2023-05-14,Arsenal FC,Brighton & Hove Albion FC,0,3,opponent,home,2023-05-14,EPL
+epl-2022-23-356,2023-05-15,Leicester City FC,Liverpool FC,0,3,opponent,home,2023-05-15,EPL
+epl-2022-23-357,2023-05-18,Newcastle United FC,Brighton & Hove Albion FC,4,1,team,home,2023-05-18,EPL
+epl-2022-23-358,2023-05-20,Tottenham Hotspur FC,Brentford FC,1,3,opponent,home,2023-05-20,EPL
+epl-2022-23-359,2023-05-20,Wolverhampton Wanderers FC,Everton FC,1,1,draw,home,2023-05-20,EPL
+epl-2022-23-360,2023-05-20,Liverpool FC,Aston Villa FC,1,1,draw,home,2023-05-20,EPL
+epl-2022-23-361,2023-05-20,Fulham FC,Crystal Palace FC,2,2,draw,home,2023-05-20,EPL
+epl-2022-23-362,2023-05-20,AFC Bournemouth,Manchester United FC,0,1,opponent,home,2023-05-20,EPL
+epl-2022-23-363,2023-05-20,Nottingham Forest FC,Arsenal FC,1,0,team,home,2023-05-20,EPL
+epl-2022-23-364,2023-05-21,West Ham United FC,Leeds United FC,3,1,team,home,2023-05-21,EPL
+epl-2022-23-365,2023-05-21,Brighton & Hove Albion FC,Southampton FC,3,1,team,home,2023-05-21,EPL
+epl-2022-23-366,2023-05-21,Manchester City FC,Chelsea FC,1,0,team,home,2023-05-21,EPL
+epl-2022-23-367,2023-05-22,Newcastle United FC,Leicester City FC,0,0,draw,home,2023-05-22,EPL
+epl-2022-23-368,2023-05-24,Brighton & Hove Albion FC,Manchester City FC,1,1,draw,home,2023-05-24,EPL
+epl-2022-23-369,2023-05-25,Manchester United FC,Chelsea FC,4,1,team,home,2023-05-25,EPL
+epl-2022-23-370,2023-05-28,Southampton FC,Liverpool FC,4,4,draw,home,2023-05-28,EPL
+epl-2022-23-371,2023-05-28,Manchester United FC,Fulham FC,2,1,team,home,2023-05-28,EPL
+epl-2022-23-372,2023-05-28,Leicester City FC,West Ham United FC,2,1,team,home,2023-05-28,EPL
+epl-2022-23-373,2023-05-28,Leeds United FC,Tottenham Hotspur FC,1,4,opponent,home,2023-05-28,EPL
+epl-2022-23-374,2023-05-28,Everton FC,AFC Bournemouth,1,0,team,home,2023-05-28,EPL
+epl-2022-23-375,2023-05-28,Crystal Palace FC,Nottingham Forest FC,1,1,draw,home,2023-05-28,EPL
+epl-2022-23-376,2023-05-28,Chelsea FC,Newcastle United FC,1,1,draw,home,2023-05-28,EPL
+epl-2022-23-377,2023-05-28,Brentford FC,Manchester City FC,1,0,team,home,2023-05-28,EPL
+epl-2022-23-378,2023-05-28,Aston Villa FC,Brighton & Hove Albion FC,2,1,team,home,2023-05-28,EPL
+epl-2022-23-379,2023-05-28,Arsenal FC,Wolverhampton Wanderers FC,5,0,team,home,2023-05-28,EPL
+epl-2023-24-0,2023-08-11,Burnley FC,Manchester City FC,0,3,opponent,home,2023-08-11,EPL
+epl-2023-24-1,2023-08-12,Arsenal FC,Nottingham Forest FC,2,1,team,home,2023-08-12,EPL
+epl-2023-24-2,2023-08-12,AFC Bournemouth,West Ham United FC,1,1,draw,home,2023-08-12,EPL
+epl-2023-24-3,2023-08-12,Brighton & Hove Albion FC,Luton Town FC,4,1,team,home,2023-08-12,EPL
+epl-2023-24-4,2023-08-12,Everton FC,Fulham FC,0,1,opponent,home,2023-08-12,EPL
+epl-2023-24-5,2023-08-12,Sheffield United FC,Crystal Palace FC,0,1,opponent,home,2023-08-12,EPL
+epl-2023-24-6,2023-08-12,Newcastle United FC,Aston Villa FC,5,1,team,home,2023-08-12,EPL
+epl-2023-24-7,2023-08-13,Brentford FC,Tottenham Hotspur FC,2,2,draw,home,2023-08-13,EPL
+epl-2023-24-8,2023-08-13,Chelsea FC,Liverpool FC,1,1,draw,home,2023-08-13,EPL
+epl-2023-24-9,2023-08-14,Manchester United FC,Wolverhampton Wanderers FC,1,0,team,home,2023-08-14,EPL
+epl-2023-24-10,2023-08-18,Nottingham Forest FC,Sheffield United FC,2,1,team,home,2023-08-18,EPL
+epl-2023-24-11,2023-08-19,Fulham FC,Brentford FC,0,3,opponent,home,2023-08-19,EPL
+epl-2023-24-12,2023-08-19,Liverpool FC,AFC Bournemouth,3,1,team,home,2023-08-19,EPL
+epl-2023-24-13,2023-08-19,Wolverhampton Wanderers FC,Brighton & Hove Albion FC,1,4,opponent,home,2023-08-19,EPL
+epl-2023-24-14,2023-08-19,Tottenham Hotspur FC,Manchester United FC,2,0,team,home,2023-08-19,EPL
+epl-2023-24-15,2023-08-19,Manchester City FC,Newcastle United FC,1,0,team,home,2023-08-19,EPL
+epl-2023-24-16,2023-08-20,Aston Villa FC,Everton FC,4,0,team,home,2023-08-20,EPL
+epl-2023-24-17,2023-08-20,West Ham United FC,Chelsea FC,3,1,team,home,2023-08-20,EPL
+epl-2023-24-18,2023-08-21,Crystal Palace FC,Arsenal FC,0,1,opponent,home,2023-08-21,EPL
+epl-2023-24-19,2023-08-25,Chelsea FC,Luton Town FC,3,0,team,home,2023-08-25,EPL
+epl-2023-24-20,2023-08-26,AFC Bournemouth,Tottenham Hotspur FC,0,2,opponent,home,2023-08-26,EPL
+epl-2023-24-21,2023-08-26,Everton FC,Wolverhampton Wanderers FC,0,1,opponent,home,2023-08-26,EPL
+epl-2023-24-22,2023-08-26,Manchester United FC,Nottingham Forest FC,3,2,team,home,2023-08-26,EPL
+epl-2023-24-23,2023-08-26,Arsenal FC,Fulham FC,2,2,draw,home,2023-08-26,EPL
+epl-2023-24-24,2023-08-26,Brentford FC,Crystal Palace FC,1,1,draw,home,2023-08-26,EPL
+epl-2023-24-25,2023-08-26,Brighton & Hove Albion FC,West Ham United FC,1,3,opponent,home,2023-08-26,EPL
+epl-2023-24-26,2023-08-27,Sheffield United FC,Manchester City FC,1,2,opponent,home,2023-08-27,EPL
+epl-2023-24-27,2023-08-27,Burnley FC,Aston Villa FC,1,3,opponent,home,2023-08-27,EPL
+epl-2023-24-28,2023-08-27,Newcastle United FC,Liverpool FC,1,2,opponent,home,2023-08-27,EPL
+epl-2023-24-29,2023-09-01,Luton Town FC,West Ham United FC,1,2,opponent,home,2023-09-01,EPL
+epl-2023-24-30,2023-09-02,Sheffield United FC,Everton FC,2,2,draw,home,2023-09-02,EPL
+epl-2023-24-31,2023-09-02,Brentford FC,AFC Bournemouth,2,2,draw,home,2023-09-02,EPL
+epl-2023-24-32,2023-09-02,Burnley FC,Tottenham Hotspur FC,2,5,opponent,home,2023-09-02,EPL
+epl-2023-24-33,2023-09-02,Chelsea FC,Nottingham Forest FC,0,1,opponent,home,2023-09-02,EPL
+epl-2023-24-34,2023-09-02,Manchester City FC,Fulham FC,5,1,team,home,2023-09-02,EPL
+epl-2023-24-35,2023-09-02,Brighton & Hove Albion FC,Newcastle United FC,3,1,team,home,2023-09-02,EPL
+epl-2023-24-36,2023-09-03,Crystal Palace FC,Wolverhampton Wanderers FC,3,2,team,home,2023-09-03,EPL
+epl-2023-24-37,2023-09-03,Liverpool FC,Aston Villa FC,3,0,team,home,2023-09-03,EPL
+epl-2023-24-38,2023-09-03,Arsenal FC,Manchester United FC,3,1,team,home,2023-09-03,EPL
+epl-2023-24-39,2023-09-16,Wolverhampton Wanderers FC,Liverpool FC,1,3,opponent,home,2023-09-16,EPL
+epl-2023-24-40,2023-09-16,Aston Villa FC,Crystal Palace FC,3,1,team,home,2023-09-16,EPL
+epl-2023-24-41,2023-09-16,Fulham FC,Luton Town FC,1,0,team,home,2023-09-16,EPL
+epl-2023-24-42,2023-09-16,Manchester United FC,Brighton & Hove Albion FC,1,3,opponent,home,2023-09-16,EPL
+epl-2023-24-43,2023-09-16,Tottenham Hotspur FC,Sheffield United FC,2,1,team,home,2023-09-16,EPL
+epl-2023-24-44,2023-09-16,West Ham United FC,Manchester City FC,1,3,opponent,home,2023-09-16,EPL
+epl-2023-24-45,2023-09-16,Newcastle United FC,Brentford FC,1,0,team,home,2023-09-16,EPL
+epl-2023-24-46,2023-09-17,AFC Bournemouth,Chelsea FC,0,0,draw,home,2023-09-17,EPL
+epl-2023-24-47,2023-09-17,Everton FC,Arsenal FC,0,1,opponent,home,2023-09-17,EPL
+epl-2023-24-48,2023-09-18,Nottingham Forest FC,Burnley FC,1,1,draw,home,2023-09-18,EPL
+epl-2023-24-49,2023-09-23,Crystal Palace FC,Fulham FC,0,0,draw,home,2023-09-23,EPL
+epl-2023-24-50,2023-09-23,Luton Town FC,Wolverhampton Wanderers FC,1,1,draw,home,2023-09-23,EPL
+epl-2023-24-51,2023-09-23,Manchester City FC,Nottingham Forest FC,2,0,team,home,2023-09-23,EPL
+epl-2023-24-52,2023-09-23,Brentford FC,Everton FC,1,3,opponent,home,2023-09-23,EPL
+epl-2023-24-53,2023-09-23,Burnley FC,Manchester United FC,0,1,opponent,home,2023-09-23,EPL
+epl-2023-24-54,2023-09-24,Arsenal FC,Tottenham Hotspur FC,2,2,draw,home,2023-09-24,EPL
+epl-2023-24-55,2023-09-24,Brighton & Hove Albion FC,AFC Bournemouth,3,1,team,home,2023-09-24,EPL
+epl-2023-24-56,2023-09-24,Chelsea FC,Aston Villa FC,0,1,opponent,home,2023-09-24,EPL
+epl-2023-24-57,2023-09-24,Liverpool FC,West Ham United FC,3,1,team,home,2023-09-24,EPL
+epl-2023-24-58,2023-09-24,Sheffield United FC,Newcastle United FC,0,8,opponent,home,2023-09-24,EPL
+epl-2023-24-59,2023-09-30,Aston Villa FC,Brighton & Hove Albion FC,6,1,team,home,2023-09-30,EPL
+epl-2023-24-60,2023-09-30,AFC Bournemouth,Arsenal FC,0,4,opponent,home,2023-09-30,EPL
+epl-2023-24-61,2023-09-30,Everton FC,Luton Town FC,1,2,opponent,home,2023-09-30,EPL
+epl-2023-24-62,2023-09-30,Manchester United FC,Crystal Palace FC,0,1,opponent,home,2023-09-30,EPL
+epl-2023-24-63,2023-09-30,Newcastle United FC,Burnley FC,2,0,team,home,2023-09-30,EPL
+epl-2023-24-64,2023-09-30,West Ham United FC,Sheffield United FC,2,0,team,home,2023-09-30,EPL
+epl-2023-24-65,2023-09-30,Wolverhampton Wanderers FC,Manchester City FC,2,1,team,home,2023-09-30,EPL
+epl-2023-24-66,2023-09-30,Tottenham Hotspur FC,Liverpool FC,2,1,team,home,2023-09-30,EPL
+epl-2023-24-67,2023-10-01,Nottingham Forest FC,Brentford FC,1,1,draw,home,2023-10-01,EPL
+epl-2023-24-68,2023-10-02,Fulham FC,Chelsea FC,0,2,opponent,home,2023-10-02,EPL
+epl-2023-24-69,2023-10-03,Luton Town FC,Burnley FC,1,2,opponent,home,2023-10-03,EPL
+epl-2023-24-70,2023-10-07,Luton Town FC,Tottenham Hotspur FC,0,1,opponent,home,2023-10-07,EPL
+epl-2023-24-71,2023-10-07,Burnley FC,Chelsea FC,1,4,opponent,home,2023-10-07,EPL
+epl-2023-24-72,2023-10-07,Everton FC,AFC Bournemouth,3,0,team,home,2023-10-07,EPL
+epl-2023-24-73,2023-10-07,Fulham FC,Sheffield United FC,3,1,team,home,2023-10-07,EPL
+epl-2023-24-74,2023-10-07,Manchester United FC,Brentford FC,2,1,team,home,2023-10-07,EPL
+epl-2023-24-75,2023-10-07,Crystal Palace FC,Nottingham Forest FC,0,0,draw,home,2023-10-07,EPL
+epl-2023-24-76,2023-10-08,Brighton & Hove Albion FC,Liverpool FC,2,2,draw,home,2023-10-08,EPL
+epl-2023-24-77,2023-10-08,West Ham United FC,Newcastle United FC,2,2,draw,home,2023-10-08,EPL
+epl-2023-24-78,2023-10-08,Wolverhampton Wanderers FC,Aston Villa FC,1,1,draw,home,2023-10-08,EPL
+epl-2023-24-79,2023-10-08,Arsenal FC,Manchester City FC,1,0,team,home,2023-10-08,EPL
+epl-2023-24-80,2023-10-21,Liverpool FC,Everton FC,2,0,team,home,2023-10-21,EPL
+epl-2023-24-81,2023-10-21,AFC Bournemouth,Wolverhampton Wanderers FC,1,2,opponent,home,2023-10-21,EPL
+epl-2023-24-82,2023-10-21,Brentford FC,Burnley FC,3,0,team,home,2023-10-21,EPL
+epl-2023-24-83,2023-10-21,Manchester City FC,Brighton & Hove Albion FC,2,1,team,home,2023-10-21,EPL
+epl-2023-24-84,2023-10-21,Newcastle United FC,Crystal Palace FC,4,0,team,home,2023-10-21,EPL
+epl-2023-24-85,2023-10-21,Nottingham Forest FC,Luton Town FC,2,2,draw,home,2023-10-21,EPL
+epl-2023-24-86,2023-10-21,Chelsea FC,Arsenal FC,2,2,draw,home,2023-10-21,EPL
+epl-2023-24-87,2023-10-21,Sheffield United FC,Manchester United FC,1,2,opponent,home,2023-10-21,EPL
+epl-2023-24-88,2023-10-22,Aston Villa FC,West Ham United FC,4,1,team,home,2023-10-22,EPL
+epl-2023-24-89,2023-10-23,Tottenham Hotspur FC,Fulham FC,2,0,team,home,2023-10-23,EPL
+epl-2023-24-90,2023-10-27,Crystal Palace FC,Tottenham Hotspur FC,1,2,opponent,home,2023-10-27,EPL
+epl-2023-24-91,2023-10-28,Chelsea FC,Brentford FC,0,2,opponent,home,2023-10-28,EPL
+epl-2023-24-92,2023-10-28,AFC Bournemouth,Burnley FC,2,1,team,home,2023-10-28,EPL
+epl-2023-24-93,2023-10-28,Arsenal FC,Sheffield United FC,5,0,team,home,2023-10-28,EPL
+epl-2023-24-94,2023-10-28,Wolverhampton Wanderers FC,Newcastle United FC,2,2,draw,home,2023-10-28,EPL
+epl-2023-24-95,2023-10-29,West Ham United FC,Everton FC,0,1,opponent,home,2023-10-29,EPL
+epl-2023-24-96,2023-10-29,Aston Villa FC,Luton Town FC,3,1,team,home,2023-10-29,EPL
+epl-2023-24-97,2023-10-29,Brighton & Hove Albion FC,Fulham FC,1,1,draw,home,2023-10-29,EPL
+epl-2023-24-98,2023-10-29,Liverpool FC,Nottingham Forest FC,3,0,team,home,2023-10-29,EPL
+epl-2023-24-99,2023-10-29,Manchester United FC,Manchester City FC,0,3,opponent,home,2023-10-29,EPL
+epl-2023-24-100,2023-11-04,Fulham FC,Manchester United FC,0,1,opponent,home,2023-11-04,EPL
+epl-2023-24-101,2023-11-04,Brentford FC,West Ham United FC,3,2,team,home,2023-11-04,EPL
+epl-2023-24-102,2023-11-04,Burnley FC,Crystal Palace FC,0,2,opponent,home,2023-11-04,EPL
+epl-2023-24-103,2023-11-04,Everton FC,Brighton & Hove Albion FC,1,1,draw,home,2023-11-04,EPL
+epl-2023-24-104,2023-11-04,Manchester City FC,AFC Bournemouth,6,1,team,home,2023-11-04,EPL
+epl-2023-24-105,2023-11-04,Sheffield United FC,Wolverhampton Wanderers FC,2,1,team,home,2023-11-04,EPL
+epl-2023-24-106,2023-11-04,Newcastle United FC,Arsenal FC,1,0,team,home,2023-11-04,EPL
+epl-2023-24-107,2023-11-05,Nottingham Forest FC,Aston Villa FC,2,0,team,home,2023-11-05,EPL
+epl-2023-24-108,2023-11-05,Luton Town FC,Liverpool FC,1,1,draw,home,2023-11-05,EPL
+epl-2023-24-109,2023-11-06,Tottenham Hotspur FC,Chelsea FC,1,4,opponent,home,2023-11-06,EPL
+epl-2023-24-110,2023-11-11,Wolverhampton Wanderers FC,Tottenham Hotspur FC,2,1,team,home,2023-11-11,EPL
+epl-2023-24-111,2023-11-11,Arsenal FC,Burnley FC,3,1,team,home,2023-11-11,EPL
+epl-2023-24-112,2023-11-11,Crystal Palace FC,Everton FC,2,3,opponent,home,2023-11-11,EPL
+epl-2023-24-113,2023-11-11,Manchester United FC,Luton Town FC,1,0,team,home,2023-11-11,EPL
+epl-2023-24-114,2023-11-11,AFC Bournemouth,Newcastle United FC,2,0,team,home,2023-11-11,EPL
+epl-2023-24-115,2023-11-12,Aston Villa FC,Fulham FC,3,1,team,home,2023-11-12,EPL
+epl-2023-24-116,2023-11-12,Brighton & Hove Albion FC,Sheffield United FC,1,1,draw,home,2023-11-12,EPL
+epl-2023-24-117,2023-11-12,Liverpool FC,Brentford FC,3,0,team,home,2023-11-12,EPL
+epl-2023-24-118,2023-11-12,West Ham United FC,Nottingham Forest FC,3,2,team,home,2023-11-12,EPL
+epl-2023-24-119,2023-11-12,Chelsea FC,Manchester City FC,4,4,draw,home,2023-11-12,EPL
+epl-2023-24-120,2023-11-25,Manchester City FC,Liverpool FC,1,1,draw,home,2023-11-25,EPL
+epl-2023-24-121,2023-11-25,Burnley FC,West Ham United FC,1,2,opponent,home,2023-11-25,EPL
+epl-2023-24-122,2023-11-25,Luton Town FC,Crystal Palace FC,2,1,team,home,2023-11-25,EPL
+epl-2023-24-123,2023-11-25,Newcastle United FC,Chelsea FC,4,1,team,home,2023-11-25,EPL
+epl-2023-24-124,2023-11-25,Nottingham Forest FC,Brighton & Hove Albion FC,2,3,opponent,home,2023-11-25,EPL
+epl-2023-24-125,2023-11-25,Sheffield United FC,AFC Bournemouth,1,3,opponent,home,2023-11-25,EPL
+epl-2023-24-126,2023-11-25,Brentford FC,Arsenal FC,0,1,opponent,home,2023-11-25,EPL
+epl-2023-24-127,2023-11-26,Tottenham Hotspur FC,Aston Villa FC,1,2,opponent,home,2023-11-26,EPL
+epl-2023-24-128,2023-11-26,Everton FC,Manchester United FC,0,3,opponent,home,2023-11-26,EPL
+epl-2023-24-129,2023-11-27,Fulham FC,Wolverhampton Wanderers FC,3,2,team,home,2023-11-27,EPL
+epl-2023-24-130,2023-12-02,Arsenal FC,Wolverhampton Wanderers FC,2,1,team,home,2023-12-02,EPL
+epl-2023-24-131,2023-12-02,Brentford FC,Luton Town FC,3,1,team,home,2023-12-02,EPL
+epl-2023-24-132,2023-12-02,Burnley FC,Sheffield United FC,5,0,team,home,2023-12-02,EPL
+epl-2023-24-133,2023-12-02,Nottingham Forest FC,Everton FC,0,1,opponent,home,2023-12-02,EPL
+epl-2023-24-134,2023-12-02,Newcastle United FC,Manchester United FC,1,0,team,home,2023-12-02,EPL
+epl-2023-24-135,2023-12-03,AFC Bournemouth,Aston Villa FC,2,2,draw,home,2023-12-03,EPL
+epl-2023-24-136,2023-12-03,Chelsea FC,Brighton & Hove Albion FC,3,2,team,home,2023-12-03,EPL
+epl-2023-24-137,2023-12-03,Liverpool FC,Fulham FC,4,3,team,home,2023-12-03,EPL
+epl-2023-24-138,2023-12-03,West Ham United FC,Crystal Palace FC,1,1,draw,home,2023-12-03,EPL
+epl-2023-24-139,2023-12-03,Manchester City FC,Tottenham Hotspur FC,3,3,draw,home,2023-12-03,EPL
+epl-2023-24-140,2023-12-05,Wolverhampton Wanderers FC,Burnley FC,1,0,team,home,2023-12-05,EPL
+epl-2023-24-141,2023-12-05,Luton Town FC,Arsenal FC,3,4,opponent,home,2023-12-05,EPL
+epl-2023-24-142,2023-12-06,Brighton & Hove Albion FC,Brentford FC,2,1,team,home,2023-12-06,EPL
+epl-2023-24-143,2023-12-06,Fulham FC,Nottingham Forest FC,5,0,team,home,2023-12-06,EPL
+epl-2023-24-144,2023-12-06,Sheffield United FC,Liverpool FC,0,2,opponent,home,2023-12-06,EPL
+epl-2023-24-145,2023-12-06,Crystal Palace FC,AFC Bournemouth,0,2,opponent,home,2023-12-06,EPL
+epl-2023-24-146,2023-12-06,Aston Villa FC,Manchester City FC,1,0,team,home,2023-12-06,EPL
+epl-2023-24-147,2023-12-06,Manchester United FC,Chelsea FC,2,1,team,home,2023-12-06,EPL
+epl-2023-24-148,2023-12-07,Everton FC,Newcastle United FC,3,0,team,home,2023-12-07,EPL
+epl-2023-24-149,2023-12-07,Tottenham Hotspur FC,West Ham United FC,1,2,opponent,home,2023-12-07,EPL
+epl-2023-24-150,2023-12-09,Crystal Palace FC,Liverpool FC,1,2,opponent,home,2023-12-09,EPL
+epl-2023-24-151,2023-12-09,Brighton & Hove Albion FC,Burnley FC,1,1,draw,home,2023-12-09,EPL
+epl-2023-24-152,2023-12-09,Manchester United FC,AFC Bournemouth,0,3,opponent,home,2023-12-09,EPL
+epl-2023-24-153,2023-12-09,Sheffield United FC,Brentford FC,1,0,team,home,2023-12-09,EPL
+epl-2023-24-154,2023-12-09,Wolverhampton Wanderers FC,Nottingham Forest FC,1,1,draw,home,2023-12-09,EPL
+epl-2023-24-155,2023-12-09,Aston Villa FC,Arsenal FC,1,0,team,home,2023-12-09,EPL
+epl-2023-24-156,2023-12-10,Everton FC,Chelsea FC,2,0,team,home,2023-12-10,EPL
+epl-2023-24-157,2023-12-10,Fulham FC,West Ham United FC,5,0,team,home,2023-12-10,EPL
+epl-2023-24-158,2023-12-10,Luton Town FC,Manchester City FC,1,2,opponent,home,2023-12-10,EPL
+epl-2023-24-159,2023-12-10,Tottenham Hotspur FC,Newcastle United FC,4,1,team,home,2023-12-10,EPL
+epl-2023-24-160,2023-12-15,Nottingham Forest FC,Tottenham Hotspur FC,0,2,opponent,home,2023-12-15,EPL
+epl-2023-24-161,2023-12-16,Chelsea FC,Sheffield United FC,2,0,team,home,2023-12-16,EPL
+epl-2023-24-162,2023-12-16,Manchester City FC,Crystal Palace FC,2,2,draw,home,2023-12-16,EPL
+epl-2023-24-163,2023-12-16,Newcastle United FC,Fulham FC,3,0,team,home,2023-12-16,EPL
+epl-2023-24-164,2023-12-16,Burnley FC,Everton FC,0,2,opponent,home,2023-12-16,EPL
+epl-2023-24-165,2023-12-17,Arsenal FC,Brighton & Hove Albion FC,2,0,team,home,2023-12-17,EPL
+epl-2023-24-166,2023-12-17,Brentford FC,Aston Villa FC,1,2,opponent,home,2023-12-17,EPL
+epl-2023-24-167,2023-12-17,West Ham United FC,Wolverhampton Wanderers FC,3,0,team,home,2023-12-17,EPL
+epl-2023-24-168,2023-12-17,Liverpool FC,Manchester United FC,0,0,draw,home,2023-12-17,EPL
+epl-2023-24-169,2023-12-21,Crystal Palace FC,Brighton & Hove Albion FC,1,1,draw,home,2023-12-21,EPL
+epl-2023-24-170,2023-12-22,Aston Villa FC,Sheffield United FC,1,1,draw,home,2023-12-22,EPL
+epl-2023-24-171,2023-12-23,West Ham United FC,Manchester United FC,2,0,team,home,2023-12-23,EPL
+epl-2023-24-172,2023-12-23,Fulham FC,Burnley FC,0,2,opponent,home,2023-12-23,EPL
+epl-2023-24-173,2023-12-23,Luton Town FC,Newcastle United FC,1,0,team,home,2023-12-23,EPL
+epl-2023-24-174,2023-12-23,Nottingham Forest FC,AFC Bournemouth,2,3,opponent,home,2023-12-23,EPL
+epl-2023-24-175,2023-12-23,Tottenham Hotspur FC,Everton FC,2,1,team,home,2023-12-23,EPL
+epl-2023-24-176,2023-12-23,Liverpool FC,Arsenal FC,1,1,draw,home,2023-12-23,EPL
+epl-2023-24-177,2023-12-24,Wolverhampton Wanderers FC,Chelsea FC,2,1,team,home,2023-12-24,EPL
+epl-2023-24-178,2023-12-26,Newcastle United FC,Nottingham Forest FC,1,3,opponent,home,2023-12-26,EPL
+epl-2023-24-179,2023-12-26,AFC Bournemouth,Fulham FC,3,0,team,home,2023-12-26,EPL
+epl-2023-24-180,2023-12-26,Sheffield United FC,Luton Town FC,2,3,opponent,home,2023-12-26,EPL
+epl-2023-24-181,2023-12-26,Burnley FC,Liverpool FC,0,2,opponent,home,2023-12-26,EPL
+epl-2023-24-182,2023-12-26,Manchester United FC,Aston Villa FC,3,2,team,home,2023-12-26,EPL
+epl-2023-24-183,2023-12-27,Brentford FC,Wolverhampton Wanderers FC,1,4,opponent,home,2023-12-27,EPL
+epl-2023-24-184,2023-12-27,Chelsea FC,Crystal Palace FC,2,1,team,home,2023-12-27,EPL
+epl-2023-24-185,2023-12-27,Everton FC,Manchester City FC,1,3,opponent,home,2023-12-27,EPL
+epl-2023-24-186,2023-12-28,Brighton & Hove Albion FC,Tottenham Hotspur FC,4,2,team,home,2023-12-28,EPL
+epl-2023-24-187,2023-12-28,Arsenal FC,West Ham United FC,0,2,opponent,home,2023-12-28,EPL
+epl-2023-24-188,2023-12-30,Luton Town FC,Chelsea FC,2,3,opponent,home,2023-12-30,EPL
+epl-2023-24-189,2023-12-30,Aston Villa FC,Burnley FC,3,2,team,home,2023-12-30,EPL
+epl-2023-24-190,2023-12-30,Crystal Palace FC,Brentford FC,3,1,team,home,2023-12-30,EPL
+epl-2023-24-191,2023-12-30,Manchester City FC,Sheffield United FC,2,0,team,home,2023-12-30,EPL
+epl-2023-24-192,2023-12-30,Wolverhampton Wanderers FC,Everton FC,3,0,team,home,2023-12-30,EPL
+epl-2023-24-193,2023-12-30,Nottingham Forest FC,Manchester United FC,2,1,team,home,2023-12-30,EPL
+epl-2023-24-194,2023-12-31,Fulham FC,Arsenal FC,2,1,team,home,2023-12-31,EPL
+epl-2023-24-195,2023-12-31,Tottenham Hotspur FC,AFC Bournemouth,3,1,team,home,2023-12-31,EPL
+epl-2023-24-196,2024-01-01,Liverpool FC,Newcastle United FC,4,2,team,home,2024-01-01,EPL
+epl-2023-24-197,2024-01-02,West Ham United FC,Brighton & Hove Albion FC,0,0,draw,home,2024-01-02,EPL
+epl-2023-24-198,2024-01-12,Burnley FC,Luton Town FC,1,1,draw,home,2024-01-12,EPL
+epl-2023-24-199,2024-01-13,Chelsea FC,Fulham FC,1,0,team,home,2024-01-13,EPL
+epl-2023-24-200,2024-01-13,Newcastle United FC,Manchester City FC,2,3,opponent,home,2024-01-13,EPL
+epl-2023-24-201,2024-01-14,Everton FC,Aston Villa FC,0,0,draw,home,2024-01-14,EPL
+epl-2023-24-202,2024-01-14,Manchester United FC,Tottenham Hotspur FC,2,2,draw,home,2024-01-14,EPL
+epl-2023-24-203,2024-01-20,Arsenal FC,Crystal Palace FC,5,0,team,home,2024-01-20,EPL
+epl-2023-24-204,2024-01-20,Brentford FC,Nottingham Forest FC,3,2,team,home,2024-01-20,EPL
+epl-2023-24-205,2024-01-21,Sheffield United FC,West Ham United FC,2,2,draw,home,2024-01-21,EPL
+epl-2023-24-206,2024-01-21,AFC Bournemouth,Liverpool FC,0,4,opponent,home,2024-01-21,EPL
+epl-2023-24-207,2024-01-22,Brighton & Hove Albion FC,Wolverhampton Wanderers FC,0,0,draw,home,2024-01-22,EPL
+epl-2023-24-208,2024-01-30,Nottingham Forest FC,Arsenal FC,1,2,opponent,home,2024-01-30,EPL
+epl-2023-24-209,2024-01-30,Luton Town FC,Brighton & Hove Albion FC,4,0,team,home,2024-01-30,EPL
+epl-2023-24-210,2024-01-30,Fulham FC,Everton FC,0,0,draw,home,2024-01-30,EPL
+epl-2023-24-211,2024-01-30,Crystal Palace FC,Sheffield United FC,3,2,team,home,2024-01-30,EPL
+epl-2023-24-212,2024-01-30,Aston Villa FC,Newcastle United FC,1,3,opponent,home,2024-01-30,EPL
+epl-2023-24-213,2024-01-31,Tottenham Hotspur FC,Brentford FC,3,2,team,home,2024-01-31,EPL
+epl-2023-24-214,2024-01-31,Manchester City FC,Burnley FC,3,1,team,home,2024-01-31,EPL
+epl-2023-24-215,2024-01-31,Liverpool FC,Chelsea FC,4,1,team,home,2024-01-31,EPL
+epl-2023-24-216,2024-02-01,West Ham United FC,AFC Bournemouth,1,1,draw,home,2024-02-01,EPL
+epl-2023-24-217,2024-02-01,Wolverhampton Wanderers FC,Manchester United FC,3,4,opponent,home,2024-02-01,EPL
+epl-2023-24-218,2024-02-03,Everton FC,Tottenham Hotspur FC,2,2,draw,home,2024-02-03,EPL
+epl-2023-24-219,2024-02-03,Brighton & Hove Albion FC,Crystal Palace FC,4,1,team,home,2024-02-03,EPL
+epl-2023-24-220,2024-02-03,Burnley FC,Fulham FC,2,2,draw,home,2024-02-03,EPL
+epl-2023-24-221,2024-02-03,Newcastle United FC,Luton Town FC,4,4,draw,home,2024-02-03,EPL
+epl-2023-24-222,2024-02-03,Sheffield United FC,Aston Villa FC,0,5,opponent,home,2024-02-03,EPL
+epl-2023-24-223,2024-02-04,AFC Bournemouth,Nottingham Forest FC,1,1,draw,home,2024-02-04,EPL
+epl-2023-24-224,2024-02-04,Chelsea FC,Wolverhampton Wanderers FC,2,4,opponent,home,2024-02-04,EPL
+epl-2023-24-225,2024-02-04,Manchester United FC,West Ham United FC,3,0,team,home,2024-02-04,EPL
+epl-2023-24-226,2024-02-04,Arsenal FC,Liverpool FC,3,1,team,home,2024-02-04,EPL
+epl-2023-24-227,2024-02-05,Brentford FC,Manchester City FC,1,3,opponent,home,2024-02-05,EPL
+epl-2023-24-228,2024-02-10,Manchester City FC,Everton FC,2,0,team,home,2024-02-10,EPL
+epl-2023-24-229,2024-02-10,Fulham FC,AFC Bournemouth,3,1,team,home,2024-02-10,EPL
+epl-2023-24-230,2024-02-10,Liverpool FC,Burnley FC,3,1,team,home,2024-02-10,EPL
+epl-2023-24-231,2024-02-10,Luton Town FC,Sheffield United FC,1,3,opponent,home,2024-02-10,EPL
+epl-2023-24-232,2024-02-10,Tottenham Hotspur FC,Brighton & Hove Albion FC,2,1,team,home,2024-02-10,EPL
+epl-2023-24-233,2024-02-10,Wolverhampton Wanderers FC,Brentford FC,0,2,opponent,home,2024-02-10,EPL
+epl-2023-24-234,2024-02-10,Nottingham Forest FC,Newcastle United FC,2,3,opponent,home,2024-02-10,EPL
+epl-2023-24-235,2024-02-11,West Ham United FC,Arsenal FC,0,6,opponent,home,2024-02-11,EPL
+epl-2023-24-236,2024-02-11,Aston Villa FC,Manchester United FC,1,2,opponent,home,2024-02-11,EPL
+epl-2023-24-237,2024-02-12,Crystal Palace FC,Chelsea FC,1,3,opponent,home,2024-02-12,EPL
+epl-2023-24-238,2024-02-17,Brentford FC,Liverpool FC,1,4,opponent,home,2024-02-17,EPL
+epl-2023-24-239,2024-02-17,Burnley FC,Arsenal FC,0,5,opponent,home,2024-02-17,EPL
+epl-2023-24-240,2024-02-17,Fulham FC,Aston Villa FC,1,2,opponent,home,2024-02-17,EPL
+epl-2023-24-241,2024-02-17,Newcastle United FC,AFC Bournemouth,2,2,draw,home,2024-02-17,EPL
+epl-2023-24-242,2024-02-17,Nottingham Forest FC,West Ham United FC,2,0,team,home,2024-02-17,EPL
+epl-2023-24-243,2024-02-17,Tottenham Hotspur FC,Wolverhampton Wanderers FC,1,2,opponent,home,2024-02-17,EPL
+epl-2023-24-244,2024-02-17,Manchester City FC,Chelsea FC,1,1,draw,home,2024-02-17,EPL
+epl-2023-24-245,2024-02-18,Sheffield United FC,Brighton & Hove Albion FC,0,5,opponent,home,2024-02-18,EPL
+epl-2023-24-246,2024-02-18,Luton Town FC,Manchester United FC,1,2,opponent,home,2024-02-18,EPL
+epl-2023-24-247,2024-02-19,Everton FC,Crystal Palace FC,1,1,draw,home,2024-02-19,EPL
+epl-2023-24-248,2024-02-20,Manchester City FC,Brentford FC,1,0,team,home,2024-02-20,EPL
+epl-2023-24-249,2024-02-21,Liverpool FC,Luton Town FC,4,1,team,home,2024-02-21,EPL
+epl-2023-24-250,2024-02-24,Aston Villa FC,Nottingham Forest FC,4,2,team,home,2024-02-24,EPL
+epl-2023-24-251,2024-02-24,Brighton & Hove Albion FC,Everton FC,1,1,draw,home,2024-02-24,EPL
+epl-2023-24-252,2024-02-24,Crystal Palace FC,Burnley FC,3,0,team,home,2024-02-24,EPL
+epl-2023-24-253,2024-02-24,Manchester United FC,Fulham FC,1,2,opponent,home,2024-02-24,EPL
+epl-2023-24-254,2024-02-24,AFC Bournemouth,Manchester City FC,0,1,opponent,home,2024-02-24,EPL
+epl-2023-24-255,2024-02-24,Arsenal FC,Newcastle United FC,4,1,team,home,2024-02-24,EPL
+epl-2023-24-256,2024-02-25,Wolverhampton Wanderers FC,Sheffield United FC,1,0,team,home,2024-02-25,EPL
+epl-2023-24-257,2024-02-26,West Ham United FC,Brentford FC,4,2,team,home,2024-02-26,EPL
+epl-2023-24-258,2024-03-02,Brentford FC,Chelsea FC,2,2,draw,home,2024-03-02,EPL
+epl-2023-24-259,2024-03-02,Everton FC,West Ham United FC,1,3,opponent,home,2024-03-02,EPL
+epl-2023-24-260,2024-03-02,Fulham FC,Brighton & Hove Albion FC,3,0,team,home,2024-03-02,EPL
+epl-2023-24-261,2024-03-02,Newcastle United FC,Wolverhampton Wanderers FC,3,0,team,home,2024-03-02,EPL
+epl-2023-24-262,2024-03-02,Nottingham Forest FC,Liverpool FC,0,1,opponent,home,2024-03-02,EPL
+epl-2023-24-263,2024-03-02,Tottenham Hotspur FC,Crystal Palace FC,3,1,team,home,2024-03-02,EPL
+epl-2023-24-264,2024-03-02,Luton Town FC,Aston Villa FC,2,3,opponent,home,2024-03-02,EPL
+epl-2023-24-265,2024-03-03,Burnley FC,AFC Bournemouth,0,2,opponent,home,2024-03-03,EPL
+epl-2023-24-266,2024-03-03,Manchester City FC,Manchester United FC,3,1,team,home,2024-03-03,EPL
+epl-2023-24-267,2024-03-04,Sheffield United FC,Arsenal FC,0,6,opponent,home,2024-03-04,EPL
+epl-2023-24-268,2024-03-09,Manchester United FC,Everton FC,2,0,team,home,2024-03-09,EPL
+epl-2023-24-269,2024-03-09,AFC Bournemouth,Sheffield United FC,2,2,draw,home,2024-03-09,EPL
+epl-2023-24-270,2024-03-09,Crystal Palace FC,Luton Town FC,1,1,draw,home,2024-03-09,EPL
+epl-2023-24-271,2024-03-09,Wolverhampton Wanderers FC,Fulham FC,2,1,team,home,2024-03-09,EPL
+epl-2023-24-272,2024-03-09,Arsenal FC,Brentford FC,2,1,team,home,2024-03-09,EPL
+epl-2023-24-273,2024-03-10,Aston Villa FC,Tottenham Hotspur FC,0,4,opponent,home,2024-03-10,EPL
+epl-2023-24-274,2024-03-10,Brighton & Hove Albion FC,Nottingham Forest FC,1,0,team,home,2024-03-10,EPL
+epl-2023-24-275,2024-03-10,West Ham United FC,Burnley FC,2,2,draw,home,2024-03-10,EPL
+epl-2023-24-276,2024-03-10,Liverpool FC,Manchester City FC,1,1,draw,home,2024-03-10,EPL
+epl-2023-24-277,2024-03-11,Chelsea FC,Newcastle United FC,3,2,team,home,2024-03-11,EPL
+epl-2023-24-278,2024-03-13,AFC Bournemouth,Luton Town FC,4,3,team,home,2024-03-13,EPL
+epl-2023-24-279,2024-03-16,Burnley FC,Brentford FC,2,1,team,home,2024-03-16,EPL
+epl-2023-24-280,2024-03-16,Luton Town FC,Nottingham Forest FC,1,1,draw,home,2024-03-16,EPL
+epl-2023-24-281,2024-03-16,Fulham FC,Tottenham Hotspur FC,3,0,team,home,2024-03-16,EPL
+epl-2023-24-282,2024-03-17,West Ham United FC,Aston Villa FC,1,1,draw,home,2024-03-17,EPL
+epl-2023-24-283,2024-03-30,Newcastle United FC,West Ham United FC,4,3,team,home,2024-03-30,EPL
+epl-2023-24-284,2024-03-30,AFC Bournemouth,Everton FC,2,1,team,home,2024-03-30,EPL
+epl-2023-24-285,2024-03-30,Chelsea FC,Burnley FC,2,2,draw,home,2024-03-30,EPL
+epl-2023-24-286,2024-03-30,Nottingham Forest FC,Crystal Palace FC,1,1,draw,home,2024-03-30,EPL
+epl-2023-24-287,2024-03-30,Sheffield United FC,Fulham FC,3,3,draw,home,2024-03-30,EPL
+epl-2023-24-288,2024-03-30,Tottenham Hotspur FC,Luton Town FC,2,1,team,home,2024-03-30,EPL
+epl-2023-24-289,2024-03-30,Aston Villa FC,Wolverhampton Wanderers FC,2,0,team,home,2024-03-30,EPL
+epl-2023-24-290,2024-03-30,Brentford FC,Manchester United FC,1,1,draw,home,2024-03-30,EPL
+epl-2023-24-291,2024-03-31,Liverpool FC,Brighton & Hove Albion FC,2,1,team,home,2024-03-31,EPL
+epl-2023-24-292,2024-03-31,Manchester City FC,Arsenal FC,0,0,draw,home,2024-03-31,EPL
+epl-2023-24-293,2024-04-02,Nottingham Forest FC,Fulham FC,3,1,team,home,2024-04-02,EPL
+epl-2023-24-294,2024-04-02,Newcastle United FC,Everton FC,1,1,draw,home,2024-04-02,EPL
+epl-2023-24-295,2024-04-02,AFC Bournemouth,Crystal Palace FC,1,0,team,home,2024-04-02,EPL
+epl-2023-24-296,2024-04-02,Burnley FC,Wolverhampton Wanderers FC,1,1,draw,home,2024-04-02,EPL
+epl-2023-24-297,2024-04-02,West Ham United FC,Tottenham Hotspur FC,1,1,draw,home,2024-04-02,EPL
+epl-2023-24-298,2024-04-03,Arsenal FC,Luton Town FC,2,0,team,home,2024-04-03,EPL
+epl-2023-24-299,2024-04-03,Brentford FC,Brighton & Hove Albion FC,0,0,draw,home,2024-04-03,EPL
+epl-2023-24-300,2024-04-03,Manchester City FC,Aston Villa FC,4,1,team,home,2024-04-03,EPL
+epl-2023-24-301,2024-04-04,Liverpool FC,Sheffield United FC,3,1,team,home,2024-04-04,EPL
+epl-2023-24-302,2024-04-04,Chelsea FC,Manchester United FC,4,3,team,home,2024-04-04,EPL
+epl-2023-24-303,2024-04-06,Crystal Palace FC,Manchester City FC,2,4,opponent,home,2024-04-06,EPL
+epl-2023-24-304,2024-04-06,Aston Villa FC,Brentford FC,3,3,draw,home,2024-04-06,EPL
+epl-2023-24-305,2024-04-06,Everton FC,Burnley FC,1,0,team,home,2024-04-06,EPL
+epl-2023-24-306,2024-04-06,Fulham FC,Newcastle United FC,0,1,opponent,home,2024-04-06,EPL
+epl-2023-24-307,2024-04-06,Luton Town FC,AFC Bournemouth,2,1,team,home,2024-04-06,EPL
+epl-2023-24-308,2024-04-06,Wolverhampton Wanderers FC,West Ham United FC,1,2,opponent,home,2024-04-06,EPL
+epl-2023-24-309,2024-04-06,Brighton & Hove Albion FC,Arsenal FC,0,3,opponent,home,2024-04-06,EPL
+epl-2023-24-310,2024-04-07,Manchester United FC,Liverpool FC,2,2,draw,home,2024-04-07,EPL
+epl-2023-24-311,2024-04-07,Sheffield United FC,Chelsea FC,2,2,draw,home,2024-04-07,EPL
+epl-2023-24-312,2024-04-07,Tottenham Hotspur FC,Nottingham Forest FC,3,1,team,home,2024-04-07,EPL
+epl-2023-24-313,2024-04-13,Newcastle United FC,Tottenham Hotspur FC,4,0,team,home,2024-04-13,EPL
+epl-2023-24-314,2024-04-13,Brentford FC,Sheffield United FC,2,0,team,home,2024-04-13,EPL
+epl-2023-24-315,2024-04-13,Burnley FC,Brighton & Hove Albion FC,1,1,draw,home,2024-04-13,EPL
+epl-2023-24-316,2024-04-13,Manchester City FC,Luton Town FC,5,1,team,home,2024-04-13,EPL
+epl-2023-24-317,2024-04-13,Nottingham Forest FC,Wolverhampton Wanderers FC,2,2,draw,home,2024-04-13,EPL
+epl-2023-24-318,2024-04-13,AFC Bournemouth,Manchester United FC,2,2,draw,home,2024-04-13,EPL
+epl-2023-24-319,2024-04-14,Liverpool FC,Crystal Palace FC,0,1,opponent,home,2024-04-14,EPL
+epl-2023-24-320,2024-04-14,West Ham United FC,Fulham FC,0,2,opponent,home,2024-04-14,EPL
+epl-2023-24-321,2024-04-14,Arsenal FC,Aston Villa FC,0,2,opponent,home,2024-04-14,EPL
+epl-2023-24-322,2024-04-15,Chelsea FC,Everton FC,6,0,team,home,2024-04-15,EPL
+epl-2023-24-323,2024-04-20,Luton Town FC,Brentford FC,1,5,opponent,home,2024-04-20,EPL
+epl-2023-24-324,2024-04-20,Sheffield United FC,Burnley FC,1,4,opponent,home,2024-04-20,EPL
+epl-2023-24-325,2024-04-20,Wolverhampton Wanderers FC,Arsenal FC,0,2,opponent,home,2024-04-20,EPL
+epl-2023-24-326,2024-04-21,Everton FC,Nottingham Forest FC,2,0,team,home,2024-04-21,EPL
+epl-2023-24-327,2024-04-21,Aston Villa FC,AFC Bournemouth,3,1,team,home,2024-04-21,EPL
+epl-2023-24-328,2024-04-21,Crystal Palace FC,West Ham United FC,5,2,team,home,2024-04-21,EPL
+epl-2023-24-329,2024-04-21,Fulham FC,Liverpool FC,1,3,opponent,home,2024-04-21,EPL
+epl-2023-24-330,2024-04-23,Arsenal FC,Chelsea FC,5,0,team,home,2024-04-23,EPL
+epl-2023-24-331,2024-04-24,Wolverhampton Wanderers FC,AFC Bournemouth,0,1,opponent,home,2024-04-24,EPL
+epl-2023-24-332,2024-04-24,Crystal Palace FC,Newcastle United FC,2,0,team,home,2024-04-24,EPL
+epl-2023-24-333,2024-04-24,Everton FC,Liverpool FC,2,0,team,home,2024-04-24,EPL
+epl-2023-24-334,2024-04-24,Manchester United FC,Sheffield United FC,4,2,team,home,2024-04-24,EPL
+epl-2023-24-335,2024-04-25,Brighton & Hove Albion FC,Manchester City FC,0,4,opponent,home,2024-04-25,EPL
+epl-2023-24-336,2024-04-27,West Ham United FC,Liverpool FC,2,2,draw,home,2024-04-27,EPL
+epl-2023-24-337,2024-04-27,Fulham FC,Crystal Palace FC,1,1,draw,home,2024-04-27,EPL
+epl-2023-24-338,2024-04-27,Manchester United FC,Burnley FC,1,1,draw,home,2024-04-27,EPL
+epl-2023-24-339,2024-04-27,Newcastle United FC,Sheffield United FC,5,1,team,home,2024-04-27,EPL
+epl-2023-24-340,2024-04-27,Wolverhampton Wanderers FC,Luton Town FC,2,1,team,home,2024-04-27,EPL
+epl-2023-24-341,2024-04-27,Everton FC,Brentford FC,1,0,team,home,2024-04-27,EPL
+epl-2023-24-342,2024-04-27,Aston Villa FC,Chelsea FC,2,2,draw,home,2024-04-27,EPL
+epl-2023-24-343,2024-04-28,AFC Bournemouth,Brighton & Hove Albion FC,3,0,team,home,2024-04-28,EPL
+epl-2023-24-344,2024-04-28,Tottenham Hotspur FC,Arsenal FC,2,3,opponent,home,2024-04-28,EPL
+epl-2023-24-345,2024-04-28,Nottingham Forest FC,Manchester City FC,0,2,opponent,home,2024-04-28,EPL
+epl-2023-24-346,2024-05-02,Chelsea FC,Tottenham Hotspur FC,2,0,team,home,2024-05-02,EPL
+epl-2023-24-347,2024-05-03,Luton Town FC,Everton FC,1,1,draw,home,2024-05-03,EPL
+epl-2023-24-348,2024-05-04,Arsenal FC,AFC Bournemouth,3,0,team,home,2024-05-04,EPL
+epl-2023-24-349,2024-05-04,Brentford FC,Fulham FC,0,0,draw,home,2024-05-04,EPL
+epl-2023-24-350,2024-05-04,Burnley FC,Newcastle United FC,1,4,opponent,home,2024-05-04,EPL
+epl-2023-24-351,2024-05-04,Sheffield United FC,Nottingham Forest FC,1,3,opponent,home,2024-05-04,EPL
+epl-2023-24-352,2024-05-04,Manchester City FC,Wolverhampton Wanderers FC,5,1,team,home,2024-05-04,EPL
+epl-2023-24-353,2024-05-05,Brighton & Hove Albion FC,Aston Villa FC,1,0,team,home,2024-05-05,EPL
+epl-2023-24-354,2024-05-05,Chelsea FC,West Ham United FC,5,0,team,home,2024-05-05,EPL
+epl-2023-24-355,2024-05-05,Liverpool FC,Tottenham Hotspur FC,4,2,team,home,2024-05-05,EPL
+epl-2023-24-356,2024-05-06,Crystal Palace FC,Manchester United FC,4,0,team,home,2024-05-06,EPL
+epl-2023-24-357,2024-05-11,Fulham FC,Manchester City FC,0,4,opponent,home,2024-05-11,EPL
+epl-2023-24-358,2024-05-11,AFC Bournemouth,Brentford FC,1,2,opponent,home,2024-05-11,EPL
+epl-2023-24-359,2024-05-11,Everton FC,Sheffield United FC,1,0,team,home,2024-05-11,EPL
+epl-2023-24-360,2024-05-11,Newcastle United FC,Brighton & Hove Albion FC,1,1,draw,home,2024-05-11,EPL
+epl-2023-24-361,2024-05-11,Tottenham Hotspur FC,Burnley FC,2,1,team,home,2024-05-11,EPL
+epl-2023-24-362,2024-05-11,West Ham United FC,Luton Town FC,3,1,team,home,2024-05-11,EPL
+epl-2023-24-363,2024-05-11,Wolverhampton Wanderers FC,Crystal Palace FC,1,3,opponent,home,2024-05-11,EPL
+epl-2023-24-364,2024-05-11,Nottingham Forest FC,Chelsea FC,2,3,opponent,home,2024-05-11,EPL
+epl-2023-24-365,2024-05-12,Manchester United FC,Arsenal FC,0,1,opponent,home,2024-05-12,EPL
+epl-2023-24-366,2024-05-13,Aston Villa FC,Liverpool FC,3,3,draw,home,2024-05-13,EPL
+epl-2023-24-367,2024-05-14,Tottenham Hotspur FC,Manchester City FC,0,2,opponent,home,2024-05-14,EPL
+epl-2023-24-368,2024-05-15,Brighton & Hove Albion FC,Chelsea FC,1,2,opponent,home,2024-05-15,EPL
+epl-2023-24-369,2024-05-15,Manchester United FC,Newcastle United FC,3,2,team,home,2024-05-15,EPL
+epl-2023-24-370,2024-05-19,Arsenal FC,Everton FC,2,1,team,home,2024-05-19,EPL
+epl-2023-24-371,2024-05-19,Brentford FC,Newcastle United FC,2,4,opponent,home,2024-05-19,EPL
+epl-2023-24-372,2024-05-19,Brighton & Hove Albion FC,Manchester United FC,0,2,opponent,home,2024-05-19,EPL
+epl-2023-24-373,2024-05-19,Burnley FC,Nottingham Forest FC,1,2,opponent,home,2024-05-19,EPL
+epl-2023-24-374,2024-05-19,Chelsea FC,AFC Bournemouth,2,1,team,home,2024-05-19,EPL
+epl-2023-24-375,2024-05-19,Crystal Palace FC,Aston Villa FC,5,0,team,home,2024-05-19,EPL
+epl-2023-24-376,2024-05-19,Liverpool FC,Wolverhampton Wanderers FC,2,0,team,home,2024-05-19,EPL
+epl-2023-24-377,2024-05-19,Luton Town FC,Fulham FC,2,4,opponent,home,2024-05-19,EPL
+epl-2023-24-378,2024-05-19,Manchester City FC,West Ham United FC,3,1,team,home,2024-05-19,EPL
+epl-2023-24-379,2024-05-19,Sheffield United FC,Tottenham Hotspur FC,0,3,opponent,home,2024-05-19,EPL

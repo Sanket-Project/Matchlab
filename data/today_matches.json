@@ -1,0 +1,784 @@
+{
+  "date": "2026-11-19",
+  "last_updated": "2026-11-19T11:40:48.632390+00:00",
+  "connected_to_internet": true,
+  "status": "41 matches today",
+  "total_matches": 41,
+  "counts": {
+    "in": 23,
+    "pre": 13,
+    "post": 5
+  },
+  "failed_sources": [],
+  "sources": [
+    {
+      "sport": "tennis",
+      "name": "ATP",
+      "ok": true,
+      "matches": 4,
+      "error": null
+    },
+    {
+      "sport": "tennis",
+      "name": "WTA",
+      "ok": true,
+      "matches": 10,
+      "error": null
+    },
+    {
+      "sport": "f1",
+      "name": "Formula 1",
+      "ok": true,
+      "matches": 0,
+      "error": null
+    },
+    {
+      "sport": "cricket",
+      "name": "CricketData.org",
+      "ok": true,
+      "matches": 2,
+      "error": null
+    },
+    {
+      "sport": "cricket",
+      "name": "ESPN Cricket",
+      "ok": true,
+      "matches": 25,
+      "error": null
+    }
+  ],
+  "budget": {
+    "cricketdata": {
+      "label": "CricketData.org",
+      "day": "2026-11-19",
+      "used": 5,
+      "limit": 100,
+      "remaining": 95,
+      "reserve": 5,
+      "last_call": {
+        "at": "2026-11-19T11:40:45+00:00",
+        "purpose": "fixture list"
+      }
+    },
+    "openrouter": {
+      "label": "OpenRouter free models",
+      "day": "2026-11-19",
+      "used": 0,
+      "limit": 50,
+      "remaining": 50,
+      "reserve": 2,
+      "last_call": null
+    }
+  },
+  "sports": {
+    "cricket": [
+      {
+        "id": "cricket-cricapi-3aaad226-9e10-423d-a23b-c0ee8310372c",
+        "sport": "cricket",
+        "tournament": "Uganda Women vs Rwanda Women, 4th Match, Womens Victoria T20I Series, 2026",
+        "team": "Uganda Women",
+        "opponent": "Rwanda Women",
+        "team_score": "90/5",
+        "opponent_score": "",
+        "start": "2026-11-07T00:00:00Z",
+        "state": "in",
+        "status": "Uganda Women opt to bat",
+        "venue": "Entebbe Cricket Oval, Entebbe",
+        "detail": "t20",
+        "source_url": "https://cricketdata.org/cricket-data-formats/matches/",
+        "innings": [
+          {
+            "team": "uganda women",
+            "runs": 90,
+            "wickets": 5,
+            "overs": 18.4
+          }
+        ]
+      },
+      {
+        "id": "cricket-cricapi-f2ccd740-e51f-4cdc-bf0a-fe5c86005503",
+        "sport": "cricket",
+        "tournament": "South Africa vs Bangladesh, 1st Test, Bangladesh tour of South Africa, 2026",
+        "team": "South Africa",
+        "opponent": "Bangladesh",
+        "team_score": "",
+        "opponent_score": "400/10 & 147/6",
+        "start": "2026-11-15T07:30:00Z",
+        "state": "in",
+        "status": "Day 5: 1st Session - Bangladesh trail by 10 runs",
+        "venue": "The Wanderers Stadium, Johannesburg",
+        "detail": "",
+        "source_url": "https://cricketdata.org/cricket-data-formats/matches/",
+        "innings": [
+          {
+            "team": "bangladesh",
+            "runs": 400,
+            "wickets": 10,
+            "overs": 101.2
+          },
+          {
+            "team": "South Africa,Bangladesh",
+            "runs": 557,
+            "wickets": 10,
+            "overs": 124.1
+          },
+          {
+            "team": "bangladesh",
+            "runs": 147,
+            "wickets": 6,
+            "overs": 45.2
+          }
+        ]
+      },
+      {
+        "id": "cricket-1550712",
+        "sport": "cricket",
+        "tournament": "Sri Lanka tour of Pakistan 2026/27",
+        "team": "Pakistan",
+        "opponent": "Sri Lanka",
+        "team_score": "325",
+        "opponent_score": "98 & 309/9 (93 ov)",
+        "start": "2026-11-17T04:30:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "Rawalpindi Cricket Stadium",
+        "detail": "Test",
+        "espn": {
+          "league": "24707",
+          "event": "1550712"
+        }
+      },
+      {
+        "id": "cricket-1552533",
+        "sport": "cricket",
+        "tournament": "Plunket Shield",
+        "team": "Northern Districts",
+        "opponent": "Auckland",
+        "team_score": "64/5 (25 ov)",
+        "opponent_score": "137",
+        "start": "2026-11-18T21:30:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "Seddon Park, Hamilton",
+        "detail": "First-class",
+        "espn": {
+          "league": "8828",
+          "event": "1552533"
+        }
+      },
+      {
+        "id": "cricket-1552534",
+        "sport": "cricket",
+        "tournament": "Plunket Shield",
+        "team": "Central Districts",
+        "opponent": "Wellington",
+        "team_score": "106/3 (37 ov)",
+        "opponent_score": "152",
+        "start": "2026-11-18T21:30:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "Fitzherbert Park, Palmerston North",
+        "detail": "First-class",
+        "espn": {
+          "league": "8828",
+          "event": "1552534"
+        }
+      },
+      {
+        "id": "cricket-1552535",
+        "sport": "cricket",
+        "tournament": "Plunket Shield",
+        "team": "Otago",
+        "opponent": "Canterbury",
+        "team_score": "",
+        "opponent_score": "321/6 (96 ov)",
+        "start": "2026-11-18T21:30:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "University Oval, Dunedin",
+        "detail": "First-class",
+        "espn": {
+          "league": "8828",
+          "event": "1552535"
+        }
+      },
+      {
+        "id": "cricket-1539442",
+        "sport": "cricket",
+        "tournament": "India tour of New Zealand 2026/27",
+        "team": "New Zealand",
+        "opponent": "India",
+        "team_score": "243/5 (82 ov)",
+        "opponent_score": "",
+        "start": "2026-11-18T22:00:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "Basin Reserve, Wellington",
+        "detail": "Test",
+        "espn": {
+          "league": "24469",
+          "event": "1539442"
+        }
+      },
+      {
+        "id": "cricket-1560146",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Nugegoda Sports Welfare Club",
+        "opponent": "Nondescripts Cricket Club",
+        "team_score": "382/3 (86.4 ov)",
+        "opponent_score": "",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Mahinda Rajapaksa International Cricket Stadium, Sooriyawewa, Hambantota",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560146"
+        }
+      },
+      {
+        "id": "cricket-1560147",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Police Sports Club",
+        "opponent": "Badureliya Sports Club",
+        "team_score": "332/2 (93 ov)",
+        "opponent_score": "",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Stumps",
+        "venue": "Galle International Stadium",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560147"
+        }
+      },
+      {
+        "id": "cricket-1560148",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Kurunegala Youth Cricket Club",
+        "opponent": "Burgher Recreation Club",
+        "team_score": "",
+        "opponent_score": "253/5 (88 ov)",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "R.Premadasa Stadium, Khettarama, Colombo",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560148"
+        }
+      },
+      {
+        "id": "cricket-1560149",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Moors Sports Club",
+        "opponent": "Sinhalese Sports Club",
+        "team_score": "19/0 (10 ov)",
+        "opponent_score": "244",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Nondescripts Cricket Club Ground, Colombo",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560149"
+        }
+      },
+      {
+        "id": "cricket-1560150",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Colombo Cricket Club",
+        "opponent": "Tamil Union Cricket and Athletic Club",
+        "team_score": "192/1 (31 ov)",
+        "opponent_score": "179",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Pallekele International Cricket Stadium",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560150"
+        }
+      },
+      {
+        "id": "cricket-1560151",
+        "sport": "cricket",
+        "tournament": "SLC Major League Tournament",
+        "team": "Bloomfield Cricket and Athletic Club",
+        "opponent": "Panadura Sports Club",
+        "team_score": "266/6 (83 ov)",
+        "opponent_score": "",
+        "start": "2026-11-19T04:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Rangiri Dambulla International Stadium",
+        "detail": "First-class",
+        "espn": {
+          "league": "20978",
+          "event": "1560151"
+        }
+      },
+      {
+        "id": "cricket-1562342",
+        "sport": "cricket",
+        "tournament": "Asia Cup Rising Stars (50 Overs)",
+        "team": "Bangladesh A",
+        "opponent": "Hong Kong",
+        "team_score": "93/1 (20/50 ov, target 220)",
+        "opponent_score": "219/8",
+        "start": "2026-11-19T06:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "University of Doha for Science and Technology",
+        "detail": "List A",
+        "espn": {
+          "league": "1562333",
+          "event": "1562342"
+        }
+      },
+      {
+        "id": "cricket-1551669",
+        "sport": "cricket",
+        "tournament": "CSA 4-Day Series Division 1",
+        "team": "Titans",
+        "opponent": "Warriors",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "LC de Villiers Oval, Pretoria",
+        "detail": "First-class",
+        "espn": {
+          "league": "21185",
+          "event": "1551669"
+        }
+      },
+      {
+        "id": "cricket-1551670",
+        "sport": "cricket",
+        "tournament": "CSA 4-Day Series Division 1",
+        "team": "Dolphins",
+        "opponent": "Western Province",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Kingsmead, Durban",
+        "detail": "First-class",
+        "espn": {
+          "league": "21185",
+          "event": "1551670"
+        }
+      },
+      {
+        "id": "cricket-1551671",
+        "sport": "cricket",
+        "tournament": "CSA 4-Day Series Division 1",
+        "team": "Knights",
+        "opponent": "Boland",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Mangaung Oval, Bloemfontein",
+        "detail": "First-class",
+        "espn": {
+          "league": "21185",
+          "event": "1551671"
+        }
+      },
+      {
+        "id": "cricket-1551672",
+        "sport": "cricket",
+        "tournament": "CSA 4-Day Series Division 1",
+        "team": "North West",
+        "opponent": "Lions",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Senwes Park, Potchefstroom",
+        "detail": "First-class",
+        "espn": {
+          "league": "21185",
+          "event": "1551672"
+        }
+      },
+      {
+        "id": "cricket-1551708",
+        "sport": "cricket",
+        "tournament": "CSA 3-Day Series Division 2 2026/27",
+        "team": "South Western Districts",
+        "opponent": "Border",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Recreation Ground, Oudtshoorn",
+        "detail": "First-class",
+        "espn": {
+          "league": "1551603",
+          "event": "1551708"
+        }
+      },
+      {
+        "id": "cricket-1551709",
+        "sport": "cricket",
+        "tournament": "CSA 3-Day Series Division 2 2026/27",
+        "team": "Limpopo",
+        "opponent": "KwaZulu-Natal Inland",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T08:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Cricket Club Ground, Polokwane",
+        "detail": "First-class",
+        "espn": {
+          "league": "1551603",
+          "event": "1551709"
+        }
+      },
+      {
+        "id": "cricket-1562343",
+        "sport": "cricket",
+        "tournament": "Asia Cup Rising Stars (50 Overs)",
+        "team": "Afghanistan A",
+        "opponent": "Sri Lanka A",
+        "team_score": "93/3 (23/50 ov)",
+        "opponent_score": "",
+        "start": "2026-11-19T10:00:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "West End Park International Cricket Stadium, Doha",
+        "detail": "List A",
+        "espn": {
+          "league": "1562333",
+          "event": "1562343"
+        }
+      },
+      {
+        "id": "cricket-1558612",
+        "sport": "cricket",
+        "tournament": "Nepal Premier League",
+        "team": "Sudur Paschim Royals (NPL)",
+        "opponent": "Chitwan Rhinos (NPL)",
+        "team_score": "",
+        "opponent_score": "30/2 (5.1/20 ov)",
+        "start": "2026-11-19T10:45:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Tribhuvan University International Cricket Ground, Kirtipur",
+        "detail": "Twenty20",
+        "espn": {
+          "league": "23081",
+          "event": "1558612"
+        }
+      },
+      {
+        "id": "cricket-1561277",
+        "sport": "cricket",
+        "tournament": "Abu Dhabi T10",
+        "team": "Arabian Aces",
+        "opponent": "UAE Bulls",
+        "team_score": "15/2 (1.4/10 ov)",
+        "opponent_score": "",
+        "start": "2026-11-19T11:30:00Z",
+        "state": "in",
+        "status": "Live",
+        "venue": "Zayed Cricket Stadium, Abu Dhabi",
+        "detail": "Other OD",
+        "espn": {
+          "league": "18522",
+          "event": "1561277"
+        }
+      },
+      {
+        "id": "cricket-1561278",
+        "sport": "cricket",
+        "tournament": "Abu Dhabi T10",
+        "team": "Royal Desert Champions",
+        "opponent": "Yas Lions",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T13:45:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Zayed Cricket Stadium, Abu Dhabi",
+        "detail": "Other OD",
+        "espn": {
+          "league": "18522",
+          "event": "1561278"
+        }
+      },
+      {
+        "id": "cricket-1561279",
+        "sport": "cricket",
+        "tournament": "Abu Dhabi T10",
+        "team": "Emirates Eagles",
+        "opponent": "United Tigers",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T16:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Zayed Cricket Stadium, Abu Dhabi",
+        "detail": "Other OD",
+        "espn": {
+          "league": "18522",
+          "event": "1561279"
+        }
+      },
+      {
+        "id": "cricket-1543969",
+        "sport": "cricket",
+        "tournament": "Women's Big Bash League",
+        "team": "Hobart Hurricanes Women",
+        "opponent": "Perth Scorchers Women",
+        "team_score": "120 (17.3/20 ov, target 149)",
+        "opponent_score": "148",
+        "start": "2026-11-19T04:40:00Z",
+        "state": "post",
+        "status": "Result",
+        "venue": "Allan Border Field, Brisbane",
+        "detail": "Women's T20",
+        "espn": {
+          "league": "21284",
+          "event": "1543969"
+        }
+      },
+      {
+        "id": "cricket-1543970",
+        "sport": "cricket",
+        "tournament": "Women's Big Bash League",
+        "team": "Brisbane Heat Women",
+        "opponent": "Sydney Thunder Women",
+        "team_score": "225/3",
+        "opponent_score": "226/4 (19.2/20 ov, target 226)",
+        "start": "2026-11-19T08:10:00Z",
+        "state": "post",
+        "status": "Result",
+        "venue": "Allan Border Field, Brisbane",
+        "detail": "Women's T20",
+        "espn": {
+          "league": "21284",
+          "event": "1543970"
+        }
+      }
+    ],
+    "tennis": [
+      {
+        "id": "tennis-187507",
+        "sport": "tennis",
+        "tournament": "ATP \u00b7 Nitto ATP Finals",
+        "team": "Rafael Jodar",
+        "opponent": "Ben Shelton",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T13:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Inalpi Arena, Turin, Italy",
+        "detail": "Group Stage"
+      },
+      {
+        "id": "tennis-186809",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Carole Monnet",
+        "opponent": "Lucia Bronzetti",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T14:30:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Center Court, Colina, Chile",
+        "detail": "Round 2"
+      },
+      {
+        "id": "tennis-186808",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Veronika Erjavec",
+        "opponent": "Valeriya Strakhova",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T16:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Center Court, Colina, Chile",
+        "detail": "Round 2"
+      },
+      {
+        "id": "tennis-186806",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Irene Burillo",
+        "opponent": "Anastasia Zolotareva",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T18:30:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Grandstand, Colina, Chile",
+        "detail": "Round 2"
+      },
+      {
+        "id": "tennis-187504",
+        "sport": "tennis",
+        "tournament": "ATP \u00b7 Nitto ATP Finals",
+        "team": "Arthur Fils",
+        "opponent": "Alexander Zverev",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T19:30:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Inalpi Arena, Turin, Italy",
+        "detail": "Group Stage"
+      },
+      {
+        "id": "tennis-186804",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Andrea Lazaro Garcia",
+        "opponent": "Fernanda Labrana",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-19T22:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Center Court, Colina, Chile",
+        "detail": "Round 2"
+      },
+      {
+        "id": "tennis-186798",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Laura Samson",
+        "opponent": "Rebeka Masarova",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-20T05:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Colina, Chile",
+        "detail": "Quarterfinal"
+      },
+      {
+        "id": "tennis-186799",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "TBD",
+        "opponent": "Guiomar Maristany Zuleta De Reales",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-20T05:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Colina, Chile",
+        "detail": "Quarterfinal"
+      },
+      {
+        "id": "tennis-186800",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "TBD",
+        "opponent": "TBD",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-20T05:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Colina, Chile",
+        "detail": "Quarterfinal"
+      },
+      {
+        "id": "tennis-186801",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "TBD",
+        "opponent": "Leyre Romero Gormaz",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-20T05:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Colina, Chile",
+        "detail": "Quarterfinal"
+      },
+      {
+        "id": "tennis-187510",
+        "sport": "tennis",
+        "tournament": "ATP \u00b7 Nitto ATP Finals",
+        "team": "Flavio Cobolli",
+        "opponent": "Carlos Alcaraz",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-20T13:00:00Z",
+        "state": "pre",
+        "status": "Scheduled",
+        "venue": "Inalpi Arena, Turin, Italy",
+        "detail": "Group Stage"
+      },
+      {
+        "id": "tennis-186807",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Nadia Podoroska",
+        "opponent": "Leyre Romero Gormaz",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-18T18:40:00Z",
+        "state": "post",
+        "status": "Final",
+        "venue": "Center Court, Colina, Chile",
+        "detail": "Round 2"
+      },
+      {
+        "id": "tennis-187514",
+        "sport": "tennis",
+        "tournament": "ATP \u00b7 Nitto ATP Finals",
+        "team": "Frances Tiafoe",
+        "opponent": "Flavio Cobolli",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-18T19:40:00Z",
+        "state": "post",
+        "status": "Final",
+        "venue": "Inalpi Arena, Turin, Italy",
+        "detail": "Group Stage"
+      },
+      {
+        "id": "tennis-186802",
+        "sport": "tennis",
+        "tournament": "WTA \u00b7 LP Open by IND",
+        "team": "Laura Samson",
+        "opponent": "Ariana Geerlings",
+        "team_score": "",
+        "opponent_score": "",
+        "start": "2026-11-18T23:00:00Z",
+        "state": "post",
+        "status": "Final",
+        "venue": "Center Court, Colina, Chile",
+        "detail": "Round 2"
+      }
+    ],
+    "f1": []
+  }
+}

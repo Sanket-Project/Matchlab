@@ -1,0 +1,613 @@
+race_id,driver_id,source_driver_id,driver,constructor_id,source_constructor_id,constructor,available,finish,classified,status,status_detail,dnf_type,points
+1045,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2021-07-17T02:00:00+00:00,2,1,Finished,Finished,,2
+1045,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2021-07-17T02:00:00+00:00,4,1,Finished,Finished,,0
+1045,bottas,driver_H43o382s,Valtteri Bottas,mercedes,team_tdiMmtQx,Mercedes,2021-07-17T02:00:00+00:00,3,1,Finished,Finished,,1
+1045,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2021-07-17T02:00:00+00:00,5,1,Finished,Finished,,0
+1045,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2021-07-17T02:00:00+00:00,6,1,Finished,Finished,,0
+1045,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2021-07-17T02:00:00+00:00,11,1,Finished,Finished,,0
+1045,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-07-17T02:00:00+00:00,7,1,Finished,Finished,,0
+1045,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2021-07-17T02:00:00+00:00,14,1,Finished,Finished,,0
+1045,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-07-17T02:00:00+00:00,10,1,Finished,Finished,,0
+1045,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2021-07-17T02:00:00+00:00,16,1,Finished,Finished,,0
+1045,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2021-07-17T02:00:00+00:00,12,1,Finished,Finished,,0
+1045,russell,driver_dPPwWNxA,George Russell,williams,team_IJAI583X,Williams,2021-07-17T02:00:00+00:00,9,1,Finished,Finished,,0
+1045,giovinazzi,driver_KgG5C2mX,Antonio Giovinazzi,alfa,team_1XDKqgNu,Alfa Romeo,2021-07-17T02:00:00+00:00,15,1,Finished,Finished,,0
+1045,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2021-07-17T02:00:00+00:00,17,1,Finished,Finished,,0
+1045,raikkonen,driver_rVobWg9B,Kimi Räikkönen,alfa,team_1XDKqgNu,Alfa Romeo,2021-07-17T02:00:00+00:00,13,1,Finished,Finished,,0
+1045,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2021-07-17T02:00:00+00:00,20,0,Retired,Vibrations,unknown,0
+1045,mazepin,driver_qz190vuw,Nikita Mazepin,haas,team_aDYlrycX,Haas F1 Team,2021-07-17T02:00:00+00:00,19,1,Finished,Finished,,0
+1045,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2021-07-17T02:00:00+00:00,18,1,Finished,Finished,,0
+1045,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2021-07-17T02:00:00+00:00,8,1,Finished,Finished,,0
+1045,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2021-07-17T02:00:00+00:00,1,1,Finished,Finished,,3
+1049,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2021-09-11T02:00:00+00:00,3,1,Finished,Finished,,1
+1049,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2021-09-11T02:00:00+00:00,4,1,Finished,Finished,,0
+1049,bottas,driver_H43o382s,Valtteri Bottas,mercedes,team_tdiMmtQx,Mercedes,2021-09-11T02:00:00+00:00,1,1,Finished,Finished,,3
+1049,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2021-09-11T02:00:00+00:00,6,1,Finished,Finished,,0
+1049,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2021-09-11T02:00:00+00:00,9,1,Finished,Finished,,0
+1049,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2021-09-11T02:00:00+00:00,7,1,Finished,Finished,,0
+1049,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2021-09-11T02:00:00+00:00,10,1,Finished,Finished,,0
+1049,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-09-11T02:00:00+00:00,11,1,Finished,Finished,,0
+1049,russell,driver_dPPwWNxA,George Russell,williams,team_IJAI583X,Williams,2021-09-11T02:00:00+00:00,15,1,Finished,Finished,,0
+1049,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-09-11T02:00:00+00:00,13,1,Finished,Finished,,0
+1049,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2021-09-11T02:00:00+00:00,14,1,Finished,Finished,,0
+1049,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2021-09-11T02:00:00+00:00,12,1,Finished,Finished,,0
+1049,giovinazzi,driver_KgG5C2mX,Antonio Giovinazzi,alfa,team_1XDKqgNu,Alfa Romeo,2021-09-11T02:00:00+00:00,8,1,Finished,Finished,,0
+1049,kubica,driver_udWRAkPy,Robert Kubica,alfa,team_1XDKqgNu,Alfa Romeo,2021-09-11T02:00:00+00:00,18,1,Finished,Finished,,0
+1049,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2021-09-11T02:00:00+00:00,19,1,Finished,Finished,,0
+1049,mazepin,driver_qz190vuw,Nikita Mazepin,haas,team_aDYlrycX,Haas F1 Team,2021-09-11T02:00:00+00:00,17,1,Finished,Finished,,0
+1049,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2021-09-11T02:00:00+00:00,5,1,Finished,Finished,,0
+1049,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2021-09-11T02:00:00+00:00,2,1,Finished,Finished,,2
+1049,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2021-09-11T02:00:00+00:00,20,0,Incident,Accident,incident,0
+1049,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2021-09-11T02:00:00+00:00,16,1,Finished,Finished,,0
+1054,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2021-11-13T02:00:00+00:00,5,1,Finished,Finished,,0
+1054,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2021-11-13T02:00:00+00:00,2,1,Finished,Finished,,2
+1054,bottas,driver_H43o382s,Valtteri Bottas,mercedes,team_tdiMmtQx,Mercedes,2021-11-13T02:00:00+00:00,1,1,Finished,Finished,,3
+1054,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2021-11-13T02:00:00+00:00,4,1,Finished,Finished,,0
+1054,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2021-11-13T02:00:00+00:00,7,1,Finished,Finished,,0
+1054,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2021-11-13T02:00:00+00:00,3,1,Finished,Finished,,1
+1054,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2021-11-13T02:00:00+00:00,8,1,Finished,Finished,,0
+1054,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-11-13T02:00:00+00:00,9,1,Finished,Finished,,0
+1054,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2021-11-13T02:00:00+00:00,12,1,Finished,Finished,,0
+1054,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2021-11-13T02:00:00+00:00,6,1,Finished,Finished,,0
+1054,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2021-11-13T02:00:00+00:00,10,1,Finished,Finished,,0
+1054,raikkonen,driver_rVobWg9B,Kimi Räikkönen,alfa,team_1XDKqgNu,Alfa Romeo,2021-11-13T02:00:00+00:00,18,1,Finished,Finished,,0
+1054,russell,driver_dPPwWNxA,George Russell,williams,team_IJAI583X,Williams,2021-11-13T02:00:00+00:00,17,1,Finished,Finished,,0
+1054,giovinazzi,driver_KgG5C2mX,Antonio Giovinazzi,alfa,team_1XDKqgNu,Alfa Romeo,2021-11-13T02:00:00+00:00,13,1,Finished,Finished,,0
+1054,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2021-11-13T02:00:00+00:00,15,1,Finished,Finished,,0
+1054,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2021-11-13T02:00:00+00:00,16,1,Finished,Finished,,0
+1054,mazepin,driver_qz190vuw,Nikita Mazepin,haas,team_aDYlrycX,Haas F1 Team,2021-11-13T02:00:00+00:00,20,1,Finished,Finished,,0
+1054,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2021-11-13T02:00:00+00:00,19,1,Finished,Finished,,0
+1054,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2021-11-13T02:00:00+00:00,11,1,Finished,Finished,,0
+1054,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2021-11-13T02:00:00+00:00,14,1,Finished,Finished,,0
+1061,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2022-04-23T16:30:00+00:00,1,1,Finished,Finished,,8
+1061,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2022-04-23T16:30:00+00:00,3,1,Finished,Finished,,6
+1061,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2022-04-23T16:30:00+00:00,5,1,Finished,Finished,,4
+1061,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2022-04-23T16:30:00+00:00,11,1,Finished,Finished,,0
+1061,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2022-04-23T16:30:00+00:00,7,1,Finished,Finished,,2
+1061,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2022-04-23T16:30:00+00:00,2,1,Finished,Finished,,7
+1061,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2022-04-23T16:30:00+00:00,12,1,Finished,Finished,,0
+1061,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2022-04-23T16:30:00+00:00,13,1,Finished,Finished,,0
+1061,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2022-04-23T16:30:00+00:00,8,1,Finished,Finished,,1
+1061,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2022-04-23T16:30:00+00:00,15,1,Finished,Finished,,0
+1061,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2022-04-23T16:30:00+00:00,18,1,Finished,Finished,,0
+1061,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2022-04-23T16:30:00+00:00,17,1,Finished,Finished,,0
+1061,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2022-04-23T16:30:00+00:00,14,1,Finished,Finished,,0
+1061,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-04-23T16:30:00+00:00,16,1,Finished,Finished,,0
+1061,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2022-04-23T16:30:00+00:00,20,0,Retired,Retired,unknown,0
+1061,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2022-04-23T16:30:00+00:00,19,1,Finished,Finished,,0
+1061,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2022-04-23T16:30:00+00:00,10,1,Finished,Finished,,0
+1061,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2022-04-23T16:30:00+00:00,6,1,Finished,Finished,,3
+1061,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-04-23T16:30:00+00:00,9,1,Finished,Finished,,0
+1061,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2022-04-23T16:30:00+00:00,4,1,Finished,Finished,,5
+1068,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2022-07-09T16:30:00+00:00,2,1,Finished,Finished,,7
+1068,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2022-07-09T16:30:00+00:00,1,1,Finished,Finished,,8
+1068,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2022-07-09T16:30:00+00:00,8,1,Finished,Finished,,1
+1068,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2022-07-09T16:30:00+00:00,4,1,Finished,Finished,,5
+1068,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-07-09T16:30:00+00:00,6,1,Finished,Finished,,3
+1068,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2022-07-09T16:30:00+00:00,9,1,Finished,Finished,,0
+1068,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2022-07-09T16:30:00+00:00,11,1,Finished,Finished,,0
+1068,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2022-07-09T16:30:00+00:00,7,1,Finished,Finished,,2
+1068,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2022-07-09T16:30:00+00:00,12,1,Finished,Finished,,0
+1068,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-07-09T16:30:00+00:00,20,0,Retired,Electrical,mechanical,0
+1068,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2022-07-09T16:30:00+00:00,10,1,Finished,Finished,,0
+1068,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2022-07-09T16:30:00+00:00,16,1,Finished,Finished,,0
+1068,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2022-07-09T16:30:00+00:00,13,1,Finished,Finished,,0
+1068,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2022-07-09T16:30:00+00:00,14,1,Finished,Finished,,0
+1068,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2022-07-09T16:30:00+00:00,15,1,Finished,Finished,,0
+1068,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2022-07-09T16:30:00+00:00,17,1,Finished,Finished,,0
+1068,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2022-07-09T16:30:00+00:00,19,1,Incident,Collision damage,incident,0
+1068,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2022-07-09T16:30:00+00:00,3,1,Finished,Finished,,6
+1068,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2022-07-09T16:30:00+00:00,18,1,Finished,Finished,,0
+1068,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2022-07-09T16:30:00+00:00,5,1,Finished,Finished,,4
+1078,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2022-11-12T21:30:00+00:00,1,1,Finished,Finished,,8
+1078,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2022-11-12T21:30:00+00:00,3,1,Finished,Finished,,6
+1078,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2022-11-12T21:30:00+00:00,2,1,Finished,Finished,,7
+1078,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2022-11-12T21:30:00+00:00,6,1,Finished,Finished,,3
+1078,alonso,driver_WqMAI78W,Fernando Alonso,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-11-12T21:30:00+00:00,18,1,Finished,Finished,,0
+1078,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2022-11-12T21:30:00+00:00,4,1,Finished,Finished,,5
+1078,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2022-11-12T21:30:00+00:00,5,1,Finished,Finished,,4
+1078,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2022-11-12T21:30:00+00:00,17,1,Finished,Finished,,0
+1078,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2022-11-12T21:30:00+00:00,14,1,Finished,Finished,,0
+1078,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2022-11-12T21:30:00+00:00,16,1,Finished,Finished,,0
+1078,vettel,driver_NpmnWj7a,Sebastian Vettel,aston_martin,team_fhnXl3cF,Aston Martin,2022-11-12T21:30:00+00:00,9,1,Finished,Finished,,0
+1078,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2022-11-12T21:30:00+00:00,13,1,Finished,Finished,,0
+1078,mick_schumacher,driver_UxnmZnub,Mick Schumacher,haas,team_aDYlrycX,Haas F1 Team,2022-11-12T21:30:00+00:00,12,1,Finished,Finished,,0
+1078,gasly,driver_q7WdJenu,Pierre Gasly,alphatauri,team_GV5YhhEU,AlphaTauri,2022-11-12T21:30:00+00:00,10,1,Finished,Finished,,0
+1078,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2022-11-12T21:30:00+00:00,20,0,Retired,Retired,unknown,0
+1078,latifi,driver_mTVhQq4k,Nicholas Latifi,williams,team_IJAI583X,Williams,2022-11-12T21:30:00+00:00,19,1,Finished,Finished,,0
+1078,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2022-11-12T21:30:00+00:00,15,1,Finished,Finished,,0
+1078,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2022-11-12T21:30:00+00:00,7,1,Finished,Finished,,2
+1078,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2022-11-12T21:30:00+00:00,8,1,Finished,Finished,,1
+1078,ricciardo,driver_yzCm34qm,Daniel Ricciardo,mclaren,team_jJ6cuwXz,McLaren,2022-11-12T21:30:00+00:00,11,1,Finished,Finished,,0
+1083,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-04-29T15:30:00+00:00,1,1,Finished,Finished,,8
+1083,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-04-29T15:30:00+00:00,3,1,Finished,Finished,,6
+1083,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-04-29T15:30:00+00:00,2,1,Finished,Finished,,7
+1083,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-04-29T15:30:00+00:00,6,1,Finished,Finished,,3
+1083,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-04-29T15:30:00+00:00,5,1,Finished,Finished,,4
+1083,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-04-29T15:30:00+00:00,7,1,Finished,Finished,,2
+1083,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-04-29T15:30:00+00:00,8,1,Finished,Finished,,1
+1083,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-04-29T15:30:00+00:00,4,1,Finished,Finished,,5
+1083,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-04-29T15:30:00+00:00,17,1,Finished,Finished,,0
+1083,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-04-29T15:30:00+00:00,19,0,Incident,Collision damage,incident,0
+1083,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-04-29T15:30:00+00:00,10,1,Finished,Finished,,0
+1083,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-04-29T15:30:00+00:00,9,1,Finished,Finished,,0
+1083,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-04-29T15:30:00+00:00,11,1,Finished,Finished,,0
+1083,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-04-29T15:30:00+00:00,13,1,Finished,Finished,,0
+1083,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-04-29T15:30:00+00:00,18,1,Finished,Finished,,0
+1083,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-04-29T15:30:00+00:00,20,0,Incident,Accident,incident,0
+1083,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-04-29T15:30:00+00:00,15,1,Finished,Finished,,0
+1083,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-04-29T15:30:00+00:00,16,1,Finished,Finished,,0
+1083,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-04-29T15:30:00+00:00,12,1,Finished,Finished,,0
+1083,de_vries,driver_xKluwMtH,Nyck de Vries,alphatauri,team_GV5YhhEU,AlphaTauri,2023-04-29T15:30:00+00:00,14,1,Finished,Finished,,0
+1088,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-07-01T16:30:00+00:00,1,1,Finished,Finished,,8
+1088,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-07-01T16:30:00+00:00,12,1,Finished,Finished,,0
+1088,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-07-01T16:30:00+00:00,2,1,Finished,Finished,,7
+1088,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-07-01T16:30:00+00:00,9,1,Finished,Finished,,0
+1088,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-07-01T16:30:00+00:00,5,1,Finished,Finished,,4
+1088,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-07-01T16:30:00+00:00,3,1,Finished,Finished,,6
+1088,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-07-01T16:30:00+00:00,8,1,Finished,Finished,,1
+1088,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-07-01T16:30:00+00:00,10,1,Finished,Finished,,0
+1088,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-07-01T16:30:00+00:00,4,1,Finished,Finished,,5
+1088,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-07-01T16:30:00+00:00,15,1,Finished,Finished,,0
+1088,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-07-01T16:30:00+00:00,13,1,Finished,Finished,,0
+1088,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-07-01T16:30:00+00:00,19,1,Finished,Finished,,0
+1088,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-07-01T16:30:00+00:00,18,1,Finished,Finished,,0
+1088,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-07-01T16:30:00+00:00,7,1,Finished,Finished,,2
+1088,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-07-01T16:30:00+00:00,20,1,Finished,Finished,,0
+1088,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-07-01T16:30:00+00:00,11,1,Finished,Finished,,0
+1088,de_vries,driver_xKluwMtH,Nyck de Vries,alphatauri,team_GV5YhhEU,AlphaTauri,2023-07-01T16:30:00+00:00,17,1,Finished,Finished,,0
+1088,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-07-01T16:30:00+00:00,14,1,Finished,Finished,,0
+1088,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-07-01T16:30:00+00:00,16,1,Finished,Finished,,0
+1088,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-07-01T16:30:00+00:00,6,1,Finished,Finished,,3
+1091,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-07-29T16:30:00+00:00,1,1,Finished,Finished,,8
+1091,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-07-29T16:30:00+00:00,19,0,Incident,Collision damage,incident,0
+1091,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-07-29T16:30:00+00:00,5,1,Finished,Finished,,4
+1091,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-07-29T16:30:00+00:00,7,1,Finished,Finished,,2
+1091,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-07-29T16:30:00+00:00,20,0,Incident,Accident,incident,0
+1091,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-07-29T16:30:00+00:00,8,1,Finished,Finished,,1
+1091,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-07-29T16:30:00+00:00,6,1,Finished,Finished,,3
+1091,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-07-29T16:30:00+00:00,9,1,Finished,Finished,,0
+1091,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-07-29T16:30:00+00:00,11,1,Finished,Finished,,0
+1091,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-07-29T16:30:00+00:00,18,1,Finished,Finished,,0
+1091,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-07-29T16:30:00+00:00,3,1,Finished,Finished,,6
+1091,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-07-29T16:30:00+00:00,13,1,Finished,Finished,,0
+1091,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-07-29T16:30:00+00:00,15,1,Finished,Finished,,0
+1091,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-07-29T16:30:00+00:00,12,1,Finished,Finished,,0
+1091,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-07-29T16:30:00+00:00,14,1,Finished,Finished,,0
+1091,ricciardo,driver_yzCm34qm,Daniel Ricciardo,alphatauri,team_GV5YhhEU,AlphaTauri,2023-07-29T16:30:00+00:00,10,1,Finished,Finished,,0
+1091,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-07-29T16:30:00+00:00,16,1,Finished,Finished,,0
+1091,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-07-29T16:30:00+00:00,17,1,Finished,Finished,,0
+1091,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-07-29T16:30:00+00:00,4,1,Finished,Finished,,5
+1091,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-07-29T16:30:00+00:00,2,1,Finished,Finished,,7
+1096,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-10-07T19:30:00+00:00,2,1,Finished,Finished,,7
+1096,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-10-07T19:30:00+00:00,1,1,Finished,Finished,,8
+1096,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-10-07T19:30:00+00:00,3,1,Finished,Finished,,6
+1096,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-10-07T19:30:00+00:00,4,1,Finished,Finished,,5
+1096,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-10-07T19:30:00+00:00,12,1,Finished,Finished,,0
+1096,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-10-07T19:30:00+00:00,8,1,Finished,Finished,,1
+1096,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-10-07T19:30:00+00:00,17,0,Retired,Retired,unknown,0
+1096,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-10-07T19:30:00+00:00,10,1,Finished,Finished,,0
+1096,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-10-07T19:30:00+00:00,15,1,Finished,Finished,,0
+1096,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-10-07T19:30:00+00:00,18,0,Retired,Retired,unknown,0
+1096,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-10-07T19:30:00+00:00,13,1,Finished,Finished,,0
+1096,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-10-07T19:30:00+00:00,9,1,Finished,Finished,,0
+1096,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-10-07T19:30:00+00:00,7,1,Finished,Finished,,2
+1096,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-10-07T19:30:00+00:00,14,1,Finished,Finished,,0
+1096,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-10-07T19:30:00+00:00,11,1,Finished,Finished,,0
+1096,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-10-07T19:30:00+00:00,16,0,Retired,Retired,unknown,0
+1096,lawson,driver_uLDLxCqO,Liam Lawson,alphatauri,team_GV5YhhEU,AlphaTauri,2023-10-07T19:30:00+00:00,20,0,Retired,Retired,unknown,0
+1096,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-10-07T19:30:00+00:00,19,0,Retired,Retired,unknown,0
+1096,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-10-07T19:30:00+00:00,5,1,Finished,Finished,,4
+1096,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-10-07T19:30:00+00:00,6,1,Finished,Finished,,3
+1097,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-10-22T00:00:00+00:00,1,1,Finished,Finished,,8
+1097,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-10-22T00:00:00+00:00,4,1,Finished,Finished,,5
+1097,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-10-22T00:00:00+00:00,6,1,Finished,Finished,,3
+1097,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-10-22T00:00:00+00:00,5,1,Finished,Finished,,4
+1097,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-10-22T00:00:00+00:00,8,1,Finished,Finished,,1
+1097,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-10-22T00:00:00+00:00,7,1,Finished,Finished,,2
+1097,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-10-22T00:00:00+00:00,20,0,Retired,Brakes,mechanical,0
+1097,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-10-22T00:00:00+00:00,14,1,Finished,Finished,,0
+1097,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-10-22T00:00:00+00:00,9,1,Finished,Finished,,0
+1097,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-10-22T00:00:00+00:00,19,1,Finished,Finished,,0
+1097,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-10-22T00:00:00+00:00,15,1,Finished,Finished,,0
+1097,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-10-22T00:00:00+00:00,16,1,Finished,Finished,,0
+1097,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-10-22T00:00:00+00:00,17,1,Finished,Finished,,0
+1097,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-10-22T00:00:00+00:00,18,1,Finished,Finished,,0
+1097,ricciardo,driver_yzCm34qm,Daniel Ricciardo,alphatauri,team_GV5YhhEU,AlphaTauri,2023-10-22T00:00:00+00:00,12,1,Finished,Finished,,0
+1097,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-10-22T00:00:00+00:00,13,1,Finished,Finished,,0
+1097,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-10-22T00:00:00+00:00,10,1,Finished,Finished,,0
+1097,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-10-22T00:00:00+00:00,11,1,Finished,Finished,,0
+1097,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-10-22T00:00:00+00:00,2,1,Finished,Finished,,7
+1097,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-10-22T00:00:00+00:00,3,1,Finished,Finished,,6
+1099,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2023-11-04T20:30:00+00:00,1,1,Finished,Finished,,8
+1099,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2023-11-04T20:30:00+00:00,2,1,Finished,Finished,,7
+1099,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2023-11-04T20:30:00+00:00,11,1,Finished,Finished,,0
+1099,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2023-11-04T20:30:00+00:00,3,1,Finished,Finished,,6
+1099,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2023-11-04T20:30:00+00:00,12,1,Finished,Finished,,0
+1099,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2023-11-04T20:30:00+00:00,8,1,Finished,Finished,,1
+1099,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-11-04T20:30:00+00:00,13,1,Finished,Finished,,0
+1099,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2023-11-04T20:30:00+00:00,7,1,Finished,Finished,,2
+1099,tsunoda,driver_aEOevTUh,Yuki Tsunoda,alphatauri,team_GV5YhhEU,AlphaTauri,2023-11-04T20:30:00+00:00,6,1,Finished,Finished,,3
+1099,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2023-11-04T20:30:00+00:00,14,1,Finished,Finished,,0
+1099,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2023-11-04T20:30:00+00:00,20,1,Finished,Finished,,0
+1099,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2023-11-04T20:30:00+00:00,18,1,Finished,Finished,,0
+1099,ricciardo,driver_yzCm34qm,Daniel Ricciardo,alphatauri,team_GV5YhhEU,AlphaTauri,2023-11-04T20:30:00+00:00,9,1,Finished,Finished,,0
+1099,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2023-11-04T20:30:00+00:00,10,1,Finished,Finished,,0
+1099,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2023-11-04T20:30:00+00:00,4,1,Finished,Finished,,5
+1099,bottas,driver_H43o382s,Valtteri Bottas,alfa,team_1XDKqgNu,Alfa Romeo,2023-11-04T20:30:00+00:00,19,1,Finished,Finished,,0
+1099,zhou,driver_CyXA6GA4,Guanyu Zhou,alfa,team_1XDKqgNu,Alfa Romeo,2023-11-04T20:30:00+00:00,17,1,Finished,Finished,,0
+1099,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2023-11-04T20:30:00+00:00,16,1,Finished,Finished,,0
+1099,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2023-11-04T20:30:00+00:00,15,1,Finished,Finished,,0
+1099,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2023-11-04T20:30:00+00:00,5,1,Finished,Finished,,4
+1106,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-04-20T05:00:00+00:00,1,1,Finished,Finished,,8
+1106,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-04-20T05:00:00+00:00,6,1,Finished,Finished,,3
+1106,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-04-20T05:00:00+00:00,3,1,Finished,Finished,,6
+1106,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-04-20T05:00:00+00:00,4,1,Finished,Finished,,5
+1106,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-04-20T05:00:00+00:00,5,1,Finished,Finished,,4
+1106,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-04-20T05:00:00+00:00,8,1,Finished,Finished,,1
+1106,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-04-20T05:00:00+00:00,20,1,Retired,Retired,unknown,0
+1106,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-04-20T05:00:00+00:00,7,1,Finished,Finished,,2
+1106,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-04-20T05:00:00+00:00,2,1,Finished,Finished,,7
+1106,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-04-20T05:00:00+00:00,19,1,Finished,Finished,,0
+1106,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-04-20T05:00:00+00:00,13,1,Finished,Finished,,0
+1106,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-04-20T05:00:00+00:00,17,1,Finished,Finished,,0
+1106,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-04-20T05:00:00+00:00,15,1,Finished,Finished,,0
+1106,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-04-20T05:00:00+00:00,9,1,Finished,Finished,,0
+1106,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-04-20T05:00:00+00:00,14,1,Finished,Finished,,0
+1106,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2024-04-20T05:00:00+00:00,10,1,Finished,Finished,,0
+1106,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2024-04-20T05:00:00+00:00,18,1,Finished,Finished,,0
+1106,ricciardo,driver_yzCm34qm,Daniel Ricciardo,rb,team_M2xA0S6V,RB F1 Team,2024-04-20T05:00:00+00:00,11,1,Finished,Finished,,0
+1106,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-04-20T05:00:00+00:00,16,1,Finished,Finished,,0
+1106,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-04-20T05:00:00+00:00,12,1,Finished,Finished,,0
+1107,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-05-04T18:00:00+00:00,20,0,Retired,Retired,unknown,0
+1107,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-05-04T18:00:00+00:00,1,1,Finished,Finished,,8
+1107,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-05-04T18:00:00+00:00,2,1,Finished,Finished,,7
+1107,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-05-04T18:00:00+00:00,3,1,Finished,Finished,,6
+1107,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-05-04T18:00:00+00:00,5,1,Finished,Finished,,4
+1107,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-05-04T18:00:00+00:00,16,1,Finished,Finished,,0
+1107,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-05-04T18:00:00+00:00,8,1,Finished,Finished,,1
+1107,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-05-04T18:00:00+00:00,12,1,Finished,Finished,,0
+1107,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-05-04T18:00:00+00:00,17,1,Finished,Finished,,0
+1107,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-05-04T18:00:00+00:00,15,1,Finished,Finished,,0
+1107,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-05-04T18:00:00+00:00,7,1,Finished,Finished,,2
+1107,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-05-04T18:00:00+00:00,9,1,Finished,Finished,,0
+1107,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-05-04T18:00:00+00:00,6,1,Finished,Finished,,3
+1107,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-05-04T18:00:00+00:00,11,1,Finished,Finished,,0
+1107,ricciardo,driver_yzCm34qm,Daniel Ricciardo,rb,team_M2xA0S6V,RB F1 Team,2024-05-04T18:00:00+00:00,4,1,Finished,Finished,,5
+1107,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-05-04T18:00:00+00:00,14,1,Finished,Finished,,0
+1107,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-05-04T18:00:00+00:00,19,0,Retired,Retired,unknown,0
+1107,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-05-04T18:00:00+00:00,13,1,Finished,Finished,,0
+1107,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2024-05-04T18:00:00+00:00,18,1,Finished,Finished,,0
+1107,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2024-05-04T18:00:00+00:00,10,1,Finished,Finished,,0
+1112,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-06-29T12:00:00+00:00,4,1,Finished,Finished,,5
+1112,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-06-29T12:00:00+00:00,2,1,Finished,Finished,,7
+1112,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-06-29T12:00:00+00:00,5,1,Finished,Finished,,4
+1112,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-06-29T12:00:00+00:00,6,1,Finished,Finished,,3
+1112,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-06-29T12:00:00+00:00,1,1,Finished,Finished,,8
+1112,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-06-29T12:00:00+00:00,19,1,Finished,Finished,,0
+1112,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-06-29T12:00:00+00:00,8,1,Finished,Finished,,1
+1112,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2024-06-29T12:00:00+00:00,9,1,Finished,Finished,,0
+1112,ricciardo,driver_yzCm34qm,Daniel Ricciardo,rb,team_M2xA0S6V,RB F1 Team,2024-06-29T12:00:00+00:00,14,1,Finished,Finished,,0
+1112,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-06-29T12:00:00+00:00,12,1,Finished,Finished,,0
+1112,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-06-29T12:00:00+00:00,7,1,Finished,Finished,,2
+1112,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-06-29T12:00:00+00:00,11,1,Finished,Finished,,0
+1112,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-06-29T12:00:00+00:00,10,1,Finished,Finished,,0
+1112,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-06-29T12:00:00+00:00,13,1,Finished,Finished,,0
+1112,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-06-29T12:00:00+00:00,17,1,Finished,Finished,,0
+1112,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-06-29T12:00:00+00:00,18,1,Finished,Finished,,0
+1112,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-06-29T12:00:00+00:00,20,1,Finished,Finished,,0
+1112,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-06-29T12:00:00+00:00,15,1,Finished,Finished,,0
+1112,sargeant,driver_xXhDYjcC,Logan Sargeant,williams,team_IJAI583X,Williams,2024-06-29T12:00:00+00:00,16,1,Finished,Finished,,0
+1112,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-06-29T12:00:00+00:00,3,1,Finished,Finished,,6
+1120,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-10-19T20:00:00+00:00,4,1,Finished,Finished,,5
+1120,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-10-19T20:00:00+00:00,2,1,Finished,Finished,,7
+1120,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-10-19T20:00:00+00:00,1,1,Finished,Finished,,8
+1120,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-10-19T20:00:00+00:00,3,1,Finished,Finished,,6
+1120,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-10-19T20:00:00+00:00,10,1,Finished,Finished,,0
+1120,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-10-19T20:00:00+00:00,5,1,Finished,Finished,,4
+1120,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-10-19T20:00:00+00:00,9,1,Finished,Finished,,0
+1120,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-10-19T20:00:00+00:00,8,1,Finished,Finished,,1
+1120,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2024-10-19T20:00:00+00:00,16,1,Finished,Finished,,0
+1120,colapinto,driver_ElsSjDoL,Franco Colapinto,williams,team_IJAI583X,Williams,2024-10-19T20:00:00+00:00,12,1,Finished,Finished,,0
+1120,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2024-10-19T20:00:00+00:00,7,1,Finished,Finished,,2
+1120,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-10-19T20:00:00+00:00,14,1,Finished,Finished,,0
+1120,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-10-19T20:00:00+00:00,18,1,Finished,Finished,,0
+1120,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-10-19T20:00:00+00:00,11,1,Finished,Finished,,0
+1120,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-10-19T20:00:00+00:00,13,1,Finished,Finished,,0
+1120,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-10-19T20:00:00+00:00,17,1,Finished,Finished,,0
+1120,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-10-19T20:00:00+00:00,20,1,Finished,Finished,,0
+1120,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-10-19T20:00:00+00:00,15,1,Finished,Finished,,0
+1120,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-10-19T20:00:00+00:00,19,1,Finished,Finished,,0
+1120,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-10-19T20:00:00+00:00,6,1,Finished,Finished,,3
+1122,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-11-02T16:00:00+00:00,4,1,Finished,Finished,,5
+1122,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-11-02T16:00:00+00:00,13,1,Finished,Finished,,0
+1122,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-11-02T16:00:00+00:00,7,1,Finished,Finished,,2
+1122,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-11-02T16:00:00+00:00,6,1,Finished,Finished,,3
+1122,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-11-02T16:00:00+00:00,3,1,Finished,Finished,,6
+1122,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-11-02T16:00:00+00:00,1,1,Finished,Finished,,8
+1122,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-11-02T16:00:00+00:00,15,1,Finished,Finished,,0
+1122,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-11-02T16:00:00+00:00,2,1,Finished,Finished,,7
+1122,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2024-11-02T16:00:00+00:00,9,1,Finished,Finished,,0
+1122,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-11-02T16:00:00+00:00,11,1,Finished,Finished,,0
+1122,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-11-02T16:00:00+00:00,8,1,Finished,Finished,,1
+1122,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2024-11-02T16:00:00+00:00,14,1,Finished,Finished,,0
+1122,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-11-02T16:00:00+00:00,16,1,Finished,Finished,,0
+1122,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-11-02T16:00:00+00:00,18,1,Finished,Finished,,0
+1122,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-11-02T16:00:00+00:00,17,1,Finished,Finished,,0
+1122,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-11-02T16:00:00+00:00,5,1,Finished,Finished,,4
+1122,colapinto,driver_ElsSjDoL,Franco Colapinto,williams,team_IJAI583X,Williams,2024-11-02T16:00:00+00:00,12,1,Finished,Finished,,0
+1122,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-11-02T16:00:00+00:00,10,1,Finished,Finished,,0
+1122,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-11-02T16:00:00+00:00,19,1,Finished,Finished,,0
+1122,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-11-02T16:00:00+00:00,20,0,Retired,Retired,unknown,0
+1124,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2024-11-30T16:00:00+00:00,8,1,Finished,Finished,,1
+1124,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2024-11-30T16:00:00+00:00,5,1,Finished,Finished,,4
+1124,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2024-11-30T16:00:00+00:00,1,1,Finished,Finished,,8
+1124,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2024-11-30T16:00:00+00:00,3,1,Finished,Finished,,6
+1124,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-11-30T16:00:00+00:00,9,1,Finished,Finished,,0
+1124,sainz,driver_nPms5pYt,Carlos Sainz,ferrari,team_LjEBz7Xq,Ferrari,2024-11-30T16:00:00+00:00,4,1,Finished,Finished,,5
+1124,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2024-11-30T16:00:00+00:00,11,1,Finished,Finished,,0
+1124,zhou,driver_CyXA6GA4,Guanyu Zhou,sauber,team_z7SnOy4M,Sauber,2024-11-30T16:00:00+00:00,19,1,Finished,Finished,,0
+1124,kevin_magnussen,driver_8tH8zRcP,Kevin Magnussen,haas,team_aDYlrycX,Haas F1 Team,2024-11-30T16:00:00+00:00,10,1,Finished,Finished,,0
+1124,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2024-11-30T16:00:00+00:00,2,1,Finished,Finished,,7
+1124,bottas,driver_H43o382s,Valtteri Bottas,sauber,team_z7SnOy4M,Sauber,2024-11-30T16:00:00+00:00,12,1,Finished,Finished,,0
+1124,hamilton,driver_cAPSXDn9,Lewis Hamilton,mercedes,team_tdiMmtQx,Mercedes,2024-11-30T16:00:00+00:00,6,1,Finished,Finished,,3
+1124,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2024-11-30T16:00:00+00:00,17,1,Finished,Finished,,0
+1124,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2024-11-30T16:00:00+00:00,16,1,Finished,Finished,,0
+1124,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2024-11-30T16:00:00+00:00,15,1,Finished,Finished,,0
+1124,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,haas,team_aDYlrycX,Haas F1 Team,2024-11-30T16:00:00+00:00,7,1,Finished,Finished,,2
+1124,perez,driver_NliMiGAb,Sergio Pérez,red_bull,team_SYB8m2Vp,Red Bull,2024-11-30T16:00:00+00:00,20,1,Finished,Finished,,0
+1124,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2024-11-30T16:00:00+00:00,13,1,Finished,Finished,,0
+1124,colapinto,driver_ElsSjDoL,Franco Colapinto,williams,team_IJAI583X,Williams,2024-11-30T16:00:00+00:00,18,1,Finished,Finished,,0
+1124,ocon,driver_0GFvbLMc,Esteban Ocon,alpine,team_LJ6hqyXM,Alpine F1 Team,2024-11-30T16:00:00+00:00,14,1,Finished,Finished,,0
+1127,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-03-22T05:00:00+00:00,1,1,Finished,Finished,,8
+1127,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-03-22T05:00:00+00:00,2,1,Finished,Finished,,7
+1127,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-03-22T05:00:00+00:00,3,1,Finished,Finished,,6
+1127,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-03-22T05:00:00+00:00,4,1,Finished,Finished,,5
+1127,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-03-22T05:00:00+00:00,5,1,Finished,Finished,,4
+1127,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2025-03-22T05:00:00+00:00,6,1,Finished,Finished,,3
+1127,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-03-22T05:00:00+00:00,7,1,Finished,Finished,,2
+1127,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-03-22T05:00:00+00:00,8,1,Finished,Finished,,1
+1127,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-03-22T05:00:00+00:00,9,1,Finished,Finished,,0
+1127,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-03-22T05:00:00+00:00,10,1,Finished,Finished,,0
+1127,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-03-22T05:00:00+00:00,11,1,Finished,Finished,,0
+1127,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-03-22T05:00:00+00:00,12,1,Finished,Finished,,0
+1127,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-03-22T05:00:00+00:00,13,1,Finished,Finished,,0
+1127,lawson,driver_uLDLxCqO,Liam Lawson,red_bull,team_SYB8m2Vp,Red Bull,2025-03-22T05:00:00+00:00,14,1,Finished,Finished,,0
+1127,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-03-22T05:00:00+00:00,15,1,Finished,Finished,,0
+1127,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-03-22T05:00:00+00:00,16,1,Finished,Finished,,0
+1127,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-03-22T05:00:00+00:00,17,1,Finished,Finished,,0
+1127,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-03-22T05:00:00+00:00,18,1,Finished,Finished,,0
+1127,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-03-22T05:00:00+00:00,19,1,Finished,Finished,,0
+1127,doohan,driver_g0a6B2Hm,Jack Doohan,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-03-22T05:00:00+00:00,20,1,Finished,Finished,,0
+1131,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-05-03T18:00:00+00:00,1,1,Finished,Finished,,8
+1131,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-05-03T18:00:00+00:00,2,1,Finished,Finished,,7
+1131,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-05-03T18:00:00+00:00,3,1,Finished,Finished,,6
+1131,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-05-03T18:00:00+00:00,4,1,Finished,Finished,,5
+1131,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-05-03T18:00:00+00:00,5,1,Finished,Finished,,4
+1131,tsunoda,driver_aEOevTUh,Yuki Tsunoda,red_bull,team_SYB8m2Vp,Red Bull,2025-05-03T18:00:00+00:00,6,1,Finished,Finished,,3
+1131,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-05-03T18:00:00+00:00,7,1,Finished,Finished,,2
+1131,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-05-03T18:00:00+00:00,8,1,Finished,Finished,,1
+1131,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-05-03T18:00:00+00:00,9,1,Finished,Finished,,0
+1131,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-05-03T18:00:00+00:00,10,1,Finished,Finished,,0
+1131,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-05-03T18:00:00+00:00,11,1,Finished,Finished,,0
+1131,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-05-03T18:00:00+00:00,12,1,Finished,Finished,,0
+1131,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2025-05-03T18:00:00+00:00,13,1,Finished,Finished,,0
+1131,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-05-03T18:00:00+00:00,14,1,Finished,Finished,,0
+1131,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-05-03T18:00:00+00:00,15,1,Finished,Finished,,0
+1131,doohan,driver_g0a6B2Hm,Jack Doohan,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-05-03T18:00:00+00:00,16,1,Finished,Finished,,0
+1131,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-05-03T18:00:00+00:00,17,1,Finished,Finished,,0
+1131,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-05-03T18:00:00+00:00,18,0,Retired,Retired,unknown,0
+1131,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-05-03T18:00:00+00:00,19,0,Retired,Retired,unknown,0
+1131,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-05-03T18:00:00+00:00,20,0,Retired,Retired,unknown,0
+1138,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-07-26T12:00:00+00:00,1,1,Finished,Finished,,8
+1138,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-07-26T12:00:00+00:00,2,1,Finished,Finished,,7
+1138,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-07-26T12:00:00+00:00,3,1,Finished,Finished,,6
+1138,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-07-26T12:00:00+00:00,4,1,Finished,Finished,,5
+1138,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-07-26T12:00:00+00:00,5,1,Finished,Finished,,4
+1138,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-07-26T12:00:00+00:00,6,1,Finished,Finished,,3
+1138,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-07-26T12:00:00+00:00,7,1,Finished,Finished,,2
+1138,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-07-26T12:00:00+00:00,8,1,Finished,Finished,,1
+1138,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-07-26T12:00:00+00:00,9,1,Finished,Finished,,0
+1138,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2025-07-26T12:00:00+00:00,10,1,Finished,Finished,,0
+1138,tsunoda,driver_aEOevTUh,Yuki Tsunoda,red_bull,team_SYB8m2Vp,Red Bull,2025-07-26T12:00:00+00:00,11,1,Finished,Finished,,0
+1138,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-07-26T12:00:00+00:00,12,1,Finished,Finished,,0
+1138,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-07-26T12:00:00+00:00,13,1,Finished,Finished,,0
+1138,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-07-26T12:00:00+00:00,14,1,Finished,Finished,,0
+1138,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-07-26T12:00:00+00:00,15,1,Finished,Finished,,0
+1138,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-07-26T12:00:00+00:00,16,1,Finished,Finished,,0
+1138,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-07-26T12:00:00+00:00,17,1,Finished,Finished,,0
+1138,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-07-26T12:00:00+00:00,18,1,Finished,Finished,,0
+1138,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-07-26T12:00:00+00:00,19,1,Finished,Finished,,0
+1138,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-07-26T12:00:00+00:00,20,0,Retired,Retired,unknown,0
+1144,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-10-18T19:00:00+00:00,1,1,Finished,Finished,,8
+1144,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-10-18T19:00:00+00:00,2,1,Finished,Finished,,7
+1144,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-10-18T19:00:00+00:00,3,1,Finished,Finished,,6
+1144,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-10-18T19:00:00+00:00,4,1,Finished,Finished,,5
+1144,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-10-18T19:00:00+00:00,5,1,Finished,Finished,,4
+1144,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-10-18T19:00:00+00:00,6,1,Finished,Finished,,3
+1144,tsunoda,driver_aEOevTUh,Yuki Tsunoda,red_bull,team_SYB8m2Vp,Red Bull,2025-10-18T19:00:00+00:00,7,1,Finished,Finished,,2
+1144,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-10-18T19:00:00+00:00,8,1,Finished,Finished,,1
+1144,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2025-10-18T19:00:00+00:00,9,1,Finished,Finished,,0
+1144,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-10-18T19:00:00+00:00,10,1,Finished,Finished,,0
+1144,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-10-18T19:00:00+00:00,11,1,Finished,Finished,,0
+1144,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-10-18T19:00:00+00:00,12,1,Finished,Finished,,0
+1144,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-10-18T19:00:00+00:00,13,1,Finished,Finished,,0
+1144,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-10-18T19:00:00+00:00,14,1,Finished,Finished,,0
+1144,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-10-18T19:00:00+00:00,15,1,Finished,Finished,,0
+1144,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-10-18T19:00:00+00:00,16,0,Retired,Retired,unknown,0
+1144,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-10-18T19:00:00+00:00,17,0,Retired,Retired,unknown,0
+1144,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-10-18T19:00:00+00:00,18,0,Retired,Retired,unknown,0
+1144,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-10-18T19:00:00+00:00,19,0,Retired,Retired,unknown,0
+1144,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-10-18T19:00:00+00:00,20,0,Retired,Retired,unknown,0
+1146,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-11-08T16:00:00+00:00,1,1,Finished,Finished,,8
+1146,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-11-08T16:00:00+00:00,2,1,Finished,Finished,,7
+1146,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-11-08T16:00:00+00:00,3,1,Finished,Finished,,6
+1146,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-11-08T16:00:00+00:00,4,1,Finished,Finished,,5
+1146,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-11-08T16:00:00+00:00,5,1,Finished,Finished,,4
+1146,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-11-08T16:00:00+00:00,6,1,Finished,Finished,,3
+1146,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-11-08T16:00:00+00:00,7,1,Finished,Finished,,2
+1146,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-11-08T16:00:00+00:00,8,1,Finished,Finished,,1
+1146,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-11-08T16:00:00+00:00,9,1,Finished,Finished,,0
+1146,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-11-08T16:00:00+00:00,10,1,Finished,Finished,,0
+1146,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-11-08T16:00:00+00:00,11,1,Finished,Finished,,0
+1146,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-11-08T16:00:00+00:00,12,1,Finished,Finished,,0
+1146,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2025-11-08T16:00:00+00:00,16,1,Finished,Finished,,0
+1146,tsunoda,driver_aEOevTUh,Yuki Tsunoda,red_bull,team_SYB8m2Vp,Red Bull,2025-11-08T16:00:00+00:00,13,1,Finished,Finished,,0
+1146,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-11-08T16:00:00+00:00,14,1,Finished,Finished,,0
+1146,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-11-08T16:00:00+00:00,15,1,Finished,Finished,,0
+1146,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-11-08T16:00:00+00:00,17,1,Finished,Finished,,0
+1146,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-11-08T16:00:00+00:00,18,1,Retired,Retired,unknown,0
+1146,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-11-08T16:00:00+00:00,19,0,Retired,Retired,unknown,0
+1146,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-11-08T16:00:00+00:00,20,0,Retired,Retired,unknown,0
+1148,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2025-11-29T16:00:00+00:00,1,1,Finished,Finished,,8
+1148,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2025-11-29T16:00:00+00:00,2,1,Finished,Finished,,7
+1148,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2025-11-29T16:00:00+00:00,3,1,Finished,Finished,,6
+1148,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2025-11-29T16:00:00+00:00,4,1,Finished,Finished,,5
+1148,tsunoda,driver_aEOevTUh,Yuki Tsunoda,red_bull,team_SYB8m2Vp,Red Bull,2025-11-29T16:00:00+00:00,5,1,Finished,Finished,,4
+1148,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2025-11-29T16:00:00+00:00,6,1,Finished,Finished,,3
+1148,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2025-11-29T16:00:00+00:00,7,1,Finished,Finished,,2
+1148,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2025-11-29T16:00:00+00:00,8,1,Finished,Finished,,1
+1148,hadjar,driver_ZiErQgDm,Isack Hadjar,rb,team_M2xA0S6V,RB F1 Team,2025-11-29T16:00:00+00:00,9,1,Finished,Finished,,0
+1148,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2025-11-29T16:00:00+00:00,10,1,Finished,Finished,,0
+1148,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,sauber,team_z7SnOy4M,Sauber,2025-11-29T16:00:00+00:00,11,1,Finished,Finished,,0
+1148,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2025-11-29T16:00:00+00:00,12,1,Finished,Finished,,0
+1148,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2025-11-29T16:00:00+00:00,13,1,Finished,Finished,,0
+1148,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2025-11-29T16:00:00+00:00,14,1,Finished,Finished,,0
+1148,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2025-11-29T16:00:00+00:00,15,1,Finished,Finished,,0
+1148,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,sauber,team_z7SnOy4M,Sauber,2025-11-29T16:00:00+00:00,16,1,Finished,Finished,,0
+1148,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2025-11-29T16:00:00+00:00,17,1,Finished,Finished,,0
+1148,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-11-29T16:00:00+00:00,18,1,Finished,Finished,,0
+1148,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2025-11-29T16:00:00+00:00,19,1,Finished,Finished,,0
+1148,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2025-11-29T16:00:00+00:00,20,1,Finished,Finished,,0
+1175,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-03-14T05:00:00+00:00,1,1,Finished,Finished,,8
+1175,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-03-14T05:00:00+00:00,2,1,Finished,Finished,,7
+1175,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-03-14T05:00:00+00:00,3,1,Finished,Finished,,6
+1175,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-03-14T05:00:00+00:00,4,1,Finished,Finished,,5
+1175,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-03-14T05:00:00+00:00,5,1,Finished,Finished,,4
+1175,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-03-14T05:00:00+00:00,6,1,Finished,Finished,,3
+1175,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2026-03-14T05:00:00+00:00,7,1,Finished,Finished,,2
+1175,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-03-14T05:00:00+00:00,8,1,Finished,Finished,,1
+1175,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-03-14T05:00:00+00:00,9,1,Finished,Finished,,0
+1175,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-03-14T05:00:00+00:00,10,1,Finished,Finished,,0
+1175,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-03-14T05:00:00+00:00,11,1,Finished,Finished,,0
+1175,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-03-14T05:00:00+00:00,12,1,Finished,Finished,,0
+1175,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-03-14T05:00:00+00:00,13,1,Finished,Finished,,0
+1175,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-03-14T05:00:00+00:00,14,1,Finished,Finished,,0
+1175,hadjar,driver_ZiErQgDm,Isack Hadjar,red_bull,team_SYB8m2Vp,Red Bull,2026-03-14T05:00:00+00:00,15,1,Finished,Finished,,0
+1175,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-03-14T05:00:00+00:00,16,1,Finished,Finished,,0
+1175,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-03-14T05:00:00+00:00,17,1,Finished,Finished,,0
+1175,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-03-14T05:00:00+00:00,18,1,Finished,Finished,,0
+1175,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-03-14T05:00:00+00:00,19,1,Finished,Finished,,0
+1175,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-03-14T05:00:00+00:00,20,0,Retired,Retired,unknown,0
+1175,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-03-14T05:00:00+00:00,21,0,Retired,Retired,unknown,0
+1175,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-03-14T05:00:00+00:00,22,0,Retired,Retired,unknown,0
+1179,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-05-02T18:00:00+00:00,1,1,Finished,Finished,,8
+1179,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-05-02T18:00:00+00:00,2,1,Finished,Finished,,7
+1179,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-05-02T18:00:00+00:00,3,1,Finished,Finished,,6
+1179,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-05-02T18:00:00+00:00,4,1,Finished,Finished,,5
+1179,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-05-02T18:00:00+00:00,5,1,Finished,Finished,,4
+1179,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-05-02T18:00:00+00:00,6,1,Finished,Finished,,3
+1179,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-05-02T18:00:00+00:00,7,1,Finished,Finished,,2
+1179,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-05-02T18:00:00+00:00,8,1,Finished,Finished,,1
+1179,hadjar,driver_ZiErQgDm,Isack Hadjar,red_bull,team_SYB8m2Vp,Red Bull,2026-05-02T18:00:00+00:00,9,1,Finished,Finished,,0
+1179,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-05-02T18:00:00+00:00,10,1,Finished,Finished,,0
+1179,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-05-02T18:00:00+00:00,22,0,Disqualified,Disqualified,,0
+1179,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-05-02T18:00:00+00:00,11,1,Finished,Finished,,0
+1179,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-05-02T18:00:00+00:00,12,1,Finished,Finished,,0
+1179,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-05-02T18:00:00+00:00,13,1,Finished,Finished,,0
+1179,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2026-05-02T18:00:00+00:00,14,1,Finished,Finished,,0
+1179,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-05-02T18:00:00+00:00,15,1,Finished,Finished,,0
+1179,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-05-02T18:00:00+00:00,16,1,Finished,Finished,,0
+1179,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-05-02T18:00:00+00:00,17,1,Finished,Finished,,0
+1179,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-05-02T18:00:00+00:00,18,1,Finished,Finished,,0
+1179,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-05-02T18:00:00+00:00,19,1,Finished,Finished,,0
+1179,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-05-02T18:00:00+00:00,20,0,Did not start,Did not start,,0
+1179,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-05-02T18:00:00+00:00,21,0,Did not start,Did not start,,0
+1180,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-05-23T18:00:00+00:00,1,1,Finished,Finished,,8
+1180,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-05-23T18:00:00+00:00,2,1,Finished,Finished,,7
+1180,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-05-23T18:00:00+00:00,3,1,Finished,Finished,,6
+1180,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-05-23T18:00:00+00:00,4,1,Finished,Finished,,5
+1180,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-05-23T18:00:00+00:00,5,1,Finished,Finished,,4
+1180,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-05-23T18:00:00+00:00,6,1,Finished,Finished,,3
+1180,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-05-23T18:00:00+00:00,7,1,Finished,Finished,,2
+1180,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-05-23T18:00:00+00:00,8,1,Finished,Finished,,1
+1180,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-05-23T18:00:00+00:00,9,1,Finished,Finished,,0
+1180,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-05-23T18:00:00+00:00,10,1,Finished,Finished,,0
+1180,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2026-05-23T18:00:00+00:00,11,1,Finished,Finished,,0
+1180,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-05-23T18:00:00+00:00,12,1,Finished,Finished,,0
+1180,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-05-23T18:00:00+00:00,13,1,Finished,Finished,,0
+1180,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-05-23T18:00:00+00:00,14,1,Finished,Finished,,0
+1180,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-05-23T18:00:00+00:00,15,1,Finished,Finished,,0
+1180,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-05-23T18:00:00+00:00,16,1,Lapped,Lapped,,0
+1180,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-05-23T18:00:00+00:00,17,1,Lapped,Lapped,,0
+1180,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-05-23T18:00:00+00:00,18,1,Lapped,Lapped,,0
+1180,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-05-23T18:00:00+00:00,19,1,Lapped,Lapped,,0
+1180,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-05-23T18:00:00+00:00,20,1,Lapped,Lapped,,0
+1180,hadjar,driver_ZiErQgDm,Isack Hadjar,red_bull,team_SYB8m2Vp,Red Bull,2026-05-23T18:00:00+00:00,21,1,Lapped,Lapped,,0
+1180,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-05-23T18:00:00+00:00,22,0,Retired,Retired,unknown,0
+1184,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-07-04T13:00:00+00:00,1,1,Finished,Finished,,8
+1184,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-07-04T13:00:00+00:00,2,1,Finished,Finished,,7
+1184,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-07-04T13:00:00+00:00,3,1,Finished,Finished,,6
+1184,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-07-04T13:00:00+00:00,4,1,Finished,Finished,,5
+1184,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-07-04T13:00:00+00:00,5,1,Finished,Finished,,4
+1184,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-07-04T13:00:00+00:00,6,1,Finished,Finished,,3
+1184,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-07-04T13:00:00+00:00,7,1,Finished,Finished,,2
+1184,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2026-07-04T13:00:00+00:00,8,1,Finished,Finished,,1
+1184,hadjar,driver_ZiErQgDm,Isack Hadjar,red_bull,team_SYB8m2Vp,Red Bull,2026-07-04T13:00:00+00:00,9,1,Finished,Finished,,0
+1184,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-07-04T13:00:00+00:00,10,1,Finished,Finished,,0
+1184,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-07-04T13:00:00+00:00,11,1,Finished,Finished,,0
+1184,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-07-04T13:00:00+00:00,12,1,Finished,Finished,,0
+1184,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-07-04T13:00:00+00:00,13,1,Finished,Finished,,0
+1184,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-07-04T13:00:00+00:00,14,1,Finished,Finished,,0
+1184,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-07-04T13:00:00+00:00,15,1,Finished,Finished,,0
+1184,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-07-04T13:00:00+00:00,16,1,Finished,Finished,,0
+1184,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-07-04T13:00:00+00:00,17,1,Finished,Finished,,0
+1184,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-07-04T13:00:00+00:00,18,1,Finished,Finished,,0
+1184,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-07-04T13:00:00+00:00,19,1,Finished,Finished,,0
+1184,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-07-04T13:00:00+00:00,20,1,Finished,Finished,,0
+1184,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-07-04T13:00:00+00:00,21,1,Lapped,Lapped,,0
+1184,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-07-04T13:00:00+00:00,22,1,Lapped,Lapped,,0
+1187,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-08-22T12:00:00+00:00,1,1,Finished,Finished,,8
+1187,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-08-22T12:00:00+00:00,2,1,Finished,Finished,,7
+1187,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-08-22T12:00:00+00:00,3,1,Finished,Finished,,6
+1187,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-08-22T12:00:00+00:00,4,1,Finished,Finished,,5
+1187,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-08-22T12:00:00+00:00,5,1,Finished,Finished,,4
+1187,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-08-22T12:00:00+00:00,6,1,Finished,Finished,,3
+1187,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-08-22T12:00:00+00:00,7,1,Finished,Finished,,2
+1187,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-08-22T12:00:00+00:00,8,1,Finished,Finished,,1
+1187,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-08-22T12:00:00+00:00,9,1,Finished,Finished,,0
+1187,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-08-22T12:00:00+00:00,10,1,Finished,Finished,,0
+1187,lawson,driver_uLDLxCqO,Liam Lawson,red_bull,team_SYB8m2Vp,Red Bull,2026-08-22T12:00:00+00:00,11,1,Finished,Finished,,0
+1187,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-08-22T12:00:00+00:00,12,1,Finished,Finished,,0
+1187,tsunoda,driver_aEOevTUh,Yuki Tsunoda,rb,team_M2xA0S6V,RB F1 Team,2026-08-22T12:00:00+00:00,13,1,Finished,Finished,,0
+1187,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-08-22T12:00:00+00:00,14,1,Finished,Finished,,0
+1187,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-08-22T12:00:00+00:00,15,1,Finished,Finished,,0
+1187,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-08-22T12:00:00+00:00,16,1,Finished,Finished,,0
+1187,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-08-22T12:00:00+00:00,17,1,Finished,Finished,,0
+1187,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-08-22T12:00:00+00:00,18,1,Finished,Finished,,0
+1187,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-08-22T12:00:00+00:00,19,1,Lapped,Lapped,,0
+1187,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-08-22T12:00:00+00:00,20,1,Lapped,Lapped,,0
+1187,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-08-22T12:00:00+00:00,21,1,Lapped,Lapped,,0
+1187,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-08-22T12:00:00+00:00,22,0,Lapped,Lapped,,0
+1191,max_verstappen,driver_VkTWWTC5,Max Verstappen,red_bull,team_SYB8m2Vp,Red Bull,2026-10-10T11:00:00+00:00,1,1,Finished,Finished,,8
+1191,hamilton,driver_cAPSXDn9,Lewis Hamilton,ferrari,team_LjEBz7Xq,Ferrari,2026-10-10T11:00:00+00:00,2,1,Finished,Finished,,7
+1191,leclerc,driver_pAXWnsA8,Charles Leclerc,ferrari,team_LjEBz7Xq,Ferrari,2026-10-10T11:00:00+00:00,3,1,Finished,Finished,,6
+1191,antonelli,driver_yNfRW5Lg,Andrea Kimi Antonelli,mercedes,team_tdiMmtQx,Mercedes,2026-10-10T11:00:00+00:00,4,1,Finished,Finished,,5
+1191,lawson,driver_uLDLxCqO,Liam Lawson,rb,team_M2xA0S6V,RB F1 Team,2026-10-10T11:00:00+00:00,5,1,Finished,Finished,,4
+1191,bearman,driver_19q67raM,Oliver Bearman,haas,team_aDYlrycX,Haas F1 Team,2026-10-10T11:00:00+00:00,6,1,Finished,Finished,,3
+1191,hulkenberg,driver_gADFaAX1,Nico Hülkenberg,audi,team_D9V5gkPb,Audi,2026-10-10T11:00:00+00:00,7,1,Finished,Finished,,2
+1191,norris,driver_BOyYHlVE,Lando Norris,mclaren,team_jJ6cuwXz,McLaren,2026-10-10T11:00:00+00:00,8,1,Finished,Finished,,1
+1191,gasly,driver_q7WdJenu,Pierre Gasly,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-10-10T11:00:00+00:00,9,1,Finished,Finished,,0
+1191,ocon,driver_0GFvbLMc,Esteban Ocon,haas,team_aDYlrycX,Haas F1 Team,2026-10-10T11:00:00+00:00,10,1,Finished,Finished,,0
+1191,alonso,driver_WqMAI78W,Fernando Alonso,aston_martin,team_fhnXl3cF,Aston Martin,2026-10-10T11:00:00+00:00,11,1,Finished,Finished,,0
+1191,sainz,driver_nPms5pYt,Carlos Sainz,williams,team_IJAI583X,Williams,2026-10-10T11:00:00+00:00,12,1,Finished,Finished,,0
+1191,arvid_lindblad,driver_DdBdmX6N,Arvid Lindblad,rb,team_M2xA0S6V,RB F1 Team,2026-10-10T11:00:00+00:00,13,1,Finished,Finished,,0
+1191,piastri,driver_1V17qcph,Oscar Piastri,mclaren,team_jJ6cuwXz,McLaren,2026-10-10T11:00:00+00:00,14,1,Retired,Retired,unknown,0
+1191,albon,driver_0Z9Cjb1U,Alexander Albon,williams,team_IJAI583X,Williams,2026-10-10T11:00:00+00:00,15,0,Retired,Retired,unknown,0
+1191,bortoleto,driver_d1a4FipV,Gabriel Bortoleto,audi,team_D9V5gkPb,Audi,2026-10-10T11:00:00+00:00,16,0,Retired,Retired,unknown,0
+1191,bottas,driver_H43o382s,Valtteri Bottas,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-10-10T11:00:00+00:00,17,0,Retired,Retired,unknown,0
+1191,hadjar,driver_ZiErQgDm,Isack Hadjar,red_bull,team_SYB8m2Vp,Red Bull,2026-10-10T11:00:00+00:00,18,0,Retired,Retired,unknown,0
+1191,colapinto,driver_ElsSjDoL,Franco Colapinto,alpine,team_LJ6hqyXM,Alpine F1 Team,2026-10-10T11:00:00+00:00,19,0,Retired,Retired,unknown,0
+1191,russell,driver_dPPwWNxA,George Russell,mercedes,team_tdiMmtQx,Mercedes,2026-10-10T11:00:00+00:00,20,0,Retired,Retired,unknown,0
+1191,perez,driver_NliMiGAb,Sergio Pérez,cadillac,team_nVXl8xvk,Cadillac F1 Team,2026-10-10T11:00:00+00:00,21,0,Retired,Retired,unknown,0
+1191,stroll,driver_XkmSOlgX,Lance Stroll,aston_martin,team_fhnXl3cF,Aston Martin,2026-10-10T11:00:00+00:00,22,0,Retired,Retired,unknown,0

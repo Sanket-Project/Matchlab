@@ -1,0 +1,38 @@
+{
+  "sports": {
+    "football": {
+      "data_dir": "D:/YourSportsData/football",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "path": "D:/YourModels/football_winner.onnx",
+          "format": "onnx",
+          "features": ["team_recent_avg", "team_recent_conceded", "opponent_recent_avg", "opponent_recent_conceded", "is_home", "is_neutral"],
+          "labels": ["team", "draw", "opponent"],
+          "dtype": "float32",
+          "output_index": 0
+        },
+        "team_score": {
+          "path": "D:/YourModels/football_score.joblib",
+          "format": "joblib",
+          "trusted": false,
+          "input": "dataframe",
+          "features": ["team_recent_avg", "opponent_recent_conceded", "is_home"]
+        },
+        "player_score": {
+          "path": "D:/YourModels/football_player.pt",
+          "format": "torchscript",
+          "trusted": false,
+          "features": ["player_recent_avg", "opponent_recent_conceded"]
+        },
+        "player_threat": {
+          "path": "D:/YourModels/football_threat.keras",
+          "format": "keras",
+          "trusted": false,
+          "features": ["interaction_rate", "interaction_opportunities", "player_recent_avg", "opponent_player_recent_avg"]
+        }
+      }
+    }
+  }
+}

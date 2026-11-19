@@ -1,0 +1,196 @@
+{
+  "pretrained": {
+    "chronos_path": "models/chronos-bolt-small",
+    "manifest": "models/manifest.json",
+    "max_context_rows": 192,
+    "n_estimators": 2
+  },
+  "sports": {
+    "football": {
+      "data_dir": "data/real/football",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true
+      }
+    },
+    "cricket": {
+      "data_dir": "data/real/cricket",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true,
+        "draw": false,
+        "format": "Standard IPL T20; completed games; no super-overs/DLS"
+      }
+    },
+    "tennis": {
+      "data_dir": "data/real/tennis",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true,
+        "max_score": 2,
+        "format": "Completed best-of-three singles"
+      }
+    },
+    "badminton": {
+      "data_dir": "data/real/badminton",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true,
+        "max_score": 2,
+        "format": "Completed best-of-three singles"
+      }
+    },
+    "baseball": {
+      "data_dir": "data/real/baseball",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true
+      }
+    },
+    "rugby": {
+      "data_dir": "data/real/rugby",
+      "demo": false,
+      "reference_mode": false,
+      "models": {
+        "winner": {
+          "format": "tabicl_classifier",
+          "path": "models/tabicl/tabicl-classifier-v2-20260212.ckpt",
+          "sha256": "bdc7dbd5e4ff21f8f0456fcf90c6b7cdf72dbea960f2d05b19bec19f9b3d4ed0"
+        },
+        "team_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_score": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        },
+        "player_threat": {
+          "format": "tabicl_regressor",
+          "path": "models/tabicl/tabicl-regressor-v2-20260212.ckpt",
+          "sha256": "0db9cb538f114e79026bf08f45f41ad8dd7ad2de2aaca9a5ca8cd3bd9748ae7a"
+        }
+      },
+      "scoring": {
+        "strict_scores": true
+      }
+    }
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "source": "Thomas McMahon superrugby; original results collated by Kevin Lassen",
+  "url": "https://github.com/thmcmahon/superrugby",
+  "license": "CC0 (publisher DESCRIPTION)",
+  "limitations": [
+    "Super Rugby union only, 2011\u20132015. Historical team names retained; no rugby league, current form, players or carry interactions.",
+    "Scores are final match points, including extra time in knockout fixtures. Draws are possible in league play."
+  ],
+  "sport": "rugby",
+  "matches": 625,
+  "player_rows": 0,
+  "interaction_rows": 0,
+  "earliest": "2011-02-18",
+  "latest": "2015-07-04",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "43b43e32f775467a26caaf147ee4427b9f653c91b6fdd50716cac86efea305fd",
+    "matches.csv": "7b2f4e1c2423e2062fd95770ee3317f2f7a31a2d34a654f436cc6466a46bb8ba",
+    "players.csv": "5bf1707efa47ab44acac7b73d71912c8b3395f5fc489d71e9e0d00c8c4cb91ae"
+  }
+}

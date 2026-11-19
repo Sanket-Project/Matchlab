@@ -1,0 +1,21 @@
+{
+  "source": "OpenFootball football.json; English Premier League 2021\u20132024",
+  "url": "https://github.com/openfootball/football.json",
+  "license": "CC0-1.0",
+  "limitations": [
+    "Full-time league results only. No player appearances or interactions.",
+    "Historical snapshot ends May 2024; no current injuries, lineups, transfers or fixtures."
+  ],
+  "sport": "football",
+  "matches": 1140,
+  "player_rows": 0,
+  "interaction_rows": 0,
+  "earliest": "2021-08-13",
+  "latest": "2024-05-19",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "43b43e32f775467a26caaf147ee4427b9f653c91b6fdd50716cac86efea305fd",
+    "matches.csv": "0ac5e4d361a5958e2def445659fce5a7847d705e3e87157c1522a6fbc6657e6a",
+    "players.csv": "5bf1707efa47ab44acac7b73d71912c8b3395f5fc489d71e9e0d00c8c4cb91ae"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "source": "Retrosheet game logs, MLB 2023 regular season",
+  "url": "https://www.retrosheet.org/",
+  "license": "Retrosheet free reuse with mandatory attribution",
+  "attribution": "The information used here was obtained free of charge from and is copyrighted by Retrosheet. Interested parties may contact Retrosheet at www.retrosheet.org.",
+  "limitations": [
+    "Team game logs only, no individual batting or pitcher interactions. Suspensions, forfeits and ties excluded.",
+    "Team abbreviations are Retrosheet identifiers. Historical snapshot, no current lineups."
+  ],
+  "sport": "baseball",
+  "matches": 2424,
+  "player_rows": 0,
+  "interaction_rows": 0,
+  "earliest": "2023-03-30",
+  "latest": "2023-10-01",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "43b43e32f775467a26caaf147ee4427b9f653c91b6fdd50716cac86efea305fd",
+    "matches.csv": "55479a6f5f969c87103de2b0e3a30c5c55309258caaed0b38eb2e64359171abc",
+    "players.csv": "5bf1707efa47ab44acac7b73d71912c8b3395f5fc489d71e9e0d00c8c4cb91ae"
+  }
+}

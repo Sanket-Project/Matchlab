@@ -1,0 +1,40 @@
+{
+  "sports": {
+    "football": {
+      "data_dir": "data/demo/football",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    },
+    "cricket": {
+      "data_dir": "data/demo/cricket",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    },
+    "tennis": {
+      "data_dir": "data/demo/tennis",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    },
+    "badminton": {
+      "data_dir": "data/demo/badminton",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    },
+    "baseball": {
+      "data_dir": "data/demo/baseball",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    },
+    "rugby": {
+      "data_dir": "data/demo/rugby",
+      "demo": true,
+      "reference_mode": true,
+      "models": {}
+    }
+  }
+}

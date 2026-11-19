@@ -1,0 +1,10 @@
+# Reference only. The dashboard itself has zero third-party dependencies.
+# Install only the runtime for your model, from an existing LOCAL wheelhouse
+# in the Python environment/version used to train/export that model.
+numpy
+pandas
+joblib
+scikit-learn
+onnxruntime
+torch
+tensorflow

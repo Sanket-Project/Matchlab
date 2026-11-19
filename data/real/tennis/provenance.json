@@ -1,0 +1,34 @@
+{
+  "source": "Jeff Sackmann / Tennis Abstract, retained archive by Aneeshers; ATP 2023\u20132024",
+  "url": "https://github.com/Aneeshers/tennis-sackmann-archive",
+  "license": "CC BY-NC-SA 4.0 \u2014 noncommercial use; derived CSVs same license",
+  "limitations": [
+    "Only completed best-of-three ATP men's singles; no Grand Slam best-of-five or retirements.",
+    "Source dates are tournament starts. date is conservative result availability (start +14 days); pre_match_date is tournament start. All same-tournament and overlapping unpublished results excluded from features.",
+    "Aces only where reported; missing aces omitted, never imputed as zero.",
+    "Point threat: fraction of total match points won, derived from both players' serve points and serve points won. No shot-level context.",
+    "ground is the tournament name; surface, level, round and pre-tournament rankings are recorded per match and are blank where the source has none."
+  ],
+  "match_context_columns": [
+    "ground",
+    "surface",
+    "level",
+    "round",
+    "team_rank",
+    "opponent_rank",
+    "team_rank_points",
+    "opponent_rank_points"
+  ],
+  "sport": "tennis",
+  "matches": 4847,
+  "player_rows": 9322,
+  "interaction_rows": 9322,
+  "earliest": "2023-01-16",
+  "latest": "2024-12-08",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "cc9040558f37c15e7081ef55740361adb8038d05b8232a512c3bba783bdf6495",
+    "matches.csv": "92db404a49bce3a2e88981676a4283b8e050b184047804b552c6229b4f6a0d5a",
+    "players.csv": "d9dce23e14de8120826c891ae27351723f7ae9348de8fb6330b1f7102fc8c341"
+  }
+}

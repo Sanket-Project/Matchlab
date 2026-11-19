@@ -1,0 +1,49 @@
+{
+  "source": "Cricsheet IPL JSON, 2008\u20132026; credit Cricsheet",
+  "normalizations": {
+    "Royal Challengers Bangalore": "Royal Challengers Bengaluru (same franchise; historical records combined)",
+    "Delhi Daredevils": "Delhi Capitals (same franchise; historical records combined)",
+    "Kings XI Punjab": "Punjab Kings (same franchise; historical records combined)",
+    "Rising Pune Supergiants": "Rising Pune Supergiant (same franchise; historical records combined)",
+    "Feroz Shah Kotla": "Arun Jaitley Stadium (same ground)",
+    "Sardar Patel Stadium": "Narendra Modi Stadium (same ground)",
+    "Punjab Cricket Association Stadium": "Punjab Cricket Association IS Bindra Stadium (same ground)",
+    "Subrata Roy Sahara Stadium": "Maharashtra Cricket Association Stadium (same ground)"
+  },
+  "url": "https://cricsheet.org/",
+  "license": "ODC-BY-1.0 (https://opendatacommons.org/licenses/by/1-0/)",
+  "excluded": {
+    "nonstandard/no-result/DLS/super-over": 48
+  },
+  "stage_1_inputs": {
+    "batting_first": "First innings team from the recorded innings order",
+    "starter": "Eleven listed players after excluding recorded incoming match replacements; blank when the starting XI cannot be established"
+  },
+  "limitations": [
+    "Completed standard IPL T20 matches only; DLS, no-result and super-over matches excluded.",
+    "Player runs are per listed appearance, including did-not-bat zeroes; not conditional on batting position.",
+    "Boundary threat is expected fraction of non-wide deliveries producing a batter four/six against a bowler; no-balls count, non-boundary overthrows do not.",
+    "Chasing totals are truncated by reaching the target. Pre-match squad strength uses the last completed starting XI.",
+    "Home advantage is inferred from earlier IPL seasons. Ground history describes completed matches; pitch conditions and weather are unmeasured."
+  ],
+  "match_context_columns": [
+    "ground",
+    "city",
+    "toss_winner",
+    "toss_decision",
+    "season",
+    "batting_first"
+  ],
+  "sport": "cricket",
+  "matches": 1195,
+  "player_rows": 26835,
+  "interaction_rows": 59486,
+  "earliest": "2008-04-18",
+  "latest": "2026-05-31",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "bc34aaf328c4fd726517e1ba98ed8ac368c872cc9118240b4b49dde3b7ad22fb",
+    "matches.csv": "af211914d0df301acd28d476f390daa4564d011d47f3d065fc60406eaaccee0f",
+    "players.csv": "69065b39c9a97ccc7ea730e172cd6dbc746019952c59f1de9bb7f24a5d46e7cb"
+  }
+}

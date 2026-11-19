@@ -1,0 +1,35 @@
+{
+  "source": "ShuttleSet and ShuttleSet22, Wei-Yao Wang and collaborators (KDD 2023 / IJCAI 2023); Badminton BWF World Tour, sanderp on Kaggle",
+  "url": "https://github.com/wywyWang/CoachAI-Projects",
+  "license": "MIT (copyright 2022 Wei-Yao Wang); annotations only; BWF World Tour data and derived match data under CC BY-SA 4.0",
+  "limitations": [
+    "Local badminton results end in 2022. Current forecasts use historical player strength from that period.",
+    "Player and rally models use the selected ShuttleSet annotations with verified terminal scoreboards."
+  ],
+  "attribution": "Badminton BWF World Tour by sanderp, https://www.kaggle.com/datasets/sanderp/badminton-bwf-world-tour (https://creativecommons.org/licenses/by-sa/4.0/). Names and orientation normalized, completed game scores converted to games won, and duplicate fixtures removed.",
+  "bwf_import": {
+    "matches": 3663,
+    "excluded": {
+      "retirement_or_other_discipline": 70,
+      "duplicate_date_and_players": 28
+    },
+    "sha256": "22a6d2de24fe5622b2a66e0faae7fc4833606294711afb120ed29bd1d731e796"
+  },
+  "match_context_columns": [
+    "ground",
+    "level",
+    "round"
+  ],
+  "sport": "badminton",
+  "matches": 3723,
+  "player_rows": 98,
+  "interaction_rows": 98,
+  "earliest": "2018-01-09",
+  "latest": "2022-10-30",
+  "synthetic": false,
+  "files": {
+    "interactions.csv": "c20c4121b25016dc3bac84d66ce8ad3aae325a77d67d1fd15d6aff6da44b2886",
+    "matches.csv": "d3f63e490ff95b7e14c00146449ce5b3d3f756d1789d803d8358b2d1bc856511",
+    "players.csv": "e9836ca2f538f3243f80b428e33c5bf173628e454a71c6b020b67cdd586b2714"
+  }
+}
