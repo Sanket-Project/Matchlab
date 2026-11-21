@@ -89,7 +89,12 @@ def attach(forecast, saved, key_ready, requests_left, minutes_to_start):
     block = {"checkpoint": point, "check": current, "earlier": None, "model_win": base, "win": base, "max_shift": MAX_SHIFT,
              "used": len(saved), "limit": MAX_PER_MATCH, "key_ready": key_ready, "requests_left": requests_left}
     if current:
-        first = min(0.99, max(0.01, base[0] + current["shift"] / 100))
+        # parse() already caps a new check; a stored one is capped again here, so an edited or older saved check
+        # can never move the win chance by more than MAX_SHIFT points.
+        shift = max(-MAX_SHIFT, min(MAX_SHIFT, int(current.get("shift") or 0)))
+        current = {**current, "shift": shift}
+        block["check"] = current
+        first = min(0.99, max(0.01, base[0] + shift / 100))
         block["win"] = [round(first, 3), round(1 - first, 3)]
     elif saved:
         block["earlier"] = max(saved.values(), key=lambda check: check.get("at") or "")
