@@ -1008,3 +1008,10 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 }
 
 .utility-divider{color:var(--color-text-secondary)}
+
+/* Typography: tabular figures wherever digits are compared or change, a readable measure for prose,
+   and no text below 11px. */
+.tag,.budget,.count,.tab-count,time,.stat .v,.stat .s,.card .teams b,.foot2,td,th,.score-status,.score-side strong,.scenario dd,.timeline,.setrow,.probabilities strong,.winlabels,.hero-stats strong,.range-extremes,.terminal-subtext,.feed-meta,.world-meta,.big,.ticker-marquee-item,.watchlist-price,.watchlist-pill{font-variant-numeric:tabular-nums}
+.sub,.note,.why,.feed-summary,.brief-list li,.hero-copy>p,.world-hero p{max-width:70ch}
+.tag{font-size:11px}
+@media(max-width:760px){.utility-bar,.budget{font-size:11px}}
