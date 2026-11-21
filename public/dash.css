@@ -356,6 +356,9 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .card .teams>span{padding:4px 0}.card .tour{font-size:12px;min-height:32px}.card .foot2{font-size:12px;margin-top:16px}
 .tag{border-radius:var(--radius-inner);font-size:10px;font-weight:600;letter-spacing:.25px;text-transform:none;background:var(--color-info-muted);color:var(--color-on-info-muted)}
 .tag.live{background:var(--color-background-red);color:var(--color-text-red)}
+/* A value that changed in place gets one short highlight (opacity only). */
+@keyframes value-changed{from{opacity:.3}to{opacity:1}}
+.changed{animation:value-changed 400ms var(--ease-out-expo)}
 .tag.live{position:relative}
 .tag.live::before{content:"";display:inline-block;width:6.5px;height:6.5px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:1px}
 .tag.live::after{content:"";position:absolute;left:8px;top:50%;width:6.5px;height:6.5px;margin-top:-3.25px;border:1.5px solid currentColor;border-radius:50%;box-sizing:border-box;opacity:0;pointer-events:none;animation:live-ring 1.8s var(--ease-out-expo) infinite}

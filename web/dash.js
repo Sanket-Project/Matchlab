@@ -4,6 +4,7 @@ const view = document.getElementById("view");
 const state = { token: "", schedule: null, filter: "all", timer: null, request: 0, players: {}, keyStatus: null, refreshing: false, aiBusy: null, aiTried: {}, aiError: {} };
 const SPORTS = { cricket: "Cricket", tennis: "Tennis", f1: "Formula 1" };
 state.search = "";
+state.pickers = {};
 const THEMES = { butter: "Butter", neutral: "Neutral", chocolate: "Chocolate" };
 state.theme = "butter";
 try {
@@ -19,12 +20,18 @@ function changeTheme(theme) {
   try { localStorage.setItem("matchlab-astryx-theme", theme); } catch (_) { /* Keep this session's palette. */ }
 }
 
+// Listeners are remembered on the node so the keyed patch below can swap in the newest closure.
+function bind(node, type, fn) {
+  if (node._on && node._on[type]) node.removeEventListener(type, node._on[type]);
+  (node._on = node._on || {})[type] = fn;
+  node.addEventListener(type, fn);
+}
 function h(tag, attrs, ...children) {
   const node = document.createElement(tag);
   for (const [key, value] of Object.entries(attrs || {})) {
     if (value === false || value == null) continue;
     if (key === "class") node.className = value;
-    else if (key.startsWith("on")) node.addEventListener(key.slice(2), value);
+    else if (key.startsWith("on")) bind(node, key.slice(2), value);
     else node.setAttribute(key, value === true ? "" : value);
   }
   for (const child of children.flat()) {
@@ -71,7 +78,10 @@ const show = (...nodes) => {
   view.classList.remove("view-enter");
   void view.offsetWidth;
   view.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
+  view.dataset.route = state.routeKey || "";
   view.classList.add("view-enter");
+  // First reveal only: counters count up once per view. Later updates change the number in place.
+  view.querySelectorAll("[data-countup]").forEach((node) => animateNumber(node, Number(node.dataset.countup)));
   if (state.focusHeading) {
     state.focusHeading = false;
     const heading = view.querySelector("h1");
@@ -82,6 +92,72 @@ const show = (...nodes) => {
     }
   }
 };
+// ---- keyed patch -----------------------------------------------------------------------
+// Same-route updates (a poll, a filter, a search) patch the existing DOM instead of rebuilding it, so focus,
+// scroll, open <details>, typed text and selects survive, entrance animations do not replay, and a value that
+// changed is updated in place with one brief highlight. A node with data-k is matched by key; a node with
+// data-atomic is kept whole while its key is unchanged and replaced when it changes (use it for components whose
+// listeners close over their own child nodes).
+const FLASH = "[data-live], .num, .stat .v, .teams b, .probabilities strong";
+function flash(el) { el.classList.remove("changed"); void el.offsetWidth; el.classList.add("changed"); }
+function morphAttrs(o, n) {
+  const details = o.tagName === "DETAILS";
+  for (const a of [...o.attributes]) if (!n.hasAttribute(a.name) && !(details && a.name === "open")) o.removeAttribute(a.name);
+  for (const a of n.attributes) if (!(details && a.name === "open") && o.getAttribute(a.name) !== a.value) o.setAttribute(a.name, a.value);
+  for (const type of Object.keys(o._on || {})) if (!(n._on && n._on[type])) { o.removeEventListener(type, o._on[type]); delete o._on[type]; }
+  for (const [type, fn] of Object.entries(n._on || {})) bind(o, type, fn);
+}
+function sameKind(o, n) {
+  if (o.nodeType !== n.nodeType) return false;
+  if (o.nodeType !== 1) return true;
+  return o.tagName === n.tagName && o.namespaceURI === n.namespaceURI && !n.hasAttribute("data-atomic") && !o.hasAttribute("data-atomic");
+}
+function morphNode(o, n) {
+  if (o.nodeType !== 1) {
+    if (o.data !== n.data) {
+      const host = o.parentElement, had = o.data.trim() !== "";
+      o.data = n.data;
+      const target = host && host.closest(FLASH);
+      if (had && target && !host.closest("[aria-busy]")) flash(target);
+    }
+    return;
+  }
+  morphAttrs(o, n);
+  if (o.tagName === "SELECT") {
+    const values = (select) => [...select.options].map((option) => option.value).join("\u0000");
+    if (values(o) !== values(n)) o.replaceWith(n);
+    return;
+  }
+  if (o.tagName === "INPUT" || o.tagName === "TEXTAREA") return;
+  morphChildren(o, n);
+}
+function morphChildren(o, n) {
+  const kids = [...n.childNodes], byKey = new Map();
+  // Drop keyed nodes that are gone first, so the survivors keep their order and are never moved: moving a node
+  // restarts its CSS animation.
+  const wanted = new Set(kids.filter((k) => k.nodeType === 1 && k.hasAttribute("data-k")).map((k) => k.getAttribute("data-k")));
+  for (const child of [...o.childNodes]) if (child.nodeType === 1 && child.hasAttribute("data-k") && !wanted.has(child.getAttribute("data-k"))) child.remove();
+  for (const child of o.childNodes) if (child.nodeType === 1 && child.hasAttribute("data-k")) byKey.set(child.getAttribute("data-k"), child);
+  kids.forEach((next, i) => {
+    const cur = o.childNodes[i] || null;
+    const key = next.nodeType === 1 ? next.getAttribute("data-k") : null;
+    if (key != null) {
+      const found = byKey.get(key);
+      if (found && found.tagName === next.tagName) {
+        if (found !== cur) o.insertBefore(found, cur);
+        if (!next.hasAttribute("data-atomic")) morphNode(found, next);
+      } else o.insertBefore(next, cur);
+    } else if (cur && !(cur.nodeType === 1 && cur.hasAttribute("data-k")) && sameKind(cur, next)) morphNode(cur, next);
+    else o.insertBefore(next, cur);
+  });
+  while (o.childNodes.length > kids.length) o.lastChild.remove();
+}
+function showMorph(...nodes) {
+  if (view.dataset.route !== (state.routeKey || "")) return show(...nodes);
+  const next = document.createDocumentFragment();
+  next.append(...nodes.flat().filter((n) => n != null && n !== false));
+  morphChildren(view, next);
+}
 const pct = (p) => `${Math.round(p * 100)}%`;
 const time = (iso) => iso ? new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
 const day = (iso) => iso ? new Date(iso).toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : "";
@@ -134,7 +210,8 @@ function card(match, index = 0) {
       : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
   return h("button", {
     class: `card match-card${live ? " is-live" : ""}`,
-    style: `--stagger:${index};`,
+    "data-k": match.id,
+    style: `--stagger:${Math.min(index, 12)};`,
     type: "button",
     onclick: () => { location.hash = `match/${encodeURIComponent(match.id)}`; }
   },
@@ -162,21 +239,18 @@ function renderMatches() {
       onclick: () => { state.filter = key; renderMatches(); } }, key === "all" ? "All sports" : SPORTS[key])));
   const refresh = h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: refreshSchedule },
     state.refreshing ? "Checking..." : "Refresh");
-  const section = (title, rows, empty) => h("section", { class: "section" },
+  const section = (key, title, rows, empty) => h("section", { class: "section", "data-k": key },
     h("h2", {}, title, h("span", { class: "count" }, rows.length ? `${rows.length}` : "")),
     rows.length ? h("div", { class: "cards" }, rows.map((m, i) => card(m, i))) : h("p", { class: "note" }, empty));
   const search = h("input", { type: "search", class: "match-search", value: state.search, placeholder: "Search teams, leagues or venues", "aria-label": "Search teams, leagues or venues",
-    oninput: (event) => { const position = event.target.selectionStart; state.search = event.target.value; renderMatches(); const field = view.querySelector(".match-search"); field.focus(); if (position != null) field.setSelectionRange(position, position); } });
+    oninput: (event) => { state.search = event.target.value; clearTimeout(state.searchTimer); state.searchTimer = setTimeout(renderMatches, 150); } });
   const heroStatsNodes = [["Live now", "in"], ["Coming up", "pre"], ["Finished", "post"]].map(([label, status]) => {
     const val = data ? all.filter((m) => m.state === status).length : null;
-    const numNode = h("strong", { class: "num" }, val != null ? String(val) : "—");
-    if (val != null) {
-      requestAnimationFrame(() => animateNumber(numNode, val));
-    }
+    const numNode = h("strong", { class: "num", "data-countup": val }, val != null ? String(val) : "—");
     return h("div", {}, h("span", {}, label), numNode);
   });
-  show(
-    h("section", { class: "matchday-hero", "aria-label": "Matchday overview" },
+  showMorph(
+    h("section", { class: "matchday-hero", "aria-label": "Matchday overview", "data-k": "hero" },
       h("div", { class: "hero-copy" }, h("p", { class: "eyebrow" }, "THE MATCHDAY EDIT"), h("h1", {}, "Every match.", h("br"), h("span", {}, "A clearer picture.")),
         h("p", {}, "Your daily view of live scores, upcoming fixtures and the numbers behind the game."),
         h("span", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
@@ -186,9 +260,9 @@ function renderMatches() {
     h("div", { class: "filter-bar" }, filters, search),
     data && data.refresh_error ? h("p", { class: "note error" }, data.refresh_error) : null,
     data && (data.sources || []).filter((s) => s.error).map((s) => h("p", { class: "note warn" }, `${s.name}: ${s.error}`)),
-    section("Live now", live, state.search ? "No live matches match your search. Try another team or league." : "A quiet moment. No matches are in play for this sport right now."),
-    section("Coming up", soon, state.search ? "No upcoming matches match your search." : "No upcoming fixtures for this selection in the next day."),
-    done.length ? h("details", { class: "section more" }, h("summary", {}, `Finished today (${done.length})`), h("div", { class: "cards", style: "margin-top:10px" }, done.map((m, i) => card(m, i)))) : null);
+    section("live", "Live now", live, state.search ? "No live matches match your search. Try another team or league." : "A quiet moment. No matches are in play for this sport right now."),
+    section("soon", "Coming up", soon, state.search ? "No upcoming matches match your search." : "No upcoming fixtures for this selection in the next day."),
+    done.length ? h("details", { class: "section more", "data-k": "done" }, h("summary", {}, `Finished today (${done.length})`), h("div", { class: "cards", style: "margin-top:10px" }, done.map((m, i) => card(m, i)))) : null);
 }
 
 async function refreshSchedule() {
@@ -227,14 +301,13 @@ function playerPicker(rows, key, display) {
   if (!rows.length) return h("p", { class: "sub" }, "Named player projections are waiting for a usable lineup.");
   const names = rows.map((row) => row.name);
   const selected = names.includes(state.players[key]) ? state.players[key] : names[0];
-  const metrics = h("div", { class: "player-forecast" });
-  const choose = (name) => {
-    state.players[key] = name;
-    metrics.replaceChildren(...display(rows[names.indexOf(name)]));
-  };
-  const select = h("select", { onchange: (event) => choose(event.target.value) },
-    names.map((name) => h("option", { value: name, selected: name === selected }, name)));
-  choose(selected);
+  const metrics = h("div", { class: "player-forecast" }, display(rows[names.indexOf(selected)]));
+  state.pickers[key] = { rows, names, display };      // read at event time, so the newest data is used after a patch
+  const select = h("select", { onchange: (event) => {
+    const picker = state.pickers[key];
+    state.players[key] = event.target.value;
+    event.target.closest(".players").querySelector(".player-forecast").replaceChildren(...picker.display(picker.rows[picker.names.indexOf(event.target.value)]));
+  } }, names.map((name) => h("option", { value: name, selected: name === selected }, name)));
   return h("div", { class: "players", "data-key": key }, h("label", { class: "player-select" }, h("span", {}, "Player"), select), metrics);
 }
 
@@ -521,7 +594,7 @@ function tennisLive(f) {
 
 function renderTennis(f, id) {
   const [a, b] = f.teams, fx = f.fixture, bt = f.analysis.backtest;
-  show(
+  showMorph(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${a.name} v ${b.name}`),
@@ -553,7 +626,7 @@ function renderForecast(f, id) {
   const fx = f.fixture;
   const supported = f.supported;
   const start = fx.start ? `${day(fx.start)} · ${time(fx.start)}` : "";
-  show(
+  showMorph(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${fx.team} vs ${fx.opponent}`),
@@ -1040,7 +1113,8 @@ function brokerTerminal(q) {
     note.textContent = quoteTime;
   }) : h("p", { class: "note" }, "No price history was supplied for this ticker.");
   const tile = (label, value) => h("div", { class: "stat-tile" }, h("span", { class: "stat-tile-k" }, label), h("span", { class: "stat-tile-v tnum" }, value));
-  return h("article", { class: "broker-terminal primary", "aria-label": `${q.name}, ${q.symbol}` },
+  return h("article", { class: "broker-terminal primary", "aria-label": `${q.name}, ${q.symbol}`, "data-atomic": "",
+    "data-k": [q.symbol, q.price, q.as_of, series ? series.length : 0].join("|") },
     h("div", { class: "terminal-topbar" }, h("div", { class: "terminal-ticker-info" },
       h("span", { class: "terminal-symbol" }, q.symbol), h("span", { class: "terminal-name" }, q.name), q.exchange ? h("span", { class: "terminal-exchange" }, q.exchange) : null)),
     h("div", { class: "terminal-hero-row" }, h("div", { class: "terminal-price-stack" }, price, change), note),
@@ -1080,7 +1154,11 @@ function chipRow(label, options, current, pick) {
 }
 
 // replaceChildren would print the word "null" for an empty slot, so empty slots are dropped first.
-const put = (element, ...nodes) => element.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
+const put = (element, ...nodes) => {
+  const next = document.createDocumentFragment();
+  next.append(...nodes.flat().filter((n) => n != null && n !== false));
+  morphChildren(element, next);
+};
 function renderWorld() {
   const request = ++state.request;
   clearTimeout(state.timer);
@@ -1152,7 +1230,7 @@ function renderWorld() {
     put(done("models", data).body, 
       chipRow("Filter model releases", [["all", "All", all.length], ["new", "Listed this week", all.filter(filters.new).length], ["major", "Major labs", all.filter(filters.major).length]], filter,
         (value) => { world.filters.models = value; world.shown.models = WORLD_STEP.models; drawModels(); keepFocus(parts.models, value); }),
-      rows.length ? h("ul", { class: "feed" }, rows.slice(0, world.shown.models).map((m) => h("li", {},
+      rows.length ? h("ul", { class: "feed" }, rows.slice(0, world.shown.models).map((m) => h("li", { "data-k": m.url },
         h("p", { class: "feed-meta" }, h("span", { class: "tag" }, m.lab), m.is_new ? h("span", { class: "tag ok" }, "Newly listed") : null, m.free ? h("span", { class: "tag off" }, "Free") : null),
         external(m.url, m.name, "feed-title"),
         h("p", { class: "feed-meta" }, `Listed ${ago(m.released)}${m.context ? ` · ${compact(m.context)} context` : ""}${price(m)}`),
@@ -1169,7 +1247,7 @@ function renderWorld() {
     const rows = items.filter((item) => matches(item, filter));
     put(done(id, data).body, 
       chipRow(filterLabel, options, filter, (value) => { world.filters[id] = value; world.shown[id] = WORLD_STEP[id]; repaint(); keepFocus(parts[id], value); }),
-      rows.length ? h("ul", { class: `feed${id === "sports" ? " feed-sports" : ""}` }, rows.slice(0, world.shown[id]).map((item) => h("li", {},
+      rows.length ? h("ul", { class: `feed${id === "sports" ? " feed-sports" : ""}` }, rows.slice(0, world.shown[id]).map((item) => h("li", { "data-k": item.url },
         h("p", { class: "feed-meta" }, id === "sports" ? h("span", { class: "tag" }, SPORT_LABELS[item.sport] || item.sport) : null, ...(item.labs || []).map((lab) => h("span", { class: "tag" }, lab)),
           `${item.source} · ${ago(item.published)}`),
         external(item.url, item.title, "feed-title"),
@@ -1263,6 +1341,7 @@ function route() {
   const hash = location.hash.slice(1) || "matches";
   const tab = hash.startsWith("match/") ? "matches" : hash;
   document.querySelectorAll("nav a").forEach((a) => a.dataset.tab === tab ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  state.routeKey = hash;
   state.focusHeading = state.routed === true;   // keep the natural first tab stop on the initial load
   state.routed = true;
   if (hash.startsWith("match/")) openMatch(decodeURIComponent(hash.slice(6)));
