@@ -22,13 +22,8 @@ def _today():
 
 
 def _read(root):
-    try:
-        from . import supabase_db
-        data = supabase_db.get_state("api_budget")
-        if data and isinstance(data, dict):
-            return data
-    except Exception:
-        pass
+    # The ledger is a local file on purpose. A copy on a shared database that anyone holding its public key can
+    # rewrite would let them reset the count and spend the day's quota.
     try:
         data = json.loads((Path(root) / LEDGER).read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
@@ -37,11 +32,6 @@ def _read(root):
 
 
 def _write(root, data):
-    try:
-        from . import supabase_db
-        supabase_db.set_state("api_budget", data)
-    except Exception:
-        pass
     try:
         path = Path(root) / LEDGER
         path.parent.mkdir(parents=True, exist_ok=True)
