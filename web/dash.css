@@ -1068,3 +1068,4 @@ table.calibration td,table.calibration th[scope=row]{font-variant-numeric:tabula
 /* A busy button ("Checking…", "Loading…") still carries a readable status: no fade, secondary text, dashed edge. */
 .btn:disabled{opacity:1;color:var(--color-text-secondary);border-style:dashed;cursor:progress}
 .btn.primary:disabled{color:var(--color-on-accent, #fff)}
+#sport-record>h2{margin-top:var(--ml-s4)}
