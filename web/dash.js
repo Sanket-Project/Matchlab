@@ -164,6 +164,43 @@ const pct = (p) => `${Math.round(p * 100)}%`;
 const time = (iso) => iso ? new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
 const day = (iso) => iso ? new Date(iso).toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : "";
 
+// ---- player photos ----------------------------------------------------------------------
+// The owner's portraits, resized to WebP by tools/process_player_photos.py and listed in a small manifest. A player
+// without a portrait, or one whose file fails to load, shows initials on a tinted disc instead: same box, no shift.
+const nameKey = (name) => String(name || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
+  .replace(/[^a-z ]/g, " ").replace(/\s+/g, " ").trim();
+state.photos = {};
+const photosReady = fetch("/images/players/manifest.json").then((r) => (r.ok ? r.json() : {})).catch(() => ({}))
+  .then((manifest) => { state.photos = manifest || {}; });
+function photoFor(name) {
+  const key = nameKey(name);
+  if (state.photos[key]) return state.photos[key];
+  // Feeds sometimes give a fuller name than the portrait ("Andrea Kimi Antonelli"): match on the family name plus
+  // one given name, never on a family name alone.
+  const words = key.split(" ");
+  return Object.entries(state.photos).find(([k]) => { const w = k.split(" "); return w[w.length - 1] === words[words.length - 1] && words.includes(w[0]); })?.[1] || null;
+}
+const initials = (name) => String(name || "").split(/\s+/).filter(Boolean).map((w) => w[0]).slice(0, 2).join("").toUpperCase() || "?";
+// Avatar beside a visible name: decorative (alt=""), sized by the caller, lazy unless it sits in the first screen.
+function avatar(name, size = 40, eager = false) {
+  const entry = photoFor(name);
+  const box = h("span", { class: "avatar", style: `--avatar:${size}px`, "aria-hidden": "true" }, h("span", { class: "avatar-initials" }, initials(name)));
+  if (!entry) return box;
+  const src = (px) => `/images/players/${entry.slug}-face-${px}.webp`;
+  box.append(h("img", { src: src(entry.face[0]), srcset: entry.face.map((px) => `${src(px)} ${px}w`).join(", "), sizes: `${size}px`,
+    width: size, height: size, alt: "", loading: eager ? "eager" : "lazy", decoding: "async", onerror: (event) => event.target.remove() }));
+  return box;
+}
+// Portrait that stands on its own (a hero or a feature card): it gets a real description.
+function portrait(name, width, caption = "") {
+  const entry = photoFor(name);
+  if (!entry) return null;
+  const src = (px) => `/images/players/${entry.slug}-${px}.webp`;
+  return h("img", { class: "portrait", src: src(entry.card[0]), srcset: entry.card.map((px) => `${src(px)} ${px}w`).join(", "), sizes: `${width}px`,
+    width, height: Math.round(width * entry.ratio), alt: `Illustrated portrait of ${entry.name}${caption}`, decoding: "async",
+    onerror: (event) => event.target.remove() });
+}
+
 async function api(path, body) {
   const options = body === undefined ? {} : {
     method: "POST", headers: { "Content-Type": "application/json", "X-MatchLab-Token": state.token }, body: JSON.stringify(body),
@@ -207,9 +244,13 @@ function card(match, index = 0) {
   const live = match.state === "in";
   const ready = modelled(match);
   const tagText = live ? "Live" : match.state === "post" ? "Finished" : time(match.start);
-  const badge = match.sport === "f1" ? h("span", { class: "tag ok" }, "Explore F1")
-    : ready ? h("span", { class: "tag ok" }, "Forecast ready")
-      : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
+  const lock = match.lock;
+  // The owner's first question about a match: is the forecast locked? A saved pre-start forecast says so, with when.
+  const badge = lock ? h("span", { class: "tag ok lock", title: `Saved before the start at ${time(lock.saved_at)}` }, `Locked ${time(lock.saved_at)}`)
+    : match.sport === "f1" ? h("span", { class: "tag ok" }, "Explore F1")
+      : ready ? h("span", { class: "tag" }, match.state === "pre" ? "Not locked yet" : "Not locked")
+        : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
+  const face = (name) => match.sport === "tennis" ? avatar(name, 32, index < 4) : null;
   return h("button", {
     class: `card match-card${live ? " is-live" : ""}`,
     "data-k": match.id,
@@ -221,8 +262,9 @@ function card(match, index = 0) {
       h("div", { class: "meta" }, h("span", {}, `${SPORTS[match.sport]}${match.detail ? " · " + match.detail : ""}`),
         h("span", { class: `tag${live ? " live" : ""}` }, tagText))),
     h("div", { class: "teams" },
-      h("span", {}, h("span", { class: "team-name" }, match.team), h("b", {}, match.team_score || "")),
-      match.opponent ? h("span", {}, h("span", { class: "team-name" }, match.opponent), h("b", {}, match.opponent_score || "")) : null),
+      h("span", {}, face(match.team), h("span", { class: "team-name" }, match.team), h("b", {}, match.team_score || "")),
+      match.opponent ? h("span", {}, face(match.opponent), h("span", { class: "team-name" }, match.opponent), h("b", {}, match.opponent_score || "")) : null),
+    lock && lock.favourite ? h("div", { class: "card-pick" }, h("span", {}, "Locked pick"), h("strong", { class: "num" }, `${lock.favourite} ${pct(lock.win)}`)) : null,
     h("div", { class: "tour" }, [match.tournament, match.venue].filter(Boolean).join(" · ")),
     h("div", { class: "foot2" }, h("span", {}, live || match.state === "post" ? (match.status || "") : `${day(match.start)} · ${countdown(match.start)}`), badge),
     h("div", { class: "card-action" }, "Explore match", h("span", { "aria-hidden": "true" }, "↗")));
@@ -233,6 +275,11 @@ function freshness(iso, limits = [20, 60]) {
   const minutes = Math.round((Date.now() - Date.parse(iso)) / 60000);
   if (!Number.isFinite(minutes)) return { level: "unknown", text: "Check time unknown" };
   const age = minutes < 2 ? "just now" : minutes < 60 ? `${minutes} min ago` : `${Math.floor(minutes / 60)} h ${minutes % 60} min ago`;
+  if (state.hosted) {
+    // The public copy shows a snapshot the owner published; it cannot refresh it.
+    if (minutes <= limits[1]) return { level: "fresh", text: `Snapshot from ${age}` };
+    return { level: "old", text: `Snapshot from ${age}. Scores and match states may be out of date.` };
+  }
   if (minutes <= limits[0]) return { level: "fresh", text: `Checked ${age}` };
   if (minutes <= limits[1]) return { level: "stale", text: `Checked ${age}. Scores may be a little behind.` };
   return { level: "old", text: `Checked ${age}. Scores may be out of date: press Refresh.` };
@@ -262,7 +309,7 @@ function renderMatches() {
   const filters = h("div", { class: "row", role: "group", "aria-label": "Sport" },
     ["all", ...Object.keys(SPORTS)].map((key) => h("button", { class: "chip", type: "button", "aria-pressed": String(state.filter === key),
       onclick: () => { state.filter = key; state.limit = {}; renderMatches(); } }, key === "all" ? "All sports" : SPORTS[key])));
-  const refresh = h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: refreshSchedule },
+  const refresh = state.hosted ? null : h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: refreshSchedule },
     state.refreshing ? "Checking..." : "Refresh");
   // Long lists are capped at 12 cards with a "show more" button, so the schedule stays scannable and the DOM small.
   const cards = (key, rows) => {
@@ -287,7 +334,7 @@ function renderMatches() {
         h("span", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
       h("div", { class: "hero-stats" }, heroStatsNodes)),
     h("div", { class: "head matches-heading" }, h("div", {}, h("p", { class: "eyebrow" }, "YOUR MATCH CENTRE"), h("h2", {}, "On the schedule"),
-      h("p", { class: "sub" }, data && data.last_updated ? [freshnessChip(data.last_updated), " Open a match to explore its forecast."] : "Loading fixtures…")), refresh),
+      h("p", { class: "sub" }, data && data.last_updated ? [freshnessChip(data.last_updated), state.hosted ? " Locked forecasts are marked on each card." : " Open a match to explore its forecast."] : "Loading fixtures…")), refresh),
     h("div", { class: "filter-bar" }, filters, search),
     data && data.refresh_error ? h("p", { class: "note error" }, data.refresh_error) : null,
     data && (data.sources || []).filter((s) => s.error).map((s) => h("p", { class: "note warn" }, `${s.name}: ${s.error}`)),
@@ -298,6 +345,11 @@ function renderMatches() {
 
 async function refreshSchedule() {
   if (state.refreshing) return;
+  if (state.hosted) {
+    try { state.schedule = await api("/api/today-matches"); } catch (_) { /* keep the copy on screen */ }
+    if (!location.hash || location.hash === "#matches") renderMatches();
+    return;
+  }
   state.refreshing = true;
   if (!location.hash || location.hash === "#matches") renderMatches();
   try {
@@ -627,7 +679,8 @@ function renderTennis(f, id) {
   const [a, b] = f.teams, fx = f.fixture, bt = f.analysis.backtest;
   showMorph(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
-    h("div", { class: "head" },
+    h("div", { class: "head saved-head" },
+      [a.name, b.name].some((name) => photoFor(name)) ? h("div", { class: "duel", "data-atomic": `${a.name}|${b.name}` }, [a.name, b.name].map((name) => portrait(name, 150))) : null,
       h("div", {}, h("h1", {}, `${a.name} v ${b.name}`),
         h("p", { class: "sub" }, [fx.tournament, fx.detail, f.format, `${f.surface.name} court`, `${day(fx.start)} ${time(fx.start)}`, f.intel.state === "pre" ? countdown(fx.start) : f.intel.status].filter(Boolean).join(" · "))),
       h("button", { id: "refresh-match", class: "btn primary", type: "button", onclick: () => openMatch(id, true, true) }, "Refresh now")),
@@ -682,6 +735,10 @@ async function openMatch(id, manual, forceRefresh = false) {
   const request = ++state.request;
   const isCurrent = () => request === state.request && location.hash === `#match/${encodeURIComponent(id)}`;
   const match = findMatch(id);
+  if (state.hosted && !(match && match.sport === "f1")) {
+    state.matchLoading = null;
+    return renderSaved(id, match, request);
+  }
   if (!manual) {
     show(h("a", { class: "back", href: "#matches" }, "← All matches"),
       h("h1", {}, match ? `${match.team}${match.opponent ? " v " + match.opponent : ""}` : "Match"),
@@ -779,86 +836,164 @@ async function openMatch(id, manual, forceRefresh = false) {
   }
 }
 
+// ---- saved forecast (public copy) --------------------------------------------------------
+const STAGES = { post_toss: "After the toss", pre_toss: "Before the toss", post_qualifying: "After qualifying", pre_weekend: "Before the race weekend", pre: "Before the start" };
+async function renderSaved(id, match, request) {
+  const title = match ? `${match.team}${match.opponent ? " v " + match.opponent : ""}` : "Match";
+  const faces = match?.sport === "tennis" ? [match.team, match.opponent].map((name) => portrait(name, 150)).filter(Boolean) : [];
+  const head = () => [h("a", { class: "back", href: "#matches" }, "← All matches"),
+    h("div", { class: "head saved-head" },
+      faces.length ? h("div", { class: "duel", "data-atomic": "" }, faces) : null,
+      h("div", {}, h("h1", {}, title), h("p", { class: "sub" }, [match?.tournament, match?.detail, match?.venue,
+        match?.start ? `${day(match.start)} · ${time(match.start)}` : ""].filter(Boolean).join(" · "))))];
+  show(...head(), h("p", { class: "note", role: "status" }, h("span", { class: "spinner" }), "Loading the saved forecast…"));
+  let saved = null, problem = "";
+  try { saved = await api(`/api/saved-forecast?id=${encodeURIComponent(id)}`); } catch (error) { if (!/No forecast/.test(error.message)) problem = error.message; }
+  if (request !== state.request) return;
+  const board = match ? matchScoreboard({ state: match.state, status: match.status, source: "Published schedule", checked_at: state.schedule?.last_updated,
+    teams: [{ name: match.team, score: match.team_score }, { name: match.opponent, score: match.opponent_score }].filter((t) => t.name) }) : null;
+  const pre = saved?.pre, counted = Boolean(pre?.saved_before_start);
+  const innings = pre ? pre.teams.filter((t) => t.first_innings).map((t) =>
+    stat(`${t.name} first innings`, `${t.first_innings.mean} runs`, `80% range ${t.first_innings.low}–${t.first_innings.high}`)) : [];
+  const lockPanel = pre ? h("section", { class: "panel", "aria-labelledby": "saved-title" },
+    h("div", { class: "section-head" }, h("h2", { id: "saved-title" }, "Saved forecast"),
+      h("span", { class: `tag${counted ? " ok" : ""}` }, counted ? (pre.at_checkpoint ? "Locked at T−15" : "Locked before the start") : "Saved after the start")),
+    h("p", { class: "sub" }, `Saved ${day(pre.saved_at)} at ${time(pre.saved_at)}${STAGES[pre.stage] ? ` · ${STAGES[pre.stage]}` : ""}. `,
+      counted ? "It counts toward the track record." : "It was saved after play began, so it is listed but never counted."),
+    pre.teams.length === 2 ? winOutlook(pre.teams, pre.teams.map((t) => t.win), []) : h("p", { class: "num" }, `${pre.teams[0].name} ${pct(pre.teams[0].win)} to win`),
+    innings.length ? h("div", { class: "stats forecast-stats" }, innings) : null,
+    pre.set_score ? h("p", { class: "sub num" }, `Most likely set score: ${pre.set_score.winner} ${pre.set_score.score.split("-").sort().reverse().join("–")}.`) : null)
+    : h("section", { class: "panel" }, h("h2", {}, "No saved forecast"),
+      h("p", { class: "sub" }, problem || "The owner's MatchLab has not saved a forecast for this match yet. Forecasts are saved when the match is opened there before it starts."));
+  const timeline = (saved?.timeline || []).slice(-8).reverse();
+  show(...head(), board, lockPanel, saved?.result ? resultPanel(saved.result) : null,
+    timeline.length ? h("section", { class: "panel" }, h("h2", {}, "Live checks saved"), h("ul", { class: "timeline" }, timeline.map((t) =>
+      h("li", {}, h("time", { datetime: t.at }, time(t.at)), h("span", {}, `${t.score}${t.note ? ". " + t.note : ""}`))))) : null,
+    h("p", { class: "note" }, "This public copy shows what the owner's MatchLab saved. The full live analysis and AI checks run on the owner's computer."));
+}
+
 // ---- track record and settings --------------------------------------------------------
-async function renderRecord() {
+const rate = (record) => record.n ? `${record.correct} of ${record.n}` : "—";
+// Wilson 95% interval: with a handful of graded forecasts the honest answer is a wide range, not one number.
+function wilson(record) {
+  const z = 1.96, n = record.n, p = record.correct / n, d = 1 + z * z / n, c = p + z * z / (2 * n);
+  const m = z * Math.sqrt(p * (1 - p) / n + z * z / (4 * n * n));
+  return [Math.max(0, (c - m) / d), Math.min(1, (c + m) / d)];
+}
+const spread = (record) => {
+  if (!record.n) return "none graded yet";
+  const [low, high] = wilson(record);
+  return `${pct(record.correct / record.n)} · 95% range ${pct(low)} to ${pct(high)} · n = ${record.n}`;
+};
+// Drawn at once, before the request: the page has its final shape while the numbers load.
+function recordSkeleton() {
+  const block = (cls) => h("span", { class: `skeleton ${cls}`, "aria-hidden": "true" });
+  return [h("section", { class: "record-hero", "aria-busy": "true", "aria-label": "Track record overview" },
+    h("div", { class: "record-hero-copy" }, h("p", { class: "eyebrow" }, "TRACK RECORD"), h("h1", {}, "What the model said,", h("br"), h("span", {}, "and how it did.")),
+      h("p", { role: "status" }, "Loading the track record…")),
+    h("div", { class: "record-hero-stat" }, h("span", {}, "Forecasts counted"), block("skeleton-num"))),
+    h("div", { class: "stats record-stats" }, [1, 2, 3].map(() => h("div", { class: "stat" }, block("skeleton-line"), block("skeleton-num"), block("skeleton-line"))))];
+}
+function calibrationTable(bins) {
+  if (!bins.some((b) => b.n)) return h("p", { class: "sub" }, "No graded forecasts to compare yet.");
+  return h("div", { class: "scroll" }, h("table", { class: "calibration" },
+    h("caption", { class: "sub" }, "Favourites grouped by the chance they were given when the forecast was saved."),
+    h("thead", {}, h("tr", {}, ["Chance given", "Forecasts (n)", "Average chance", "Favourite won"].map((label) => h("th", { scope: "col" }, label)))),
+    h("tbody", {}, bins.map((b) => h("tr", {},
+      h("th", { scope: "row" }, `${Math.round(b.low * 100)}–${Math.round(b.high * 100)}%`), h("td", { class: "num" }, b.n),
+      h("td", { class: "num" }, b.n ? pct(b.predicted) : "—"), h("td", { class: "num" }, b.n ? `${b.won} of ${b.n} (${pct(b.observed)})` : "—"))))));
+}
+function recordRow(match, sport) {
+  const result = match.result;
+  const favourite = match.teams.reduce((first, next) => next.win > first.win ? next : first);
+  const title = [match.fixture.team, match.fixture.opponent].filter(Boolean).join(" v ");
+  const href = sport === "f1" ? (state.hosted ? "#f1" : `/lab?sport=f1&season=${match.fixture.season}&round=${match.fixture.round}`) : `#match/${encodeURIComponent(match.id)}`;
+  return h("tr", { "data-k": match.id },
+    h("td", {}, h("a", { href }, title), h("div", { class: "sub" }, day(match.fixture.start))),
+    h("td", { class: "num" }, `${favourite.name} ${pct(favourite.win)}`),
+    h("td", {}, time(match.saved_at), STAGES[match.stage] ? h("div", { class: "sub" }, STAGES[match.stage]) : null,
+      match.saved_before_start ? null : h("div", { class: "sub" }, "Opened after the start · not counted")),
+    h("td", {}, !result ? "Waiting for result" : !result.winner_pick ? (result.status || "No winner") :
+      h("span", { class: result.winner_pick.correct ? "good" : "bad" }, `${result.winner} won · ${result.winner_pick.correct ? "Correct" : "Missed"}`),
+      result?.first_innings ? h("div", { class: "sub" }, `First innings ${result.first_innings.actual} vs forecast ${result.first_innings.predicted}`) : null,
+      result?.set_score ? h("div", { class: "sub" }, `Sets ${result.set_score.actual} vs forecast ${result.set_score.pick}`) : null));
+}
+async function renderRecord(again = false) {
   const request = ++state.request;
-  show(h("h1", {}, "Track record"), h("p", { class: "note", role: "status" }, "Grading finished events…"));
+  if (!again) { show(...recordSkeleton()); state.recordRows = {}; }
+  let record;
   try {
-    const { summary, sports } = await api("/api/track-record");
-    if (request !== state.request) return;
-    const rate = (record) => record.n ? `${record.correct} of ${record.n}` : "—";
-    // Wilson 95% interval: with a handful of graded forecasts the honest answer is a wide range, not one number.
-    const spread = (record) => {
-      if (!record.n) return "none graded yet";
-      const z = 1.96, p = record.correct / record.n, d = 1 + z * z / record.n, c = p + z * z / (2 * record.n);
-      const m = z * Math.sqrt(p * (1 - p) / record.n + z * z / (4 * record.n * record.n));
-      return `${pct(record.correct / record.n)} · 95% range ${pct(Math.max(0, (c - m) / d))} to ${pct(Math.min(1, (c + m) / d))} · n = ${record.n}`;
-    };
-    const counted = (summary) => summary.graded + summary.waiting;
-    const detail = h("section", { id: "sport-record", "aria-labelledby": "sport-record-title" });
-    const filters = h("div", { class: "row record-filters", role: "group", "aria-label": "Sport" });
-    function select(sport) {
-      const { summary: stats, matches } = sports[sport];
-      for (const button of filters.children) button.setAttribute("aria-pressed", String(button.value === sport));
-      const calibration = summary.calibration[sport];
-      const metrics = [stat("Winner picked", rate(stats.winner), `${spread(stats.winner)} · ${stats.waiting} waiting`)];
-      if (sport !== "f1") metrics.push(stat("Winner with AI check", rate(stats.ai_winner), spread(stats.ai_winner)));
-      if (sport === "tennis") metrics.push(stat("Exact set score", rate(stats.set_score), spread(stats.set_score)));
-      if (sport === "cricket") metrics.push(
-        stat("First-innings error", stats.first_innings.mean_error == null ? "—" : `${stats.first_innings.mean_error} runs`,
-          `n = ${stats.first_innings.n} · ${stats.first_innings.in_range} inside the range`),
-        stat("Top batter", rate(stats.top_batter), spread(stats.top_batter)), stat("Top wicket-taker", rate(stats.top_bowler), spread(stats.top_bowler)));
-      const table = h("div", { class: "scroll" }, h("table", {},
-        h("thead", {}, h("tr", {}, ["Event", "Forecast", "Saved", "Result"].map((label) => h("th", { scope: "col" }, label)))),
-        h("tbody", {}, matches.map((match) => {
-          const result = match.result;
-          const favourite = match.teams.reduce((first, next) => next.win > first.win ? next : first);
-          const title = [match.fixture.team, match.fixture.opponent].filter(Boolean).join(" v ");
-          const stage = ({ post_toss: "After toss", pre_toss: "Before toss", post_qualifying: "After qualifying", pre_weekend: "Before race weekend" })[match.stage];
-          return h("tr", {},
-            h("td", {}, h("a", { href: sport === "f1" ? `/lab?sport=f1&season=${match.fixture.season}&round=${match.fixture.round}`
-              : `#match/${encodeURIComponent(match.id)}` }, title), h("div", { class: "sub" }, day(match.fixture.start))),
-            h("td", {}, `${favourite.name} ${pct(favourite.win)}`),
-            h("td", {}, time(match.saved_at), stage ? h("div", { class: "sub" }, stage) : null,
-              match.saved_before_start ? null : h("div", { class: "sub" }, "Opened after start · not counted")),
-            h("td", {}, !result ? "Waiting for result" : !result.winner_pick ? (result.status || "No winner") :
-              h("span", { class: result.winner_pick.correct ? "good" : "bad" }, `${result.winner} won · ${result.winner_pick.correct ? "Correct" : "Missed"}`),
-              result?.first_innings ? h("div", { class: "sub" }, `First innings ${result.first_innings.actual} vs forecast ${result.first_innings.predicted}`) : null,
-              result?.set_score ? h("div", { class: "sub" }, `Sets ${result.set_score.actual} vs forecast ${result.set_score.pick}`) : null));
-        }))));
-      detail.replaceChildren(
-        h("h2", { id: "sport-record-title" }, SPORTS[sport]),
-        h("div", { class: "stats record-stats" }, metrics),
-        h("p", { class: "sub" }, `${counted(stats)} forecasts counted (saved before the start), ${stats.graded} graded. ${stats.saved - counted(stats)} more were opened after the start and are not counted.`),
-        calibration ? h("p", { class: "sub" }, calibration.graded < calibration.needed
-          ? `Not calibrated yet: that needs ${calibration.needed} graded forecasts and ${calibration.graded} are available, so the win chances shown are the model's own.`
-          : `Favourites won ${pct(calibration.favourite_won)} of ${calibration.graded} graded forecasts (n = ${calibration.graded}). Their average predicted chance was ${pct(calibration.favourite_expected)}.`) : null,
-        h("section", { class: "panel" }, h("h3", {}, "Saved forecasts"),
-          matches.length ? table : h("p", { class: "note" }, sport === "f1"
-            ? "Run a Formula 1 forecast before the race to start tracking it."
-            : `Open a ${SPORTS[sport].toLowerCase()} match before the start to save its forecast.`),
-          sport === "f1" ? h("p", { class: "sub" }, h("a", { href: "/lab?sport=f1" }, "Open the race forecast")) : null));
-    }
-    for (const [sport, label] of Object.entries(SPORTS)) {
-      filters.append(h("button", { class: "chip", type: "button", value: sport, "aria-controls": "sport-record",
-        onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${counted(sports[sport].summary)} counted`));
-    }
-    const totals = Object.values(sports).reduce((acc, s) => ({ counted: acc.counted + counted(s.summary), graded: acc.graded + s.summary.graded, after: acc.after + (s.summary.saved - counted(s.summary)) }), { counted: 0, graded: 0, after: 0 });
-    const recordHero = h("section", { class: "record-hero", "aria-label": "Track record overview" },
-      h("div", { class: "record-hero-copy" },
-        h("p", { class: "eyebrow" }, "TRACK RECORD"),
-        h("h1", {}, "What the model said,", h("br"), h("span", {}, "and how it did.")),
-        h("p", {}, "A forecast counts only if it was saved before the event began. Results are graded from final scores, and every rate shows how many forecasts it rests on."),
-        h("span", { class: "hero-date" }, "Forecasts opened after the start are listed, never counted.")),
-      h("div", { class: "record-hero-stat" },
-        h("span", {}, "Forecasts counted"),
-        h("strong", { class: "num" }, `${totals.counted}`),
-        h("p", { class: "sub" }, `${totals.graded} graded so far · ${totals.after} opened after the start and excluded`)));
-    show(recordHero, filters, detail);
-    select(state.recordSport || "cricket");
+    record = await api("/api/track-record");
   } catch (error) {
-    if (request === state.request) show(h("h1", {}, "Track record"), h("p", { class: "note error", role: "alert" }, error.message));
+    if (request === state.request) show(h("h1", {}, "Track record"), h("p", { class: "note error", role: "alert" }, `The track record could not be loaded. ${error.message}`),
+      h("button", { class: "btn", type: "button", onclick: () => renderRecord() }, "Try again"));
+    return;
   }
+  if (request !== state.request) return;
+  const { summary, sports } = record;
+  for (const sport of Object.keys(SPORTS)) if (!again || !state.recordRows[sport]) state.recordRows[sport] = sports[sport].matches;
+  const counted = (s) => s.graded + s.waiting;
+  const detail = h("section", { id: "sport-record", "aria-labelledby": "sport-record-title" });
+  // Works on the node in the page, so a chip pressed after an in-place update still finds its panel.
+  function select(sport) {
+    const { summary: stats, bins, total } = sports[sport];
+    const rows = state.recordRows[sport];
+    view.querySelectorAll(".record-filters .chip").forEach((button) => button.setAttribute("aria-pressed", String(button.value === sport)));
+    const calibration = summary.calibration[sport];
+    const metrics = [stat("Winner picked", rate(stats.winner), `${spread(stats.winner)} · ${stats.waiting} waiting`)];
+    if (sport !== "f1") metrics.push(stat("Winner with AI check", rate(stats.ai_winner),
+      stats.ai_winner.n ? `${spread(stats.ai_winner)} · model alone on the same ${stats.ai_winner.n}: ${rate(stats.model_on_ai_sample)}` : "No graded forecast had an AI check yet"));
+    if (sport === "tennis") metrics.push(stat("Exact set score", rate(stats.set_score), spread(stats.set_score)));
+    if (sport === "cricket") metrics.push(
+      stat("First-innings error", stats.first_innings.mean_error == null ? "—" : `${stats.first_innings.mean_error} runs`,
+        `average miss · n = ${stats.first_innings.n} · ${stats.first_innings.in_range} of ${stats.first_innings.n} inside the 80% range`),
+      stat("Top batter", rate(stats.top_batter), spread(stats.top_batter)), stat("Top wicket-taker", rate(stats.top_bowler), spread(stats.top_bowler)));
+    const more = total - rows.length;
+    const table = h("div", { class: "scroll" }, h("table", { class: "record-table" },
+      h("thead", {}, h("tr", {}, ["Event", "Forecast", "Saved", "Result"].map((label) => h("th", { scope: "col" }, label)))),
+      h("tbody", {}, rows.map((match) => recordRow(match, sport)))));
+    const loadMore = more > 0 ? h("button", { class: "btn world-more", type: "button", onclick: async (event) => {
+      event.target.disabled = true;
+      event.target.textContent = "Loading…";
+      try {
+        const page = await api(`/api/track-record?sport=${sport}&offset=${rows.length}`);
+        state.recordRows[sport] = rows.concat(page.matches);
+      } catch (_) { /* the button is drawn again below */ }
+      if (location.hash === "#record") select(sport);
+    } }, `Show ${Math.min(25, more)} more (${more} left)`) : null;
+    (view.querySelector("#sport-record") || detail).replaceChildren(
+      h("h2", { id: "sport-record-title" }, SPORTS[sport]),
+      h("div", { class: "stats record-stats" }, metrics),
+      h("p", { class: "sub" }, `${counted(stats)} forecasts counted (saved before the start), ${stats.graded} graded. ${stats.after_start} more ${stats.after_start === 1 ? "was" : "were"} opened after the start and ${stats.after_start === 1 ? "is" : "are"} not counted.`),
+      sport !== "f1" ? h("section", { class: "panel" }, h("h3", {}, "How sure, and how often right"),
+        calibrationTable(bins),
+        calibration ? h("p", { class: "sub" }, calibration.graded < calibration.needed
+          ? `Not calibrated yet: that needs ${calibration.needed} graded forecasts and ${calibration.graded} are available, so the win chances shown are the model's own. With this few, each row is mostly luck.`
+          : `Favourites won ${pct(calibration.favourite_won)} of ${calibration.graded} graded forecasts. Their average predicted chance was ${pct(calibration.favourite_expected)}.`) : null) : null,
+      h("section", { class: "panel" }, h("h3", {}, `Saved forecasts${total ? ` (${total})` : ""}`),
+        rows.length ? [table, loadMore] : h("p", { class: "note" }, sport === "f1"
+          ? (state.hosted ? "No Formula 1 forecast has been saved yet." : "Run a Formula 1 forecast before the race to start tracking it.")
+          : state.hosted ? `No ${SPORTS[sport].toLowerCase()} forecast has been saved yet.` : `Open a ${SPORTS[sport].toLowerCase()} match before the start to save its forecast.`),
+        sport === "f1" && !state.hosted ? h("p", { class: "sub" }, h("a", { href: "/lab?sport=f1" }, "Open the race forecast")) : null));
+  }
+  const filters = h("div", { class: "row record-filters", role: "group", "aria-label": "Sport" },
+    Object.entries(SPORTS).map(([sport, label]) => h("button", { class: "chip", type: "button", value: sport, "aria-controls": "sport-record",
+      "aria-pressed": String((state.recordSport || "cricket") === sport), onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${counted(sports[sport].summary)} counted`)));
+  const note = record.grading ? "Grading finished events now; the numbers update by themselves."
+    : state.hosted && record.published_at ? freshness(record.published_at).text : "Forecasts opened after the start are listed, never counted.";
+  const recordHero = h("section", { class: "record-hero", "aria-label": "Track record overview" },
+    h("div", { class: "record-hero-copy" },
+      h("p", { class: "eyebrow" }, "TRACK RECORD"),
+      h("h1", {}, "What the model said,", h("br"), h("span", {}, "and how it did.")),
+      h("p", {}, "A forecast counts only if it was saved before the event began. Results are graded from final scores, and every rate shows how many forecasts it rests on."),
+      h("span", { class: "hero-date" }, note)),
+    h("div", { class: "record-hero-stat" },
+      h("span", {}, "Forecasts counted"),
+      h("strong", { class: "num" }, `${counted(summary)}`),
+      h("p", { class: "sub" }, `${summary.graded} graded · ${summary.waiting} waiting for a result · ${summary.after_start} opened after the start and excluded`)));
+  if (again) showMorph(recordHero, filters, detail); else show(recordHero, filters, detail);
+  select(state.recordSport || "cricket");
+  if (record.grading && !again) state.timer = setTimeout(() => { if (location.hash === "#record") renderRecord(true); }, 8000);
 }
 
 function renderSettings() {
@@ -874,13 +1009,22 @@ function renderSettings() {
     } catch (error) { message.textContent = error.message; }
   };
   const b = state.schedule && state.schedule.budget;
+  const appearance = h("section", { class: "panel appearance-settings", "aria-labelledby": "appearance-title" },
+    h("h2", { id: "appearance-title" }, "Appearance"),
+    h("p", { class: "sub", id: "theme-help" }, "Choose a theme for MatchLab. Your choice is saved in this browser."),
+    h("label", { class: "palette-control", for: "palette" }, "Theme",
+      h("select", { id: "palette", "aria-describedby": "theme-help", onchange: (event) => changeTheme(event.target.value) },
+        Object.entries(THEMES).map(([value, label]) => h("option", { value, selected: state.theme === value }, label)))));
+  if (state.hosted) {
+    return show(h("h1", {}, "Settings"), appearance,
+      h("section", { class: "panel" }, h("h2", {}, "About this copy"),
+        h("ul", { class: "why" },
+          h("li", {}, "This is a public, read-only copy of the owner's MatchLab. It shows the schedule and the forecasts that MatchLab saved, as last published."),
+          h("li", {}, "It cannot make forecasts, ask the AI, or spend any API budget. Keys and request budgets stay on the owner's computer."),
+          h("li", {}, "Formula 1 standings and the World headlines are read live from free public feeds."))));
+  }
   show(h("h1", {}, "Settings"),
-    h("section", { class: "panel appearance-settings", "aria-labelledby": "appearance-title" },
-      h("h2", { id: "appearance-title" }, "Appearance"),
-      h("p", { class: "sub", id: "theme-help" }, "Choose a theme for MatchLab. Your choice is saved in this browser."),
-      h("label", { class: "palette-control", for: "palette" }, "Theme",
-        h("select", { id: "palette", "aria-label": "Color palette", "aria-describedby": "theme-help", onchange: (event) => changeTheme(event.target.value) },
-          Object.entries(THEMES).map(([value, label]) => h("option", { value, selected: state.theme === value }, label))))),
+    appearance,
     h("section", { class: "panel" }, h("h2", {}, "Request budgets"),
       h("ul", { class: "why" },
         h("li", {}, `CricketData.org: ${b ? `${b.cricketdata.used} of ${b.cricketdata.limit} used today` : "unknown"}. Only the fixture list uses it, cached for 15 minutes (longer as the budget runs down), and 5 requests are always held back.`),
@@ -972,6 +1116,7 @@ function f1LapPanel(season, last, next, request) {
   return panel;
 }
 
+const driverName = (row) => `${row.Driver.givenName} ${row.Driver.familyName}`;
 async function renderF1() {
   const request = ++state.request;
   clearTimeout(state.timer);
@@ -998,13 +1143,22 @@ async function renderF1() {
         h("section", { class: "panel f1-feature-card" },
           h("div", { class: "f1-card-body" },
             h("p", { class: "f1-label" }, "CHAMPIONSHIP LEADER"),
-            drivers.length ? [h("h2", {}, `${drivers[0].Driver.givenName} ${drivers[0].Driver.familyName}`), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")), h("p", { class: "f1-points" }, `${drivers[0].points} pts`)] : unavailable()))),
+            drivers.length ? [h("h2", {}, driverName(drivers[0])), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")),
+              h("p", { class: "f1-points num" }, `${drivers[0].points} pts`),
+              drivers[1] ? h("p", { class: "sub num" }, `${Number(drivers[0].points) - Number(drivers[1].points)} points ahead of ${driverName(drivers[1])}`) : null] : unavailable()),
+          drivers.length ? portrait(driverName(drivers[0]), 180, `, the championship leader`) : null)),
+      drivers.length ? h("section", { class: "f1-drivers", "aria-labelledby": "f1-drivers-title" },
+        h("h2", { class: "vh", id: "f1-drivers-title" }, "Top of the standings"),
+        h("ol", { class: "f1-driver-cards" }, drivers.slice(0, 6).map((d) => h("li", { class: "f1-driver-card" },
+          avatar(driverName(d), 56), h("div", {}, h("span", { class: "f1-pos num" }, `P${d.position}`), h("strong", {}, driverName(d)),
+            h("span", { class: "sub" }, (d.Constructors || []).map((c) => c.name).join(" / "))),
+          h("span", { class: "f1-driver-points num" }, `${d.points}`, h("span", { class: "sub" }, " pts")))))) : null,
       f1LapPanel(data.schedule?.RaceTable?.Races || [], last, next, request),
       h("div", { class: "f1-grid" },
-        h("section", { class: "panel" }, h("p", { class: "f1-label" }, `${driversList?.season || "CURRENT"} SEASON · ROUND ${driversList?.round || "—"}`), h("h2", {}, "Driver standings"), drivers.length ? table(["Pos", "Driver", "Team", "Wins", "Points"], drivers.map(d => h("tr", {}, h("td", {}, d.position), h("td", {}, `${d.Driver.givenName} ${d.Driver.familyName}`), h("td", {}, (d.Constructors || []).map(c => c.name).join(" / ")), h("td", {}, d.wins), h("td", {}, h("strong", {}, d.points))))) : unavailable()),
+        h("section", { class: "panel" }, h("p", { class: "f1-label" }, `${driversList?.season || "CURRENT"} SEASON · ROUND ${driversList?.round || "—"}`), h("h2", {}, "Driver standings"), drivers.length ? table(["Pos", "Driver", "Team", "Wins", "Points"], drivers.map(d => h("tr", {}, h("td", { class: "num" }, d.position), h("td", {}, h("span", { class: "driver-cell" }, avatar(driverName(d), 28), driverName(d))), h("td", {}, (d.Constructors || []).map(c => c.name).join(" / ")), h("td", {}, d.wins), h("td", {}, h("strong", {}, d.points))))) : unavailable()),
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, "THE TEAMS"), h("h2", {}, "Constructor standings"), teams.length ? table(["Pos", "Team", "Wins", "Points"], teams.map(t => h("tr", {}, h("td", {}, t.position), h("td", {}, t.Constructor.name), h("td", {}, t.wins), h("td", {}, h("strong", {}, t.points))))) : unavailable())),
       h("section", { class: "panel" }, h("p", { class: "f1-label" }, "LATEST GRAND PRIX"), h("h2", {}, last?.raceName || "Race results"), last ? [h("p", { class: "sub" }, `${last.date} · ${last.Circuit?.circuitName || ""}`), table(["Pos", "Driver", "Team", "Points", "Status"], (last.Results || []).map(r => h("tr", {}, h("td", {}, r.position), h("td", {}, `${r.Driver.givenName} ${r.Driver.familyName}`), h("td", {}, r.Constructor.name), h("td", {}, r.points), h("td", {}, r.status))))] : unavailable()),
-      h("p", { class: "note f1-source" }, "Standings and results from Jolpica F1 may be delayed. ", h("a", { href: "/lab?sport=f1" }, "Open the race forecast")));
+      h("p", { class: "note f1-source" }, "Standings and results from Jolpica F1 may be delayed. ", state.hosted ? null : h("a", { href: "/lab?sport=f1" }, "Open the race forecast")));
   } catch (error) {
     if (request !== state.request) return;
     show(h("h1", {}, "Formula 1"), h("p", { class: "note error" }, "Could not refresh Formula One data. Check your connection and try again."), h("button", { class: "btn", type: "button", onclick: renderF1 }, "Try again"));
@@ -1311,7 +1465,7 @@ function renderWorld() {
     const info = world.brief, body = parts.brief.body;
     body.removeAttribute("aria-busy");
     if (!info) return;
-    const saved = info.saved, meter = info.budget;
+    const saved = info.saved, meter = info.budget || { used: 0, limit: 0 };
     parts.brief.meta.textContent = saved ? `Written ${ago(saved.at)}` : "";
     const waiting = info.age != null && info.age < info.min_gap;
     const button = h("button", { class: "btn", type: "button", disabled: world.briefBusy || waiting || !info.has_key, onclick: () => writeBrief(true) },
@@ -1322,7 +1476,8 @@ function renderWorld() {
     };
     const brief = saved?.brief;
     put(body,
-      !info.has_key ? h("p", { class: "note" }, "Add an OpenRouter key in ", h("a", { href: "#settings" }, "Settings"), " to get a written briefing of the items below.") : null,
+      info.hosted ? (saved ? null : h("p", { class: "note" }, "No briefing has been published yet. Briefings are written on the owner's MatchLab."))
+        : !info.has_key ? h("p", { class: "note" }, "Add an OpenRouter key in ", h("a", { href: "#settings" }, "Settings"), " to get a written briefing of the items below.") : null,
       brief ? h("div", { class: "brief" },
         brief.headline ? h("p", { class: "brief-headline" }, brief.headline) : null,
         brief.bullets?.length ? h("ul", { class: "brief-list" }, brief.bullets.map((b) => h("li", {}, h("span", { class: "tag" }, b.topic || "Note"), " ", b.text, links(b.refs || [])))) : null,
@@ -1332,7 +1487,7 @@ function renderWorld() {
       world.briefBusy ? h("p", { class: "note", role: "status" }, "Writing the briefing from today’s headlines…") : null,
       world.briefError ? h("p", { class: "note error", role: "alert" }, world.briefError) : null,
       h("div", { class: "row brief-actions" }, info.has_key ? button : null,
-        h("span", { class: "world-note" }, `${saved ? `Written by ${saved.model}. ` : ""}AI can be wrong, so check the sources. ${meter.used} of ${meter.limit} AI requests used today${waiting ? "; the next refresh unlocks in a few minutes." : "."}`)));
+        h("span", { class: "world-note" }, `${saved ? `Written by ${saved.model}. ` : ""}AI can be wrong, so check the sources.${info.hosted ? " Published from the owner's MatchLab." : ` ${meter.used} of ${meter.limit} AI requests used today${waiting ? "; the next refresh unlocks in a few minutes." : "."}`}`)));
   }
 
   async function writeBrief(force) {
@@ -1393,22 +1548,36 @@ function route() {
   window.scrollTo(0, 0);
 }
 
+// The public copy says what it is on every view: a read-only snapshot of the owner's MatchLab.
+function markHosted(app) {
+  document.documentElement.dataset.hosted = "true";
+  const bar = document.getElementById("budgets");
+  bar.replaceChildren(h("span", { class: "hosted-note", title: app.note || "" }, "Public read-only copy",
+    app.published_at ? [" · ", h("span", { "data-freshness": app.published_at }, freshness(app.published_at).text)] : null));
+  document.querySelector(".foot a[href='/lab']")?.remove();
+}
+
 (async function start() {
   try {
-    const [app, schedule] = await Promise.all([api("/api/session"), api("/api/today-matches")]);
+    const [app, schedule] = await Promise.all([api("/api/session"), api("/api/today-matches"), photosReady]);
     state.token = app.token;
     state.keyStatus = app.openrouter_key_status;
+    state.hosted = Boolean(app.hosted);
     state.schedule = schedule;
     showBudgets(schedule.budget);
+    if (state.hosted) markHosted(app);
   } catch (error) {
+    const hosted = location.hostname !== "127.0.0.1" && location.hostname !== "localhost";
     show(h("h1", {}, "MatchLab could not start"),
-      h("p", { class: "note error", role: "alert", style: "margin-top:14px" }, `The local server did not answer (${error.message}). Check that MatchLab is still running in its terminal window, then try again.`),
+      h("p", { class: "note error", role: "alert", style: "margin-top:14px" }, hosted
+        ? `The server did not answer (${error.message}). Try again in a minute.`
+        : `The local server did not answer (${error.message}). Check that MatchLab is still running in its terminal window, then try again.`),
       h("button", { class: "btn primary", type: "button", style: "margin-top:12px", onclick: () => location.reload() }, "Try again"));
     return;
   }
   window.addEventListener("hashchange", route);
   route();
-  refreshSchedule();
+  if (!state.hosted) refreshSchedule();
   setInterval(() => { if (!location.hash || location.hash === "#matches") refreshSchedule(); }, 5 * 60 * 1000);
   setInterval(updateFreshness, 30 * 1000);
 })();
