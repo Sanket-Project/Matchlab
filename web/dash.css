@@ -1065,3 +1065,6 @@ table.calibration td,table.calibration th[scope=row]{font-variant-numeric:tabula
 @keyframes skeleton-pulse{from{opacity:.55}to{opacity:1}}
 @media (prefers-reduced-motion:reduce){.skeleton{animation:none}}
 @media(max-width:480px){.f1-feature-card:has(.portrait){grid-template-columns:minmax(0,1fr) 112px}.saved-head{gap:var(--ml-s3)}}
+/* A busy button ("Checking…", "Loading…") still carries a readable status: no fade, secondary text, dashed edge. */
+.btn:disabled{opacity:1;color:var(--color-text-secondary);border-style:dashed;cursor:progress}
+.btn.primary:disabled{color:var(--color-on-accent, #fff)}
