@@ -7,18 +7,46 @@
       "use": "@vercel/python",
       "config": {
         "maxDuration": 60,
-        "excludeFiles": "{app.py,web/**,public/**,docs/**,tests/**,command-center/**,design-system/**,models/**,artifacts/**,data/raw/**,data/real/**,data/demo/**,data/local/**,data/today_matches.json,*.md,config*.json}"
+        "excludeFiles": "{app.py,web/**,public/**,docs/**,tests/**,command-center/**,design-system/**,models/**,artifacts/**,data/raw/**,data/real/**,data/demo/**,data/local/**,data/today_matches.json,*.md,config*.json}",
+        "includeFiles": "data/public/**"
       }
     },
-    { "src": "web/dash.html", "use": "@vercel/static" },
-    { "src": "web/dash.js", "use": "@vercel/static" },
-    { "src": "web/dash.css", "use": "@vercel/static" },
-    { "src": "web/astryx.css", "use": "@vercel/static" },
-    { "src": "web/favicon.svg", "use": "@vercel/static" },
-    { "src": "web/*.woff2", "use": "@vercel/static" },
-    { "src": "web/licenses/*", "use": "@vercel/static" },
-    { "src": "web/images/*.jpg", "use": "@vercel/static" },
-    { "src": "web/images/players/*", "use": "@vercel/static" }
+    {
+      "src": "web/dash.html",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/dash.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/dash.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/astryx.css",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/favicon.svg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/*.woff2",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/licenses/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/images/*.jpg",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "web/images/players/*",
+      "use": "@vercel/static"
+    }
   ],
   "routes": [
     {
@@ -31,9 +59,24 @@
       },
       "continue": true
     },
-    { "src": "/api/(.*)", "dest": "/api/index.py" },
-    { "src": "/lab", "status": 308, "headers": { "Location": "/" } },
-    { "src": "/dash(?:\\.html)?", "status": 308, "headers": { "Location": "/" } },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/lab",
+      "status": 308,
+      "headers": {
+        "Location": "/"
+      }
+    },
+    {
+      "src": "/dash(?:\\.html)?",
+      "status": 308,
+      "headers": {
+        "Location": "/"
+      }
+    },
     {
       "src": "/",
       "dest": "/web/dash.html",
@@ -42,11 +85,42 @@
         "Content-Security-Policy": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'"
       }
     },
-    { "src": "/(dash\\.js|dash\\.css|astryx\\.css|favicon\\.svg)", "dest": "/web/$1", "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
-    { "src": "/([a-z-]+\\.woff2)", "dest": "/web/$1", "headers": { "Cache-Control": "public, max-age=604800, immutable" } },
-    { "src": "/licenses/([A-Za-z0-9.-]+)", "dest": "/web/licenses/$1" },
-    { "src": "/images/players/([a-z0-9.-]+)", "dest": "/web/images/players/$1", "headers": { "Cache-Control": "public, max-age=86400" } },
-    { "src": "/images/([a-z0-9-]+\\.jpg)", "dest": "/web/images/$1", "headers": { "Cache-Control": "public, max-age=86400" } },
-    { "src": "/(.*)", "status": 404, "dest": "/api/index.py" }
+    {
+      "src": "/(dash\\.js|dash\\.css|astryx\\.css|favicon\\.svg)",
+      "dest": "/web/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=0, must-revalidate"
+      }
+    },
+    {
+      "src": "/([a-z-]+\\.woff2)",
+      "dest": "/web/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=604800, immutable"
+      }
+    },
+    {
+      "src": "/licenses/([A-Za-z0-9.-]+)",
+      "dest": "/web/licenses/$1"
+    },
+    {
+      "src": "/images/players/([a-z0-9.-]+)",
+      "dest": "/web/images/players/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/images/([a-z0-9-]+\\.jpg)",
+      "dest": "/web/images/$1",
+      "headers": {
+        "Cache-Control": "public, max-age=86400"
+      }
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/api/index.py"
+    }
   ]
 }
