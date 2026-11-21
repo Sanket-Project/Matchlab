@@ -275,8 +275,6 @@ input[type=password]{min-width:0;width:min(100%,360px);min-height:44px;backgroun
 }
 .match-card{display:flex;flex-direction:column;align-items:stretch;position:relative;overflow:hidden;animation:match-card-cascade 0.35s var(--ease-out-expo) both;animation-delay:calc(min(var(--stagger, 0), 12) * var(--motion-stagger-step, 28ms))}
 @keyframes match-card-cascade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.match-card-thumb{transition:transform 0.25s var(--ease-out-expo),border-color 0.2s ease}
-.match-card:hover .match-card-thumb{transform:scale(1.08);border-color:var(--color-accent)}
 .card-action span{display:inline-block;transition:transform 0.22s var(--ease-spring)}
 .match-card:hover .card-action span{transform:translate(3px,-3px)}
 .match-card.is-live{border-top:3px solid var(--color-text-red, #dc2626);position:relative}
@@ -925,31 +923,10 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 }
 
 /* Editorial sports imagery & showcase styles */
-.sports-showcase{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:24px 0 16px}
-.showcase-card{display:flex;flex-direction:column;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;padding:0;box-shadow:var(--shadow);color:inherit;cursor:pointer;transition:transform 0.25s var(--ease-out-expo),box-shadow 0.25s var(--ease-out-expo),border-color 0.2s ease;animation:showcase-card-enter 0.38s var(--ease-out-expo) both}
-.showcase-card:nth-child(1){animation-delay:30ms}
-.showcase-card:nth-child(2){animation-delay:60ms}
-.showcase-card:nth-child(3){animation-delay:90ms}
-@keyframes showcase-card-enter{from{opacity:0;transform:translateY(14px) scale(0.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-.showcase-card:hover{transform:translateY(-4px) translateZ(0);border-color:var(--color-accent);box-shadow:0 12px 32px rgba(13,41,32,.12)}
-.showcase-card:active{transform:translateY(-1px) scale(0.99)}
-.showcase-card.active{border-color:var(--primary);outline:2px solid var(--primary);box-shadow:0 4px 16px rgba(13,41,32,.12)}
-.showcase-media-wrap{width:100%;height:136px;overflow:hidden;background:var(--subtle);position:relative}
-.showcase-img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s ease}
-.showcase-card:hover .showcase-img{transform:scale(1.04)}
-.showcase-content{padding:14px 18px 18px;display:flex;flex-direction:column;gap:5px}
-.showcase-kicker{font-size:10px;font-weight:750;letter-spacing:1.5px;text-transform:uppercase;color:var(--primary)}
-.showcase-content h3{font-size:16px;font-weight:700;letter-spacing:-.3px;margin:0;color:var(--ink)}
-.showcase-content p{font-size:12.5px;color:var(--muted);margin:0;line-height:1.45}
-@media (max-width:820px){.sports-showcase{grid-template-columns:1fr;gap:12px}.showcase-card{flex-direction:row}.showcase-media-wrap{width:130px;height:auto;flex-shrink:0}}
 
 .match-card-top{display:flex;align-items:center;gap:12px;margin-bottom:6px}
-.match-card-thumb{width:38px;height:38px;border-radius:8px;object-fit:cover;flex-shrink:0;border:1px solid var(--line);box-shadow:0 1px 3px rgba(0,0,0,.08)}
 
 .f1-feature-card{overflow:hidden;padding:0 !important}
-.panel-media-wrap{width:100%;height:156px;overflow:hidden;background:var(--subtle);position:relative}
-.panel-media{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
-.f1-feature-card:hover .panel-media{transform:scale(1.03)}
 .f1-card-body{padding:20px 24px 24px}
 
 .record-hero{display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:36px;background:linear-gradient(115deg,rgba(20,38,31,.93) 0%,rgba(20,38,31,.78) 55%,rgba(20,38,31,.90) 100%),url("/images/track-record-hero.jpg") center/cover no-repeat;color:#fff;border-radius:20px;padding:36px 42px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 12px 36px rgba(20,38,31,.12)}
@@ -964,12 +941,6 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .record-hero-stat .sub{color:var(--hero-text);margin-top:2px;font-size:13px}
 @media (max-width:760px){.record-hero{grid-template-columns:1fr;gap:20px;padding:26px}.record-hero-stat{border-left:0;border-top:1px solid #ffffff26;padding:16px 0 0}}
 
-.venue-banner{position:relative;border-radius:var(--radius);overflow:hidden;margin:14px 0 18px;height:164px;border:1px solid var(--line);box-shadow:var(--shadow)}
-.venue-media{width:100%;height:100%;object-fit:cover;display:block}
-.venue-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(13,41,32,.92) 0%,rgba(13,41,32,.50) 60%,rgba(13,41,32,.15) 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:18px 24px;color:#fff}
-.venue-kicker{font-size:10px;font-weight:750;letter-spacing:1.5px;color:var(--accent);text-transform:uppercase}
-.venue-overlay h3{font-size:20px;font-weight:700;margin:4px 0 2px;color:#fff;letter-spacing:-.4px}
-.venue-overlay p{font-size:13px;color:#d6e6da;margin:0}
 
 
 

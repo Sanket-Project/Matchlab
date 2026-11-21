@@ -132,9 +132,6 @@ function card(match, index = 0) {
   const badge = match.sport === "f1" ? h("span", { class: "tag ok" }, "Explore F1")
     : ready ? h("span", { class: "tag ok" }, "Forecast ready")
       : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
-  const thumb = match.sport === "cricket" ? "/images/sport-cricket.jpg"
-    : match.sport === "tennis" ? "/images/sport-tennis.jpg"
-    : "/images/f1-hero.jpg";
   return h("button", {
     class: `card match-card${live ? " is-live" : ""}`,
     style: `--stagger:${index};`,
@@ -142,7 +139,6 @@ function card(match, index = 0) {
     onclick: () => { location.hash = `match/${encodeURIComponent(match.id)}`; }
   },
     h("div", { class: "match-card-top" },
-      h("img", { src: thumb, alt: SPORTS[match.sport] || "Sport", class: "match-card-thumb", loading: "lazy", decoding: "async" }),
       h("div", { class: "meta" }, h("span", {}, `${SPORTS[match.sport]}${match.detail ? " · " + match.detail : ""}`),
         h("span", { class: `tag${live ? " live" : ""}` }, tagText))),
     h("div", { class: "teams" },
@@ -171,31 +167,6 @@ function renderMatches() {
     rows.length ? h("div", { class: "cards" }, rows.map((m, i) => card(m, i))) : h("p", { class: "note" }, empty));
   const search = h("input", { type: "search", class: "match-search", value: state.search, placeholder: "Search teams, leagues or venues", "aria-label": "Search teams, leagues or venues",
     oninput: (event) => { const position = event.target.selectionStart; state.search = event.target.value; renderMatches(); const field = view.querySelector(".match-search"); field.focus(); if (position != null) field.setSelectionRange(position, position); } });
-  const sportsGallery = h("div", { class: "sports-showcase", role: "region", "aria-label": "Featured sports disciplines" },
-    h("button", { class: `showcase-card${state.filter === "cricket" ? " active" : ""}`, type: "button", "aria-pressed": String(state.filter === "cricket"),
-      onclick: () => { state.filter = state.filter === "cricket" ? "all" : "cricket"; renderMatches(); } },
-      h("div", { class: "showcase-media-wrap" },
-        h("img", { src: "/images/sport-cricket.jpg", alt: "Cricket Match Simulations", class: "showcase-img", loading: "lazy", decoding: "async" })),
-      h("div", { class: "showcase-content" },
-        h("span", { class: "showcase-kicker" }, "CRICKET"),
-        h("h3", {}, "Match Simulations"),
-        h("p", {}, "3,000 Monte Carlo pitch & player models"))),
-    h("button", { class: `showcase-card${state.filter === "tennis" ? " active" : ""}`, type: "button", "aria-pressed": String(state.filter === "tennis"),
-      onclick: () => { state.filter = state.filter === "tennis" ? "all" : "tennis"; renderMatches(); } },
-      h("div", { class: "showcase-media-wrap" },
-        h("img", { src: "/images/sport-tennis.jpg", alt: "Tennis Surface Ratings", class: "showcase-img", loading: "lazy", decoding: "async" })),
-      h("div", { class: "showcase-content" },
-        h("span", { class: "showcase-kicker" }, "TENNIS"),
-        h("h3", {}, "Surface Ratings"),
-        h("p", {}, "Surface-weighted ratings, hold rates & set distributions"))),
-    h("button", { class: "showcase-card", type: "button",
-      onclick: () => { location.hash = "f1"; } },
-      h("div", { class: "showcase-media-wrap" },
-        h("img", { src: "/images/f1-hero.jpg", alt: "Formula 1 Hub", class: "showcase-img", loading: "lazy", decoding: "async" })),
-      h("div", { class: "showcase-content" },
-        h("span", { class: "showcase-kicker" }, "FORMULA 1"),
-        h("h3", {}, "Championship Hub"),
-        h("p", {}, "Standings, race telemetry, lap timings & circuit analytics"))));
   const heroStatsNodes = [["Live now", "in"], ["Coming up", "pre"], ["Finished", "post"]].map(([label, status]) => {
     const val = data ? all.filter((m) => m.state === status).length : null;
     const numNode = h("strong", { class: "num" }, val != null ? String(val) : "—");
@@ -210,7 +181,6 @@ function renderMatches() {
         h("p", {}, "Your daily view of live scores, upcoming fixtures and the numbers behind the game."),
         h("span", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
       h("div", { class: "hero-stats" }, heroStatsNodes)),
-    sportsGallery,
     h("div", { class: "head matches-heading" }, h("div", {}, h("p", { class: "eyebrow" }, "YOUR MATCH CENTRE"), h("h2", {}, "On the schedule"),
       h("p", { class: "sub" }, data && data.last_updated ? `Last checked ${time(data.last_updated)} · Open a match to explore its forecast.` : "Loading fixtures…")), refresh),
     h("div", { class: "filter-bar" }, filters, search),
@@ -570,12 +540,6 @@ function renderTennis(f, id) {
   const [a, b] = f.teams, fx = f.fixture, bt = f.analysis.backtest;
   show(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
-    h("div", { class: "venue-banner" },
-      h("img", { src: "/images/tennis-court.jpg", alt: "Tennis Court Surface", class: "venue-media", loading: "lazy" }),
-      h("div", { class: "venue-overlay" },
-        h("span", { class: "venue-kicker" }, `${(f.surface?.name || "CHAMPIONSHIP").toUpperCase()} COURT`),
-        h("h3", {}, `${f.format} · ${f.surface?.name || "Championship"} court`),
-        h("p", {}, [fx.tournament, fx.detail, `${day(fx.start)} ${time(fx.start)}`].filter(Boolean).join(" · ")))),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${a.name} v ${b.name}`),
         h("p", { class: "sub" }, [fx.tournament, fx.detail, f.format, `${f.surface.name} court`, `${day(fx.start)} ${time(fx.start)}`, f.intel.state === "pre" ? countdown(fx.start) : f.intel.status].filter(Boolean).join(" · "))),
@@ -608,12 +572,6 @@ function renderForecast(f, id) {
   const start = fx.start ? `${day(fx.start)} · ${time(fx.start)}` : "";
   show(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
-    h("div", { class: "venue-banner" },
-      h("img", { src: "/images/cricket-stadium.jpg", alt: "Cricket Ground Atmosphere", class: "venue-media", loading: "lazy" }),
-      h("div", { class: "venue-overlay" },
-        h("span", { class: "venue-kicker" }, "VENUE & CONDITIONS"),
-        h("h3", {}, fx.venue || "Match Venue"),
-        h("p", {}, [fx.tournament, supported ? `${f.category}’s ${f.format}` : fx.detail, start].filter(Boolean).join(" · ")))),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${fx.team} vs ${fx.opponent}`),
         h("p", { class: "sub" }, [fx.tournament, supported ? `${f.category}’s ${f.format}` : fx.detail,
@@ -940,14 +898,10 @@ async function renderF1() {
       h("div", { class: "f1-hero-bottom" }, h("span", {}, `Jolpica checked ${new Date(data.checked_at).toLocaleString()} · Data may be delayed`), h("button", { class: "btn", type: "button", onclick: renderF1 }, "Refresh data"))),
       h("div", { class: "f1-overview" },
         h("section", { class: "panel f1-feature-card" },
-          h("div", { class: "panel-media-wrap" },
-            h("img", { src: "/images/f1-next-race.jpg", alt: "Grand Prix Circuit", class: "panel-media", loading: "lazy" })),
           h("div", { class: "f1-card-body" },
             h("p", { class: "f1-label" }, "NEXT RACE"),
             next ? [h("h2", {}, next.raceName), h("p", { class: "sub" }, `${next.Circuit?.circuitName || ""} · ${day(next.date + "T" + (next.time || "00:00:00Z"))}`), h("p", {}, next.time ? time(next.date + "T" + next.time) : "Start time to be confirmed")] : data.next ? h("p", {}, "No upcoming race published.") : unavailable())),
         h("section", { class: "panel f1-feature-card" },
-          h("div", { class: "panel-media-wrap" },
-            h("img", { src: "/images/f1-championship-leader.jpg", alt: "Championship Leader", class: "panel-media", loading: "lazy" })),
           h("div", { class: "f1-card-body" },
             h("p", { class: "f1-label" }, "CHAMPIONSHIP LEADER"),
             drivers.length ? [h("h2", {}, `${drivers[0].Driver.givenName} ${drivers[0].Driver.familyName}`), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")), h("p", { class: "f1-points" }, `${drivers[0].points} pts`)] : unavailable()))),
