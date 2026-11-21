@@ -132,3 +132,13 @@ Cricsheet JSON uses ODC Attribution 1.0. Tennis derived data is for noncommercia
 - [AcesAPI](https://acesapi.com/) (optional, user's own key): surface Elo and head-to-head for a tennis match.
   500 free credits a month; each check costs 7 and is metered in `data/local/api_budget.json`. Terms allow showing
   and storing the data in your own app; redistribution as a feed or dataset is not allowed.
+- **AI web search (Gemini + Google Search grounding)**, last resort for fixtures and scores
+  (`tools/fetch_ai_scores.py`, wired in `tools/fetch_today_matches.py`). It runs only when CricketData.org reaches its
+  daily limit (our ledger or the provider's own count) or every source for a sport fails. It adds fixtures the other
+  feeds lack and fills blank scores of in-play or finished matches; it never replaces a feed's score. An answer is kept
+  only when Gemini cites the web pages it searched; rows are validated like any feed row. Each lookup is metered as
+  `gemini_search` (100 a day, 5 held back) and cached for the CricketData refresh interval; a key without search
+  access is asked again after an hour at most. Cards show "AI web search" with the cited pages. These fixtures are
+  never saved to Track record, which grades only from ESPN scorecards. Google Search grounding is not part of every
+  Gemini free tier: without it the lookup reports itself unavailable in Settings and the dashboard uses its other feeds.
+  A model without web search is never asked for scores, because it could only guess them.

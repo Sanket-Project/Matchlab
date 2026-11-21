@@ -15,6 +15,8 @@ DEFAULTS = {
     "openrouter": {"limit": 50, "reserve": 2, "label": "OpenRouter free models"},
     # AcesAPI's free key carries 500 credits a month; a call costs 1 to 5 credits.
     "acesapi": {"limit": 500, "reserve": 20, "label": "AcesAPI credits", "period": "month"},
+    # Last-resort fixture and score lookups (Gemini + Google Search), only after a sports feed hits its limit.
+    "gemini_search": {"limit": 100, "reserve": 5, "label": "Gemini web search"},
 }
 LEDGER = "data/local/api_budget.json"
 

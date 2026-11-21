@@ -223,6 +223,12 @@ function showBudgets(budget) {
   }
 }
 
+// The last AI web search outcome from the fixture refresh, for Settings (a key without search is not a feed failure).
+function aiSearchNote() {
+  const last = (state.schedule?.sources || []).filter((s) => s.name === "AI web search (Gemini)").map((s) => s.note).filter(Boolean)[0];
+  return last ? ` Last attempt: ${last}` : "";
+}
+
 function countdown(iso) {
   const minutes = Math.round((new Date(iso) - Date.now()) / 60000);
   if (minutes < -1) return "start time passed";
@@ -251,6 +257,9 @@ function card(match, index = 0) {
       : ready ? h("span", { class: "tag" }, match.state === "pre" ? "Not locked yet" : "Not locked")
         : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
   const face = (name) => match.sport === "tennis" ? avatar(name, 32, index < 4) : null;
+  // Fixtures or scores read from web pages by the last-resort AI search are labelled, with the pages it cited.
+  const ai = match.ai_source || match.score_source;
+  const aiTag = ai ? h("span", { class: "tag", title: `Unofficial: ${match.ai_source ? "fixture and score" : "score"} found by an AI web search after the sports feeds hit their limit. Sources: ${(ai.sources || []).map((s) => s.title).filter(Boolean).join(", ") || "web pages"}.` }, "AI web search") : null;
   return h("button", {
     class: `card match-card${live ? " is-live" : ""}`,
     "data-k": match.id,
@@ -260,7 +269,8 @@ function card(match, index = 0) {
   },
     h("div", { class: "match-card-top" },
       h("div", { class: "meta" }, h("span", {}, `${SPORTS[match.sport]}${match.detail ? " · " + match.detail : ""}`),
-        h("span", { class: `tag${live ? " live" : ""}` }, tagText))),
+        aiTag ? h("span", { class: "row" }, aiTag, h("span", { class: `tag${live ? " live" : ""}` }, tagText))
+          : h("span", { class: `tag${live ? " live" : ""}` }, tagText))),
     h("div", { class: "teams" },
       h("span", {}, face(match.team), h("span", { class: "team-name" }, match.team), h("b", {}, match.team_score || "")),
       match.opponent ? h("span", {}, face(match.opponent), h("span", { class: "team-name" }, match.opponent), h("b", {}, match.opponent_score || "")) : null),
@@ -1204,6 +1214,7 @@ function renderSettings() {
         h("li", {}, `OpenRouter: ${b ? `${b.openrouter.used} of ${b.openrouter.limit} used today` : "unknown"}. Used for AI checks: one request per match and stage (before the toss or start, after the toss, then a few times as the score moves), at most 12 per match, saved so nothing is asked twice. Checks start by themselves 45 minutes before a match you have open.`),
         h("li", {}, "The toss, playing XIs and live scores come from ESPN's free feed and cost nothing, so the half hour before a match is never rationed."),
         h("li", {}, `AcesAPI: ${b?.acesapi ? `${b.acesapi.used} of ${b.acesapi.limit} credits used this month` : "unknown"}. Spent only when you press Check AcesAPI on a tennis match (7 credits), saved for a day, and 20 credits are held back.`),
+        h("li", {}, `Gemini web search: ${b?.gemini_search ? `${b.gemini_search.used} of ${b.gemini_search.limit} used today` : "unknown"}. A last resort: it runs only when CricketData.org reaches its daily limit or every feed for a sport fails. It adds fixtures the other feeds lack and fills blank scores, never replaces a feed's score, keeps only answers that cite web pages, and marks each one "AI web search". Those fixtures are not saved to Track record.${aiSearchNote()}`),
         h("li", {}, "Weather (Open-Meteo) and the F1 practice and qualifying results (OpenF1) are free and need no key. They are cached for 30 and 10 minutes."),
         h("li", {}, "Limits can be edited in data/local/api_budget.json if your plan differs."))),
     h("section", { class: "panel" }, h("h2", {}, "OpenRouter key (optional)"),

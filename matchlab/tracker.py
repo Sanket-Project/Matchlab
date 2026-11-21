@@ -131,8 +131,9 @@ def _cricket_update(timeline, live, at):
 
 def record(root, fixture, forecast):
     """Save the forecast while the match has not started; append live checks once it has.
-    Returns the stored entry (pre-match forecast and timeline) for the page."""
-    if not forecast.get("supported"):
+    Returns the stored entry (pre-match forecast and timeline) for the page.
+    Fixtures known only from an AI web search are never saved: Track record holds feed-confirmed matches only."""
+    if not forecast.get("supported") or str(fixture.get("id", "")).split("-")[1:2] == ["ai"]:
         return None
     with _LOCK:
         data = _read(root)

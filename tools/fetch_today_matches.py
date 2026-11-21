@@ -7,7 +7,10 @@ empty and the failure is recorded under "sources". Nothing is invented.
 "Today" is the local calendar day of this machine. Fixtures are kept when they
 start today (local time) or are in progress right now (e.g. a multi-day Test).
 """
+import hashlib
 import json
+import os
+import re
 import sys
 import urllib.request
 from concurrent.futures import ThreadPoolExecutor
@@ -19,6 +22,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from matchlab import budget  # noqa: E402
 from matchlab.cricket_sim import team_key  # noqa: E402
+sys.path.insert(0, str(ROOT / "tools"))
+import fetch_ai_scores  # noqa: E402
 OUTPUT_FILE = ROOT / "data" / "today_matches.json"
 CRICKETDATA_KEY_FILE = ROOT / "data" / "local" / "cricketdata.key"
 BASE = "https://site.api.espn.com/apis/site/v2/sports"
@@ -28,6 +33,7 @@ CRICKETDATA_SCOREBOARD = "https://cricketdata.org/cricket-data-formats/matches/"
 HEADERS = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
 TIMEOUT = 10
 SPORTS = ["cricket", "tennis", "f1"]
+SPORT_LABELS = {"cricket": "Cricket", "tennis": "Tennis", "f1": "Formula 1"}
 AHEAD = timedelta(hours=30)  # also list fixtures starting within this window
 
 # (sport, label, path, parser). Team scoreboards share one layout; tennis nests
@@ -151,7 +157,7 @@ def fetch_cricketdata(today):
     if not key:
         try:
             from matchlab.openrouter_key import env_file_value
-            key = env_file_value("CRICKETDATA_API_KEY")
+            key = env_file_value("CRICKETDATA_API_KEY", ROOT / ".env")
         except Exception:
             pass
     if not key and CRICKETDATA_KEY_FILE.is_file():
@@ -172,6 +178,8 @@ def fetch_cricketdata(today):
         info = response.get("info") or {}
         budget.sync(ROOT, "cricketdata", info.get("hitsToday"), info.get("hitsLimit"))
         events = response.get("data")
+        if response.get("status") != "success" and re.search(r"limit|exceed|quota", str(response.get("reason") or ""), re.I):
+            raise BudgetSpent()   # the provider's own daily limit (it also counts other apps using the key)
         if response.get("status") != "success" or not isinstance(events, list):
             raise ValueError("CricketData.org did not return a match list")
         cache.put(events)
@@ -215,8 +223,8 @@ def fetch_cricket(today):
     try:
         listed = fetch_cricketdata(today)
     except BudgetSpent:
-        sources.append({"sport": "cricket", "name": "CricketData.org", "ok": True, "matches": 0,
-                        "error": "Daily request budget reached; using ESPN only until it resets (midnight UTC)."})
+        sources.append({"sport": "cricket", "name": "CricketData.org", "ok": True, "matches": 0, "limited": True,
+                        "error": "Daily request budget reached; using ESPN until it resets (midnight UTC)."})
     except Exception:
         # The request URL and provider response can contain the key.
         sources.append({"sport": "cricket", "name": "CricketData.org", "ok": False, "matches": 0,
@@ -286,6 +294,108 @@ def fetch_scoreboard(job, today):
     return list(seen.values())
 
 
+AI_SOURCE = "AI web search (Gemini)"
+
+
+def ai_needed(sport, sources):
+    """True when a keyed feed for `sport` hit its request limit, or every source for it failed."""
+    mine = [s for s in sources if s["sport"] == sport]
+    return any(s.get("limited") for s in mine) or (bool(mine) and not any(s["ok"] for s in mine))
+
+
+def _gemini_key():
+    key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not key:
+        try:
+            from matchlab.openrouter_key import env_file_value
+            key = env_file_value("GEMINI_API_KEY", ROOT / ".env")
+        except Exception:
+            key = ""
+    return key
+
+
+def _text(value, limit):
+    return re.sub(r"\s+", " ", str(value or "")).strip()[:limit]
+
+
+def _score(value):
+    text = _text(value, 40)
+    return text if re.search(r"\d", text) else ""
+
+
+def ai_records(sport, rows, sources, today):
+    """Validated fixtures from an AI web search answer, in the same shape as every other feed."""
+    found, seen = [], set()
+    for row in rows:
+        team, opponent = _text(row.get("team"), 80), _text(row.get("opponent"), 80)
+        state = str(row.get("state") or "").strip().lower()
+        if not team or (sport != "f1" and not opponent) or state not in ("pre", "in", "post"):
+            continue
+        start = parse_time(row.get("start_utc"))
+        if not keep(start, state, today):
+            continue
+        pair = frozenset(team_key(x) for x in (team, opponent) if x)
+        if pair in seen:
+            continue
+        seen.add(pair)
+        digest = hashlib.sha1("|".join(sorted(pair) + [today.isoformat()]).encode("utf-8")).hexdigest()[:12]
+        scored = state != "pre"
+        match = record(sport, f"ai-g{digest}",_text(row.get("tournament"), 100) or SPORT_LABELS.get(sport, sport), team,
+                       opponent if sport != "f1" else "", start, state, _text(row.get("status"), 80) or None,
+                       _text(row.get("venue"), 100), _score(row.get("team_score")) if scored else "",
+                       _score(row.get("opponent_score")) if scored else "", detail=_text(row.get("format"), 30))
+        match["source_url"] = sources[0]["uri"]
+        match["ai_source"] = {"label": AI_SOURCE, "sources": sources}
+        found.append(match)
+    return found
+
+
+def merge_ai(listed, found):
+    """Add fixtures no other feed listed; fill only blank scores of in-play or finished ones. Never overwrite a feed."""
+    def pair(match):
+        return frozenset(team_key(match[k]) for k in ("team", "opponent") if match.get(k))
+    known = {pair(m): m for m in listed}
+    added = 0
+    for match in found:
+        twin = known.get(pair(match))
+        if twin is None:
+            listed.append(match)
+            added += 1
+        elif twin["state"] != "pre" and not (twin.get("team_score") or twin.get("opponent_score")) \
+                and (match["team_score"] or match["opponent_score"]):
+            twin["team_score"], twin["opponent_score"] = match["team_score"], match["opponent_score"]
+            twin["score_source"] = match["ai_source"]
+            added += 1
+    return added
+
+
+def fetch_ai(sport, today, listed):
+    """One metered, cached Gemini web search for `sport`. Returns (fixtures, source entry), or (None, None) without a key."""
+    key = _gemini_key()
+    if not key:
+        return None, None
+    blocked = budget.Cache(ROOT, f"ai_scores_{sport}_blocked")
+    cache = budget.Cache(ROOT, f"ai_scores_{sport}")
+    answer = cache.get(budget.refresh_interval(ROOT, "gemini_search")) or blocked.get(3600)
+    if answer is None:
+        if not budget.spend(ROOT, "gemini_search", f"{sport} fixtures and scores"):
+            return [], {"sport": sport, "name": AI_SOURCE, "ok": True, "matches": 0, "optional": True, "error": None,
+                        "note": "Daily Gemini web search budget reached."}
+        known = [{"team": m["team"], "opponent": m.get("opponent", "")} for m in listed]
+        answer = fetch_ai_scores.lookup(key, sport, today.isoformat(), known)
+        if answer.get("ok"):
+            cache.put(answer)
+        elif answer.get("blocked"):
+            blocked.put(answer)   # do not ask again for an hour
+    if not answer.get("ok"):
+        # A key without web search is a known, quiet state: it is reported in Settings, not as a feed failure.
+        return [], {"sport": sport, "name": AI_SOURCE, "ok": False, "matches": 0, "optional": True,
+                    "error": None if answer.get("blocked") else answer.get("error"), "note": answer.get("error")}
+    found = ai_records(sport, answer.get("matches") or [], answer["sources"], today)
+    return found, {"sport": sport, "name": AI_SOURCE, "ok": True, "matches": len(found), "optional": True, "error": None,
+                   "note": "Unofficial: read from web pages by an AI model, which cites the pages it used."}
+
+
 def fetch_matches(now=None):
     today = (now or datetime.now().astimezone()).date()
     schedule = {sport: [] for sport in SPORTS}
@@ -306,12 +416,24 @@ def fetch_matches(now=None):
         schedule["cricket"] = matches
         sources.extend(cricket_sources)
 
+    for sport in SPORTS:
+        if not ai_needed(sport, sources):
+            continue
+        try:
+            found, source = fetch_ai(sport, today, schedule[sport])
+        except Exception as exc:   # never let the last-resort lookup break the schedule (or echo a key)
+            found, source = [], {"sport": sport, "name": AI_SOURCE, "ok": False, "matches": 0, "optional": True,
+                                 "error": f"The AI web search failed ({type(exc).__name__})."}
+        if source:
+            source["matches"] = merge_ai(schedule[sport], found or [])
+            sources.append(source)
+
     order = {"in": 0, "pre": 1, "post": 2}
     for matches in schedule.values():
         matches.sort(key=lambda m: (order[m["state"]], m["start"], m["id"]))
     everything = [m for matches in schedule.values() for m in matches]
-    reachable = any(s["ok"] for s in sources)
-    failed = [s["name"] for s in sources if not s["ok"]]
+    reachable = any(s["ok"] for s in sources if not s.get("optional"))
+    failed = [s["name"] for s in sources if not s["ok"] and not s.get("optional")]
     total = len(everything)
     if not reachable:
         status = "Could not reach any schedule source; check the internet connection"

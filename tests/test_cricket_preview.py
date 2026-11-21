@@ -3,6 +3,7 @@ import io
 import json
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 from unittest.mock import patch
 from urllib.error import HTTPError
@@ -10,7 +11,7 @@ from zipfile import ZipFile
 
 from matchlab.cricket_preview import _recent, build_context
 from matchlab.cricket_projections import _scorecard, project
-from tools.fetch_openrouter_preview import generate
+from tools.fetch_openrouter_preview import generate, run
 
 
 class CricketPreviewTests(unittest.TestCase):
@@ -55,6 +56,27 @@ class CricketPreviewTests(unittest.TestCase):
             result = generate("test-secret", {})
         self.assertIn("Data & models", result["error"])
         self.assertNotIn("private upstream error", result["error"])
+
+    def test_rejected_saved_key_retries_with_env_key_then_gemini(self):
+        keys = {"OPENROUTER_API_KEY": "env-key", "GEMINI_API_KEY": "gem-key"}
+        good = {"text": "Fine.", "model": "m", "web_sources": []}
+        rejected = {"error": "OpenRouter rejected the API key.", "status": 401}
+        gemini = unittest.mock.Mock(return_value={"text": "See [ESPN](https://espn.com).", "model": "gemini-x"})
+        with patch("tools.fetch_openrouter_preview.generate", side_effect=[rejected, good]) as call:
+            self.assertEqual(run("old-key", {}, lookup=keys.get, gemini=gemini), good)
+        self.assertEqual([c.args[0] for c in call.call_args_list], ["old-key", "env-key"])
+        gemini.assert_not_called()
+        busy = {"error": "OpenRouter is rate limiting free model requests.", "status": 429}
+        with patch("tools.fetch_openrouter_preview.generate", return_value=busy) as call:
+            result = run("env-key", {}, lookup=keys.get, gemini=gemini)
+        call.assert_called_once()   # the same key is never retried
+        self.assertEqual(result, {"text": "See [ESPN].", "model": "google/gemini-x", "web_sources": []})
+        self.assertEqual(gemini.call_args.kwargs["key"], "gem-key")
+        with patch("tools.fetch_openrouter_preview.generate", return_value=busy):
+            self.assertEqual(run("env-key", {}, lookup={}.get, gemini=gemini), busy)   # no Gemini key: original error
+        gemini.return_value = {"error": "Gemini down"}
+        with patch("tools.fetch_openrouter_preview.generate", return_value=busy):
+            self.assertEqual(run("env-key", {}, lookup=keys.get, gemini=gemini), busy)
 
 
 class CricketProjectionTests(unittest.TestCase):

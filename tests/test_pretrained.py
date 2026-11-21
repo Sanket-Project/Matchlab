@@ -122,7 +122,10 @@ class PublicDataTests(unittest.TestCase):
         ds = self.engine.datasets["tennis"]
         index = HistoryIndex(ds)
         for m in ds.matches[::100]:
-            self.assertLess(m["pre_match_date"], m["date"])
+            if "_supplement-" in m["match_id"]:   # published match day: the result is known that day, never earlier
+                self.assertEqual(m["pre_match_date"], m["date"])
+            else:                                 # archive: tournament start, results available 14 days later
+                self.assertLess(m["pre_match_date"], m["date"])
             for side in (m["team"], m["opponent"]):
                 records = index.before(index.sides, side, m["pre_match_date"], 30)
                 self.assertTrue(all(r["date"] < m["pre_match_date"] for r in records))

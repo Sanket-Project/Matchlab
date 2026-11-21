@@ -192,8 +192,11 @@ class ImportedContextTests(unittest.TestCase):
     def test_tennis_matches_record_surface_and_rankings(self):
         rows = self.rows("tennis")
         self.assertTrue({"Hard", "Clay", "Grass"} <= {r["surface"] for r in rows})
-        ranked = [r for r in rows if r["team_rank"] and r["opponent_rank"]]
-        self.assertGreater(len(ranked), 0.95 * len(rows))
+        # Entry rankings come from the archive; local supplement rows leave them blank by design.
+        archive = [r for r in rows if "_supplement-" not in r["match_id"]]
+        ranked = [r for r in archive if r["team_rank"] and r["opponent_rank"]]
+        self.assertGreater(len(ranked), 0.95 * len(archive))
+        self.assertTrue(all(not r["team_rank"] for r in rows if "_supplement-" in r["match_id"]))
         self.assertTrue(all(int(r["team_rank"]) > 0 for r in ranked))
 
 

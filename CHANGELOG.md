@@ -1,5 +1,27 @@
 # Changelog
 
+## 2026-11-22
+
+### AI web search when sports feeds hit their limit
+- When CricketData.org reaches its daily limit (or every feed for a sport fails), Gemini with Google Search grounding
+  looks up today's fixtures and scores. It only adds missing fixtures and fills blank scores, keeps only answers that
+  cite web pages, is metered (`gemini_search`, 100 a day) and cached, and is labelled "AI web search" on each card.
+  AI-only fixtures are not saved to Track record. A CricketData "limit exceeded" reply now also counts as the limit.
+- Status: the current Gemini key has no Google Search grounding quota (free tier), so the lookup is dormant and
+  says so under Settings → Request budgets. It turns on by itself once grounding is enabled for the key.
+
+### Fixes after the API key check
+- **CricketData.org was silently off.** `tools/fetch_today_matches.py` read `os.environ` without importing `os`;
+  the `NameError` was caught and every refresh fell back to ESPN only. Fixed; the `.env` lookup now uses the
+  project root, so tests stay isolated from your real `.env`.
+- **AI requests survive a dead saved key.** The AI worker (`tools/fetch_openrouter_preview.py`, used by AI checks,
+  summaries, previews and the World briefing) retries once with `OPENROUTER_API_KEY` from the environment or `.env`
+  when OpenRouter rejects the key it was given, then falls back to Google Gemini (`GEMINI_API_KEY`) if OpenRouter
+  still cannot answer. Each request is still metered once in the OpenRouter ledger. The answer's `model` shows
+  `google/…` when Gemini replied.
+- Two tennis data tests now check archive rows and local supplement rows by their own documented rules
+  (supplement rows carry no entry rankings and use the match day as availability date).
+
 ## 2026-11-21
 
 ### New data feeds (chosen from the public-apis list)
