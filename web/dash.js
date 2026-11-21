@@ -33,7 +33,36 @@ function h(tag, attrs, ...children) {
   }
   return node;
 }
-const show = (...nodes) => view.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
+function animateNumber(node, target, suffix = "") {
+  if (typeof window !== "undefined" && window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    node.textContent = target + suffix;
+    return;
+  }
+  const numeric = typeof target === "number" ? target : parseInt(target, 10);
+  if (isNaN(numeric)) {
+    node.textContent = target + suffix;
+    return;
+  }
+  const duration = 340;
+  const start = performance.now();
+  const initial = 0;
+  function step(now) {
+    const elapsed = now - start;
+    const progress = Math.min(1, elapsed / duration);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = Math.round(initial + (numeric - initial) * ease);
+    node.textContent = current + suffix;
+    if (progress < 1) requestAnimationFrame(step);
+    else node.textContent = target + suffix;
+  }
+  requestAnimationFrame(step);
+}
+const show = (...nodes) => {
+  view.classList.remove("view-enter");
+  void view.offsetWidth;
+  view.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
+  view.classList.add("view-enter");
+};
 const pct = (p) => `${Math.round(p * 100)}%`;
 const time = (iso) => iso ? new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
 const day = (iso) => iso ? new Date(iso).toLocaleDateString([], { weekday: "short", day: "numeric", month: "short" }) : "";
@@ -77,16 +106,26 @@ function modelled(match) {
   return /t20|twenty20|t10|odi|list a|one-day|one day/.test(`${kind} ${(match.tournament || "").toLowerCase()}`);
 }
 
-function card(match) {
+function card(match, index = 0) {
   const live = match.state === "in";
   const ready = modelled(match);
   const tagText = live ? "Live" : match.state === "post" ? "Finished" : time(match.start);
   const badge = match.sport === "f1" ? h("span", { class: "tag ok" }, "Explore F1")
     : ready ? h("span", { class: "tag ok" }, "Forecast ready")
       : h("span", { class: "tag off" }, match.sport === "tennis" ? "Players not decided" : "Not modelled yet");
-  return h("button", { class: `card match-card${live ? " is-live" : ""}`, type: "button", onclick: () => { location.hash = `match/${encodeURIComponent(match.id)}`; } },
-    h("div", { class: "meta" }, h("span", {}, `${SPORTS[match.sport]}${match.detail ? " · " + match.detail : ""}`),
-      h("span", { class: `tag${live ? " live" : ""}` }, tagText)),
+  const thumb = match.sport === "cricket" ? "/images/sport-cricket.jpg"
+    : match.sport === "tennis" ? "/images/sport-tennis.jpg"
+    : "/images/f1-hero.jpg";
+  return h("button", {
+    class: `card match-card${live ? " is-live" : ""}`,
+    style: `--stagger:${index};`,
+    type: "button",
+    onclick: () => { location.hash = `match/${encodeURIComponent(match.id)}`; }
+  },
+    h("div", { class: "match-card-top" },
+      h("img", { src: thumb, alt: SPORTS[match.sport] || "Sport", class: "match-card-thumb", loading: "lazy", decoding: "async" }),
+      h("div", { class: "meta" }, h("span", {}, `${SPORTS[match.sport]}${match.detail ? " · " + match.detail : ""}`),
+        h("span", { class: `tag${live ? " live" : ""}` }, tagText))),
     h("div", { class: "teams" },
       h("span", {}, h("span", { class: "team-name" }, match.team), h("b", {}, match.team_score || "")),
       match.opponent ? h("span", {}, h("span", { class: "team-name" }, match.opponent), h("b", {}, match.opponent_score || "")) : null),
@@ -110,16 +149,49 @@ function renderMatches() {
     state.refreshing ? "Checking..." : "Refresh");
   const section = (title, rows, empty) => h("section", { class: "section" },
     h("h2", {}, title, h("span", { class: "count" }, rows.length ? `${rows.length}` : "")),
-    rows.length ? h("div", { class: "cards" }, rows.map(card)) : h("p", { class: "note" }, empty));
+    rows.length ? h("div", { class: "cards" }, rows.map((m, i) => card(m, i))) : h("p", { class: "note" }, empty));
   const search = h("input", { type: "search", class: "match-search", value: state.search, placeholder: "Search teams, leagues or venues", "aria-label": "Search teams, leagues or venues",
     oninput: (event) => { const position = event.target.selectionStart; state.search = event.target.value; renderMatches(); const field = view.querySelector(".match-search"); field.focus(); if (position != null) field.setSelectionRange(position, position); } });
+  const sportsGallery = h("div", { class: "sports-showcase", role: "region", "aria-label": "Featured sports disciplines" },
+    h("button", { class: `showcase-card${state.filter === "cricket" ? " active" : ""}`, type: "button", "aria-pressed": String(state.filter === "cricket"),
+      onclick: () => { state.filter = state.filter === "cricket" ? "all" : "cricket"; renderMatches(); } },
+      h("div", { class: "showcase-media-wrap" },
+        h("img", { src: "/images/sport-cricket.jpg", alt: "Cricket Match Simulations", class: "showcase-img", loading: "lazy", decoding: "async" })),
+      h("div", { class: "showcase-content" },
+        h("span", { class: "showcase-kicker" }, "CRICKET"),
+        h("h3", {}, "Match Simulations"),
+        h("p", {}, "3,000 Monte Carlo pitch & player models"))),
+    h("button", { class: `showcase-card${state.filter === "tennis" ? " active" : ""}`, type: "button", "aria-pressed": String(state.filter === "tennis"),
+      onclick: () => { state.filter = state.filter === "tennis" ? "all" : "tennis"; renderMatches(); } },
+      h("div", { class: "showcase-media-wrap" },
+        h("img", { src: "/images/sport-tennis.jpg", alt: "Tennis Surface Ratings", class: "showcase-img", loading: "lazy", decoding: "async" })),
+      h("div", { class: "showcase-content" },
+        h("span", { class: "showcase-kicker" }, "TENNIS"),
+        h("h3", {}, "Surface Ratings"),
+        h("p", {}, "Surface-weighted ratings, hold rates & set distributions"))),
+    h("button", { class: "showcase-card", type: "button",
+      onclick: () => { location.hash = "f1"; } },
+      h("div", { class: "showcase-media-wrap" },
+        h("img", { src: "/images/f1-hero.jpg", alt: "Formula 1 Hub", class: "showcase-img", loading: "lazy", decoding: "async" })),
+      h("div", { class: "showcase-content" },
+        h("span", { class: "showcase-kicker" }, "FORMULA 1"),
+        h("h3", {}, "Championship Hub"),
+        h("p", {}, "Standings, race telemetry, lap timings & circuit analytics"))));
+  const heroStatsNodes = [["Live now", "in"], ["Coming up", "pre"], ["Finished", "post"]].map(([label, status]) => {
+    const val = data ? all.filter((m) => m.state === status).length : null;
+    const numNode = h("strong", { class: "num" }, val != null ? String(val) : "—");
+    if (val != null) {
+      requestAnimationFrame(() => animateNumber(numNode, val));
+    }
+    return h("div", {}, h("span", {}, label), numNode);
+  });
   show(
     h("section", { class: "matchday-hero", "aria-label": "Matchday overview" },
       h("div", { class: "hero-copy" }, h("p", { class: "eyebrow" }, "THE MATCHDAY EDIT"), h("h1", {}, "Every match.", h("br"), h("span", {}, "A clearer picture.")),
         h("p", {}, "Your daily view of live scores, upcoming fixtures and the numbers behind the game."),
         h("span", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
-      h("div", { class: "hero-stats" }, [["Live now", "in"], ["Coming up", "pre"], ["Finished", "post"]].map(([label, status]) =>
-        h("div", {}, h("span", {}, label), h("strong", { class: "num" }, data ? all.filter((m) => m.state === status).length : "—"))))),
+      h("div", { class: "hero-stats" }, heroStatsNodes)),
+    sportsGallery,
     h("div", { class: "head matches-heading" }, h("div", {}, h("p", { class: "eyebrow" }, "YOUR MATCH CENTRE"), h("h2", {}, "On the schedule"),
       h("p", { class: "sub" }, data && data.last_updated ? `Last checked ${time(data.last_updated)} · Open a match to explore its forecast.` : "Loading fixtures…")), refresh),
     h("div", { class: "filter-bar" }, filters, search),
@@ -127,7 +199,7 @@ function renderMatches() {
     data && (data.sources || []).filter((s) => s.error).map((s) => h("p", { class: "note warn" }, `${s.name}: ${s.error}`)),
     section("Live now", live, state.search ? "No live matches match your search. Try another team or league." : "A quiet moment. No matches are in play for this sport right now."),
     section("Coming up", soon, state.search ? "No upcoming matches match your search." : "No upcoming fixtures for this selection in the next day."),
-    done.length ? h("details", { class: "section more" }, h("summary", {}, `Finished today (${done.length})`), h("div", { class: "cards", style: "margin-top:10px" }, done.map(card))) : null);
+    done.length ? h("details", { class: "section more" }, h("summary", {}, `Finished today (${done.length})`), h("div", { class: "cards", style: "margin-top:10px" }, done.map((m, i) => card(m, i)))) : null);
 }
 
 async function refreshSchedule() {
@@ -219,12 +291,19 @@ function matchScoreboard(board) {
 function winOutlook(teams, win, reasons) {
   const favourite = win[0] >= win[1] ? 0 : 1;
   const even = pct(win[0]) === pct(win[1]);
+  const bar = h("div", { class: "probability-bar", "aria-hidden": "true" }, h("div", { style: "width:0%" }));
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const fill = bar.firstElementChild;
+      if (fill) fill.style.width = `${win[0] * 100}%`;
+    });
+  });
   return h("div", { class: "outlook" },
     h("div", { class: "outlook-head" }, h("h3", {}, even ? "Too close to call" : `${teams[favourite].name} favoured to win`),
       h("span", { class: "tag" }, "Model forecast")),
     h("div", { class: "probabilities" }, teams.map((team, i) => h("div", {},
       h("strong", { class: "num" }, pct(win[i])), h("span", {}, team.name)))),
-    h("div", { class: "probability-bar", "aria-hidden": "true" }, h("div", { style: `width:${win[0] * 100}%` })),
+    bar,
     reasons.length ? h("ul", { class: "why" }, reasons.map((reason) => h("li", {}, reason))) : null);
 }
 
@@ -404,10 +483,18 @@ function aiPanel(f, id, sport) {
 
 function winPanel(f, title) {
   const [a, b] = f.teams, win = f.live ? [a.win, b.win] : nowWin(f);
+  const barA = h("div", { class: "a", style: "width:0%" }, pct(win[0]));
+  const barB = h("div", { class: "b", style: "width:0%" }, `${100 - Math.round(win[0] * 100)}%`);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      barA.style.width = `${Math.max(8, win[0] * 100)}%`;
+      barB.style.width = `${Math.max(8, win[1] * 100)}%`;
+    });
+  });
   return h("section", { class: "panel" },
     h("h2", {}, title),
     h("div", { class: "winbar", role: "img", "aria-label": `${a.name} ${pct(win[0])}, ${b.name} ${100 - Math.round(win[0] * 100)}%` },
-      h("div", { class: "a", style: `width:${Math.max(8, win[0] * 100)}%` }, pct(win[0])), h("div", { class: "b", style: `width:${Math.max(8, win[1] * 100)}%` }, `${100 - Math.round(win[0] * 100)}%`)),
+      barA, barB),
     h("div", { class: "winlabels" }, h("span", {}, a.name), h("span", {}, b.name)),
     !f.live && f.ai && f.ai.check && f.ai.check.shift ? h("p", { class: "sub" }, `Model alone: ${a.name} ${pct(f.ai.model_win[0])}. The AI check moved it ${f.ai.check.shift > 0 ? "+" : ""}${f.ai.check.shift} points.`) : null,
     a.win_model != null ? h("p", { class: "sub" }, `Corrected from past results: the model alone said ${a.name} ${pct(a.win_model)}. Across ${f.calibration.graded} graded forecasts its favourites were given ${pct(f.calibration.favourite_expected)} on average and won ${pct(f.calibration.favourite_won)}, so its chances are ${f.calibration.factor < 1 ? "pulled toward" : "pushed away from"} 50%.`) : null,
@@ -416,8 +503,18 @@ function winPanel(f, title) {
 
 // ---- tennis match page ----------------------------------------------------------------
 function setRows(rows) {
-  return rows.map((row) => h("div", { class: "setrow" }, h("span", {}, `${row.winner} ${row.score.split("-").sort().reverse().join("-")}`),
-    h("div", { class: "track" }, h("div", { class: "fill", style: `width:${Math.round(row.chance * 100)}%` })), h("span", { class: "num" }, pct(row.chance))));
+  return rows.map((row) => {
+    const fill = h("div", { class: "fill", style: "width:0%" });
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        fill.style.width = `${Math.round(row.chance * 100)}%`;
+      });
+    });
+    return h("div", { class: "setrow" },
+      h("span", {}, `${row.winner} ${row.score.split("-").sort().reverse().join("-")}`),
+      h("div", { class: "track" }, fill),
+      h("span", { class: "num" }, pct(row.chance)));
+  });
 }
 
 function tennisPlayer(t) {
@@ -454,6 +551,12 @@ function renderTennis(f, id) {
   const [a, b] = f.teams, fx = f.fixture, bt = f.analysis.backtest;
   show(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
+    h("div", { class: "venue-banner" },
+      h("img", { src: "/images/tennis-court.jpg", alt: "Tennis Court Surface", class: "venue-media", loading: "lazy" }),
+      h("div", { class: "venue-overlay" },
+        h("span", { class: "venue-kicker" }, `${(f.surface?.name || "CHAMPIONSHIP").toUpperCase()} COURT`),
+        h("h3", {}, `${f.format} · ${f.surface?.name || "Championship"} court`),
+        h("p", {}, [fx.tournament, fx.detail, `${day(fx.start)} ${time(fx.start)}`].filter(Boolean).join(" · ")))),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${a.name} v ${b.name}`),
         h("p", { class: "sub" }, [fx.tournament, fx.detail, f.format, `${f.surface.name} court`, `${day(fx.start)} ${time(fx.start)}`, f.intel.state === "pre" ? countdown(fx.start) : f.intel.status].filter(Boolean).join(" · "))),
@@ -486,6 +589,12 @@ function renderForecast(f, id) {
   const start = fx.start ? `${day(fx.start)} · ${time(fx.start)}` : "";
   show(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
+    h("div", { class: "venue-banner" },
+      h("img", { src: "/images/cricket-stadium.jpg", alt: "Cricket Ground Atmosphere", class: "venue-media", loading: "lazy" }),
+      h("div", { class: "venue-overlay" },
+        h("span", { class: "venue-kicker" }, "VENUE & CONDITIONS"),
+        h("h3", {}, fx.venue || "Match Venue"),
+        h("p", {}, [fx.tournament, supported ? `${f.category}’s ${f.format}` : fx.detail, start].filter(Boolean).join(" · ")))),
     h("div", { class: "head" },
       h("div", {}, h("h1", {}, `${fx.team} vs ${fx.opponent}`),
         h("p", { class: "sub" }, [fx.tournament, supported ? `${f.category}’s ${f.format}` : fx.detail,
@@ -647,9 +756,18 @@ async function renderRecord() {
       filters.append(h("button", { class: "chip", type: "button", value: sport, "aria-controls": "sport-record",
         onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${sports[sport].summary.saved}`));
     }
-    show(h("div", { class: "head" }, h("div", {}, h("h1", {}, "Track record"),
-      h("p", { class: "sub" }, "Accuracy counts forecasts saved before play or the race start."))),
-      filters, detail);
+    const totalSaved = Object.values(sports).reduce((acc, s) => acc + (s.summary?.saved || 0), 0);
+    const recordHero = h("section", { class: "record-hero", "aria-label": "Track record overview" },
+      h("div", { class: "record-hero-copy" },
+        h("p", { class: "eyebrow" }, "VERIFIED ACCURACY & RIGOR"),
+        h("h1", {}, "The science behind", h("br"), h("span", {}, "every forecast.")),
+        h("p", {}, "Every probability is mathematically calibrated, saved before match start, and graded against ground-truth outcomes."),
+        h("span", { class: "hero-date" }, "Transparent, reproducible, and strictly auditable.")),
+      h("div", { class: "record-hero-stat" },
+        h("span", {}, "Tracked Forecasts"),
+        h("strong", { class: "num" }, `${totalSaved}`),
+        h("p", { class: "sub" }, "saved forecasts across all sports")));
+    show(recordHero, filters, detail);
     select(state.recordSport || "cricket");
   } catch (error) {
     if (request === state.request) show(h("h1", {}, "Track record"), h("p", { class: "note error", role: "alert" }, error.message));
@@ -687,8 +805,10 @@ function renderSettings() {
         h("button", { class: "btn", type: "button", onclick: () => send("clear") }, "Remove key")), message));
 }
 
-function f1LapPanel(last, next, request) {
-  const choices = [last, next].filter((race) => race?.season && race?.round);
+function f1LapPanel(season, last, next, request) {
+  const byRound = new Map();
+  for (const race of [...season, last, next]) if (race?.season && race?.round) byRound.set(`${race.season}/${race.round}`, race);
+  const choices = [...byRound.values()].sort((a, b) => a.date.localeCompare(b.date));
   const panel = h("section", { class: "panel", "aria-labelledby": "f1-lap-title" },
     h("h2", { id: "f1-lap-title" }, "Lap-by-lap analysis"));
   if (!choices.length) {
@@ -698,8 +818,13 @@ function f1LapPanel(last, next, request) {
   const key = (race) => `${race.season}/${race.round}`;
   const start = (race) => Date.parse(`${race.date}T${race.time || "00:00:00Z"}`);
   const preferred = next && start(next) <= Date.now() ? next : last || next;
-  const select = h("select", { id: "f1-lap-race" },
-    choices.map((race) => h("option", { value: key(race), selected: key(race) === key(preferred) }, race.raceName)));
+  // Every race of the season, split into what has been run (newest first) and what is still to come.
+  const started = choices.filter((race) => start(race) <= Date.now()).reverse();
+  const upcoming = choices.filter((race) => start(race) > Date.now());
+  const label = (race) => `Round ${race.round} · ${race.raceName} · ${new Date(`${race.date}T12:00:00Z`).toLocaleDateString([], { day: "numeric", month: "short", timeZone: "UTC" })}`;
+  const group = (title, races) => races.length ? h("optgroup", { label: title }, races.map((race) => h("option", { value: key(race) }, label(race)))) : null;
+  const select = h("select", { id: "f1-lap-race" }, group(`Completed or under way (${started.length})`, started), group(`Upcoming (${upcoming.length})`, upcoming));
+  select.value = key(preferred);
   const status = h("p", { class: "note", role: "status" });
   const rows = h("div", { class: "scroll lap-table", tabindex: "0", role: "region", "aria-label": "Lap timing" });
   const refresh = h("button", { class: "btn", type: "button", onclick: load }, "Refresh laps");
@@ -755,9 +880,60 @@ function f1LapPanel(last, next, request) {
     rows.replaceChildren();
     load();
   });
-  panel.append(h("div", { class: "row lap-controls" }, h("label", { for: "f1-lap-race" }, "Grand Prix"), select, refresh), status, rows);
+  panel.append(h("div", { class: "row lap-controls" }, h("label", { for: "f1-lap-race" }, "Grand Prix"), h("span", { class: "select-wrap" }, select), refresh), status, rows);
   load();
   return panel;
+}
+
+const F1_GRID_CARS = [
+  { team: "Red Bull Racing", chassis: "RB20", img: "/images/f1-car-redbull.jpg", engine: "Honda RBPT", color: "#001A30", accent: "#CC1E4A", secondary: "#FCD700", drivers: "Verstappen · Pérez", aero: "Aggressive undercut sidepods & inverted shark-inlets" },
+  { team: "Ferrari", chassis: "SF-24", img: "/images/f1-hero.jpg", engine: "Ferrari 066/12", color: "#E80020", accent: "#FFF200", secondary: "#FFFFFF", drivers: "Leclerc · Sainz", aero: "Reworked downwash gulley & push-rod rear suspension" },
+  { team: "McLaren", chassis: "MCL38", img: "/images/f1-grid-lineup.jpg", engine: "Mercedes-AMG", color: "#FF8000", accent: "#141414", secondary: "#47C7FC", drivers: "Norris · Piastri", aero: "Low-drag beam wing & optimized floor venturi channels" },
+  { team: "Mercedes", chassis: "W15", img: "/images/f1-hero.jpg", engine: "Mercedes-AMG", color: "#00A19B", accent: "#C0C0C0", secondary: "#0A0A0A", drivers: "Hamilton · Russell", aero: "Anti-dive front wishbones & twin-plane rear wing" },
+  { team: "Aston Martin", chassis: "AMR24", img: "/images/f1-car-astonmartin.jpg", engine: "Mercedes-AMG", color: "#00665E", accent: "#CEDC00", secondary: "#071D18", drivers: "Alonso · Stroll", aero: "Deep slide-channel sidepod slide & slim nosecone" },
+  { team: "Alpine", chassis: "A524", img: "/images/f1-car-alpine.jpg", engine: "Renault E-Tech", color: "#0090FF", accent: "#FD4BC7", secondary: "#111111", drivers: "Gasly · Ocon", aero: "Wide-span front cascade & compact cooling package" },
+  { team: "Williams", chassis: "FW46", img: "/images/f1-grid-lineup.jpg", engine: "Mercedes-AMG", color: "#00A0DE", accent: "#041E42", secondary: "#B05B1B", drivers: "Albon · Colapinto", aero: "Forward-shifted aero pressure & low-drag rear wing" },
+  { team: "RB", chassis: "VCARB 01", img: "/images/f1-car-vcarb.jpg", engine: "Honda RBPT", color: "#6692FF", accent: "#FFFFFF", secondary: "#CC1E4A", drivers: "Tsunoda · Lawson", aero: "Pull-rod front suspension synergy with Red Bull Technology" },
+  { team: "Sauber", chassis: "C44", img: "/images/f1-car-sauber.jpg", engine: "Ferrari", color: "#52E252", accent: "#0F0F0F", secondary: "#242424", drivers: "Bottas · Zhou", aero: "Fluo-green high-visibility livery & undercut radiator inlets" },
+  { team: "Haas F1 Team", chassis: "VF-24", img: "/images/f1-grid-lineup.jpg", engine: "Ferrari", color: "#B6BABD", accent: "#E6002B", secondary: "#1C1C1C", drivers: "Hülkenberg · Magnussen", aero: "Ferrari-derived suspension & tire degradation management floor" }
+];
+
+function f1CarsGrid(teams) {
+  const pointsMap = Object.fromEntries((teams || []).map((t) => [t.Constructor.name.toLowerCase(), t]));
+  const cards = F1_GRID_CARS.map((car) => {
+    const matched = Object.entries(pointsMap).find(([name]) => car.team.toLowerCase().includes(name) || name.includes(car.team.toLowerCase()))?.[1];
+    return h("article", { class: "f1-car-card", style: `--team-color:${car.color};--team-accent:${car.accent};--team-secondary:${car.secondary}` },
+      h("div", { class: "car-media-wrap" },
+        h("img", { src: car.img, alt: `${car.team} ${car.chassis}`, class: "car-media", loading: "lazy", decoding: "async" })),
+      h("div", { class: "car-livery-bar" },
+        h("div", { class: "bar-primary" }),
+        h("div", { class: "bar-accent" }),
+        h("div", { class: "bar-secondary" })),
+      h("div", { class: "car-card-body" },
+        h("div", { class: "car-header" },
+          h("div", {},
+            h("span", { class: "car-chassis" }, car.chassis),
+            h("h3", {}, car.team)),
+          matched ? h("span", { class: "tag ok" }, `P${matched.position} · ${matched.points} pts`) : null),
+        h("div", { class: "car-specs" },
+          h("div", {}, h("span", { class: "spec-label" }, "Power Unit"), h("strong", {}, car.engine)),
+          h("div", {}, h("span", { class: "spec-label" }, "Drivers"), h("strong", {}, car.drivers))),
+        h("p", { class: "car-aero" }, car.aero)));
+  });
+  return h("section", { class: "panel f1-grid-showcase", "aria-labelledby": "f1-grid-title" },
+    h("div", { class: "section-head" },
+      h("div", {},
+        h("p", { class: "f1-label" }, "THE 2024–2026 GRID"),
+        h("h2", { id: "f1-grid-title" }, "Cars & Constructors on the Grid")),
+      h("span", { class: "tag" }, "10 Teams · 20 Cars")),
+    h("p", { class: "sub", style: "margin-bottom:14px" }, "Chassis architecture, power units, driver lineups and active aerodynamics for every car on the Formula 1 grid."),
+    h("div", { class: "f1-grid-banner" },
+      h("img", { src: "/images/f1-grid-lineup.jpg", alt: "Complete Formula 1 Starting Grid Lineup", class: "grid-banner-img", loading: "lazy" }),
+      h("div", { class: "grid-banner-overlay" },
+        h("span", { class: "venue-kicker" }, "THE STARTING GRID LINEUP"),
+        h("h3", {}, "Every Car on the Grid"),
+        h("p", {}, "All 10 constructor machines in championship formation on the start/finish straight"))),
+    h("div", { class: "f1-cars-container" }, cards));
 }
 
 async function renderF1() {
@@ -779,9 +955,20 @@ async function renderF1() {
       h("p", {}, "Standings, results and the road ahead."),
       h("div", { class: "f1-hero-bottom" }, h("span", {}, `Jolpica checked ${new Date(data.checked_at).toLocaleString()} · Data may be delayed`), h("button", { class: "btn", type: "button", onclick: renderF1 }, "Refresh data"))),
       h("div", { class: "f1-overview" },
-        h("section", { class: "panel" }, h("p", { class: "f1-label" }, "NEXT RACE"), next ? [h("h2", {}, next.raceName), h("p", { class: "sub" }, `${next.Circuit?.circuitName || ""} · ${day(next.date + "T" + (next.time || "00:00:00Z"))}`), h("p", {}, next.time ? time(next.date + "T" + next.time) : "Start time to be confirmed")] : data.next ? h("p", {}, "No upcoming race published.") : unavailable()),
-        h("section", { class: "panel" }, h("p", { class: "f1-label" }, "CHAMPIONSHIP LEADER"), drivers.length ? [h("h2", {}, `${drivers[0].Driver.givenName} ${drivers[0].Driver.familyName}`), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")), h("p", { class: "f1-points" }, `${drivers[0].points} pts`)] : unavailable())),
-      f1LapPanel(last, next, request),
+        h("section", { class: "panel f1-feature-card" },
+          h("div", { class: "panel-media-wrap" },
+            h("img", { src: "/images/f1-next-race.jpg", alt: "Grand Prix Circuit", class: "panel-media", loading: "lazy" })),
+          h("div", { class: "f1-card-body" },
+            h("p", { class: "f1-label" }, "NEXT RACE"),
+            next ? [h("h2", {}, next.raceName), h("p", { class: "sub" }, `${next.Circuit?.circuitName || ""} · ${day(next.date + "T" + (next.time || "00:00:00Z"))}`), h("p", {}, next.time ? time(next.date + "T" + next.time) : "Start time to be confirmed")] : data.next ? h("p", {}, "No upcoming race published.") : unavailable())),
+        h("section", { class: "panel f1-feature-card" },
+          h("div", { class: "panel-media-wrap" },
+            h("img", { src: "/images/f1-championship-leader.jpg", alt: "Championship Leader", class: "panel-media", loading: "lazy" })),
+          h("div", { class: "f1-card-body" },
+            h("p", { class: "f1-label" }, "CHAMPIONSHIP LEADER"),
+            drivers.length ? [h("h2", {}, `${drivers[0].Driver.givenName} ${drivers[0].Driver.familyName}`), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")), h("p", { class: "f1-points" }, `${drivers[0].points} pts`)] : unavailable()))),
+      f1LapPanel(data.schedule?.RaceTable?.Races || [], last, next, request),
+      f1CarsGrid(teams),
       h("div", { class: "f1-grid" },
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, `${driversList?.season || "CURRENT"} SEASON · ROUND ${driversList?.round || "—"}`), h("h2", {}, "Driver standings"), drivers.length ? table(["Pos", "Driver", "Team", "Wins", "Points"], drivers.map(d => h("tr", {}, h("td", {}, d.position), h("td", {}, `${d.Driver.givenName} ${d.Driver.familyName}`), h("td", {}, (d.Constructors || []).map(c => c.name).join(" / ")), h("td", {}, d.wins), h("td", {}, h("strong", {}, d.points))))) : unavailable()),
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, "THE TEAMS"), h("h2", {}, "Constructor standings"), teams.length ? table(["Pos", "Team", "Wins", "Points"], teams.map(t => h("tr", {}, h("td", {}, t.position), h("td", {}, t.Constructor.name), h("td", {}, t.wins), h("td", {}, h("strong", {}, t.points))))) : unavailable())),
@@ -793,6 +980,870 @@ async function renderF1() {
   }
 }
 
+// ---- World: markets, AI news, model releases and sports headlines -------------------------------
+const MAJOR_LABS = new Set(["anthropic", "openai", "google", "meta", "mistral", "mistralai", "xai", "x-ai", "deepseek", "qwen", "alibaba", "microsoft", "nvidia", "amazon", "cohere", "perplexity", "moonshotai", "z-ai", "meta-llama"]);
+const SPORT_LABELS = { cricket: "Cricket", football: "Football", tennis: "Tennis", f1: "Formula 1" };
+const WORLD_SECTIONS = ["markets", "news", "models", "sports"];
+const WORLD_STEP = { news: 10, models: 8, sports: 12 };
+state.world = { data: {}, filters: { news: "all", models: "all", sports: "all" }, shown: { ...WORLD_STEP }, brief: null, briefBusy: false, briefError: "", briefTried: false, selectedStock: "ANT", timeframe: "5D", chartMode: "area", indicators: { sma9: false, sma21: false, bollinger: false } };
+
+const ago = (iso) => {
+  const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
+  if (!Number.isFinite(mins)) return "";
+  if (mins < 2) return "just now";
+  if (mins < 60) return `${mins} min ago`;
+  if (mins < 48 * 60) return `${Math.round(mins / 60)} h ago`;
+  return `${Math.round(mins / 1440)} d ago`;
+};
+const money = (n, currency = "USD") => new Intl.NumberFormat([], { style: "currency", currency }).format(n);
+const compact = (n) => new Intl.NumberFormat([], { notation: "compact", maximumFractionDigits: 1 }).format(n);
+const signed = (n, digits = 2) => `${n > 0 ? "+" : n < 0 ? "−" : ""}${Math.abs(n).toFixed(digits)}`;
+const external = (href, text, cls) => h("a", { class: cls, href, target: "_blank", rel: "noopener noreferrer" }, text, h("span", { class: "vh" }, " (opens in a new tab)"));
+
+function smoothBezierPath(pts) {
+  if (!pts || pts.length < 2) return "";
+  let d = `M ${pts[0][0].toFixed(1)},${pts[0][1].toFixed(1)}`;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const p0 = pts[Math.max(i - 1, 0)];
+    const p1 = pts[i];
+    const p2 = pts[i + 1];
+    const p3 = pts[Math.min(i + 2, pts.length - 1)];
+    const cp1x = (p1[0] + (p2[0] - p0[0]) / 6).toFixed(1);
+    const cp1y = (p1[1] + (p2[1] - p0[1]) / 6).toFixed(1);
+    const cp2x = (p2[0] - (p3[0] - p1[0]) / 6).toFixed(1);
+    const cp2y = (p2[1] - (p3[1] - p1[1]) / 6).toFixed(1);
+    d += ` C ${cp1x},${cp1y} ${cp2x},${cp2y} ${p2[0].toFixed(1)},${p2[1].toFixed(1)}`;
+  }
+  return d;
+}
+
+function brokerSparkline(series, direction, width = 140, height = 36) {
+  if (!Array.isArray(series) || series.length < 2) return null;
+  const low = Math.min(...series), high = Math.max(...series), span = high - low || 1;
+  const padY = 3;
+  const pts = series.map((v, i) => [
+    (i / (series.length - 1)) * width,
+    height - padY - ((v - low) / span) * (height - 2 * padY)
+  ]);
+  const curveD = smoothBezierPath(pts);
+  const areaD = `${curveD} L ${width},${height} L 0,${height} Z`;
+  const gradId = `spark-grad-${Math.random().toString(36).slice(2, 8)}`;
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+  svg.setAttribute("class", `mini-broker-spark ${direction}`);
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.setAttribute("role", "presentation");
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="currentColor" stop-opacity="0.32"/>
+        <stop offset="100%" stop-color="currentColor" stop-opacity="0.0"/>
+      </linearGradient>
+    </defs>
+    <path d="${areaD}" fill="url(#${gradId})" />
+    <path d="${curveD}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+  `;
+  return svg;
+}
+
+function rangeMetricCard(label, current, lowVal, highVal, currency) {
+  const min = lowVal != null ? lowVal : current;
+  const max = highVal != null ? highVal : current;
+  const span = max - min || 1;
+  const pct = Math.max(0, Math.min(100, ((current - min) / span) * 100));
+  return h("div", { class: "range-metric-card" },
+    h("div", { class: "range-title-row" },
+      h("span", { class: "range-label" }, label),
+      h("span", { class: "range-current tnum" }, `${pct.toFixed(0)}% in range`)
+    ),
+    h("div", { class: "range-track", "aria-hidden": "true" },
+      h("div", { class: "range-fill" }),
+      h("div", { class: "range-pin", style: `left: ${pct.toFixed(1)}%` })
+    ),
+    h("div", { class: "range-extremes" },
+      h("span", { class: "tnum" }, `Low ${money(min, currency)}`),
+      h("span", { class: "tnum" }, `High ${money(max, currency)}`)
+    )
+  );
+}
+
+function computeOHLC(series) {
+  if (!Array.isArray(series) || series.length < 2) return [];
+  return series.map((val, i) => {
+    const prev = i > 0 ? series[i - 1] : val * 0.998;
+    const open = prev;
+    const close = val;
+    const delta = Math.abs(close - open);
+    const high = Math.max(open, close) + delta * 0.42 + (val * 0.002);
+    const low = Math.min(open, close) - delta * 0.42 - (val * 0.002);
+    return { open, high, low, close, isUp: close >= open };
+  });
+}
+
+function computeSMA(series, period) {
+  const result = [];
+  for (let i = 0; i < series.length; i++) {
+    const start = Math.max(0, i - period + 1);
+    const slice = series.slice(start, i + 1);
+    const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
+    result.push(avg);
+  }
+  return result;
+}
+
+function computeBollinger(series, period = 12, mult = 1.8) {
+  const uppers = [], lowers = [], mids = [];
+  for (let i = 0; i < series.length; i++) {
+    const start = Math.max(0, i - period + 1);
+    const slice = series.slice(start, i + 1);
+    const mean = slice.reduce((a, b) => a + b, 0) / slice.length;
+    const variance = slice.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / slice.length;
+    const std = Math.sqrt(variance);
+    mids.push(mean);
+    uppers.push(mean + mult * std);
+    lowers.push(mean - mult * std);
+  }
+  return { uppers, lowers, mids };
+}
+
+const MARKET_SENTIMENT = {
+  ANT: { buy: 84, hold: 13, sell: 3, bidK: 1.8, askK: 2.4, rating: "Strong Buy", beta: "1.34" },
+  NVDA: { buy: 89, hold: 8, sell: 3, bidK: 4.2, askK: 5.1, rating: "Strong Buy", beta: "1.68" },
+  GOOGL: { buy: 78, hold: 18, sell: 4, bidK: 2.1, askK: 2.6, rating: "Moderate Buy", beta: "1.12" },
+  AMZN: { buy: 81, hold: 16, sell: 3, bidK: 2.9, askK: 3.3, rating: "Strong Buy", beta: "1.25" },
+  MSFT: { buy: 83, hold: 14, sell: 3, bidK: 2.5, askK: 3.0, rating: "Strong Buy", beta: "1.18" }
+};
+
+function tickerMarquee(quotes, activeSymbol, onSelect) {
+  const items = quotes.concat(quotes);
+  return h("div", { class: "ticker-marquee-wrap", "aria-label": "Live Markets Ticker Tape" },
+    h("div", { class: "ticker-marquee-track" },
+      items.map((q) => {
+        const known = typeof q.change_pct === "number";
+        const dir = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
+        return h("button", {
+          class: `ticker-marquee-item ${q.symbol === activeSymbol ? "active" : ""}`,
+          type: "button",
+          onclick: () => onSelect(q.symbol),
+          title: `Switch to ${q.symbol}`
+        },
+          h("span", { class: "item-sym" }, q.symbol),
+          h("span", { class: "item-price tnum" }, money(q.price, q.currency)),
+          known ? h("span", { class: `item-pill tnum ${dir}` }, `${q.change_pct >= 0 ? "▲" : "▼"} ${signed(q.change_pct)}%`) : null
+        );
+      })
+    )
+  );
+}
+
+function brokerTerminal(q, quotes, timeframe, chartMode, indicators, onSelectStock, onSelectTimeframe, onToggleMode, onToggleIndicator) {
+  const known = typeof q.change_pct === "number";
+  const direction = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
+  const rawSeries = Array.isArray(q.series) && q.series.length >= 2 ? q.series : [q.price, q.price];
+  
+  let displaySeries = rawSeries;
+  if (timeframe === "1D" && rawSeries.length > 8) {
+    displaySeries = rawSeries.slice(-Math.max(8, Math.floor(rawSeries.length * 0.35)));
+  }
+
+  const low = Math.min(...displaySeries);
+  const high = Math.max(...displaySeries);
+  const span = high - low || 1;
+  const first = displaySeries[0];
+  const last = displaySeries[displaySeries.length - 1];
+
+  const svgW = 860, svgH = 260;
+  const padL = 16, padR = 80, padT = 26, padB = 40;
+  const chartW = svgW - padL - padR;
+  const chartH = svgH - padT - padB;
+
+  const pts = displaySeries.map((v, i) => [
+    padL + (i / (displaySeries.length - 1)) * chartW,
+    padT + (1 - (v - low) / span) * chartH
+  ]);
+
+  const curveD = smoothBezierPath(pts);
+  const areaD = `${curveD} L ${pts[pts.length - 1][0].toFixed(1)},${(padT + chartH).toFixed(1)} L ${pts[0][0].toFixed(1)},${(padT + chartH).toFixed(1)} Z`;
+  const gradId = `broker-terminal-grad-${q.symbol}`;
+
+  // Indicators calculations
+  const sma9Series = computeSMA(displaySeries, 5);
+  const sma21Series = computeSMA(displaySeries, 9);
+  const bbData = computeBollinger(displaySeries, 8, 1.8);
+
+  const sma9Pts = sma9Series.map((v, i) => [
+    padL + (i / (displaySeries.length - 1)) * chartW,
+    padT + (1 - (v - low) / span) * chartH
+  ]);
+  const sma21Pts = sma21Series.map((v, i) => [
+    padL + (i / (displaySeries.length - 1)) * chartW,
+    padT + (1 - (v - low) / span) * chartH
+  ]);
+  const bbUpperPts = bbData.uppers.map((v, i) => [
+    padL + (i / (displaySeries.length - 1)) * chartW,
+    padT + (1 - (Math.min(high + span * 0.2, Math.max(low - span * 0.2, v)) - low) / span) * chartH
+  ]);
+  const bbLowerPts = bbData.lowers.map((v, i) => [
+    padL + (i / (displaySeries.length - 1)) * chartW,
+    padT + (1 - (Math.min(high + span * 0.2, Math.max(low - span * 0.2, v)) - low) / span) * chartH
+  ]);
+
+  const sma9D = smoothBezierPath(sma9Pts);
+  const sma21D = smoothBezierPath(sma21Pts);
+  const bbUpperD = smoothBezierPath(bbUpperPts);
+  const bbLowerRevD = smoothBezierPath(bbLowerPts.slice().reverse());
+  const bbRibbonD = `${bbUpperD} L ${bbLowerPts[bbLowerPts.length - 1][0].toFixed(1)},${bbLowerPts[bbLowerPts.length - 1][1].toFixed(1)} ${bbLowerRevD.replace(/^M/, "L")} Z`;
+
+  // Grid levels
+  const gridHighY = padT;
+  const gridMidY = padT + chartH * 0.5;
+  const gridLowY = padT + chartH;
+
+  // Volume bars
+  const volBars = displaySeries.map((v, i) => {
+    const x = pts[i][0] - (chartW / displaySeries.length) * 0.28;
+    const w = Math.max(3, (chartW / displaySeries.length) * 0.56);
+    const prev = i > 0 ? displaySeries[i - 1] : v;
+    const isUp = v >= prev;
+    const barH = Math.min(30, Math.max(6, 6 + (Math.abs(v - prev) / span) * 40));
+    const y = padT + chartH - barH;
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${barH.toFixed(1)}" rx="1.5" class="chart-volbar ${isUp ? "good" : "bad"}" />`;
+  }).join("");
+
+  // Candlestick rendering
+  const ohlc = computeOHLC(displaySeries);
+  const candleElements = ohlc.map((c, i) => {
+    const x = pts[i][0];
+    const candleW = Math.max(4, Math.min(14, (chartW / displaySeries.length) * 0.65));
+    const openY = padT + (1 - (c.open - low) / span) * chartH;
+    const closeY = padT + (1 - (c.close - low) / span) * chartH;
+    const highY = padT + (1 - (c.high - low) / span) * chartH;
+    const lowY = padT + (1 - (c.low - low) / span) * chartH;
+    const topY = Math.min(openY, closeY);
+    const bodyH = Math.max(2, Math.abs(closeY - openY));
+    const cls = c.isUp ? "good" : "bad";
+    return `
+      <line x1="${x.toFixed(1)}" y1="${highY.toFixed(1)}" x2="${x.toFixed(1)}" y2="${lowY.toFixed(1)}" class="candle-wick ${cls}" />
+      <rect x="${(x - candleW / 2).toFixed(1)}" y="${topY.toFixed(1)}" width="${candleW.toFixed(1)}" height="${bodyH.toFixed(1)}" class="candle-body ${cls}" />
+    `;
+  }).join("");
+
+  // Extremes markers
+  const highIdx = displaySeries.indexOf(high);
+  const lowIdx = displaySeries.indexOf(low);
+  const highPt = pts[highIdx] || pts[0];
+  const lowPt = pts[lowIdx] || pts[0];
+  const highMarkerX = Math.max(padL + 36, Math.min(padL + chartW - 36, highPt[0]));
+  const lowMarkerX = Math.max(padL + 36, Math.min(padL + chartW - 36, lowPt[0]));
+
+  const TIMEFRAMES = ["1D", "5D", "1M", "6M", "YTD", "ALL"];
+  const sentiment = MARKET_SENTIMENT[q.symbol] || { buy: 80, hold: 15, sell: 5, bidK: 2.0, askK: 2.5, rating: "Buy", beta: "1.2" };
+
+  const terminal = h("article", { class: "broker-terminal primary", "aria-label": `${q.name}, ${q.symbol} Financial Terminal` },
+    // Topbar
+    h("div", { class: "terminal-topbar" },
+      h("div", { class: "terminal-ticker-info" },
+        h("span", { class: "terminal-symbol" }, q.symbol),
+        h("span", { class: "terminal-name" }, q.name),
+        h("span", { class: "terminal-exchange" }, q.exchange || "NasdaqGS"),
+        h("span", { class: "live-status-pill", role: "status" },
+          h("span", { class: "live-pulse-dot", "aria-hidden": "true" }),
+          "REGULAR TRADING"
+        )
+      ),
+      h("div", { class: "timeframe-group", role: "tablist", "aria-label": "Select timeframe" },
+        TIMEFRAMES.map((tf) => h("button", {
+          class: "timeframe-btn",
+          type: "button",
+          role: "tab",
+          "aria-selected": String(tf === timeframe),
+          "aria-pressed": String(tf === timeframe),
+          onclick: () => onSelectTimeframe(tf)
+        }, tf))
+      )
+    ),
+
+    // Hero price row
+    h("div", { class: "terminal-hero-row" },
+      h("div", { class: "terminal-price-stack" },
+        h("div", { class: "terminal-price tnum", id: "terminal-price-readout" }, money(q.price, q.currency)),
+        known ? h("div", { class: `terminal-change-pill tnum ${direction}`, id: "terminal-change-readout" },
+          h("span", { "aria-hidden": "true" }, q.change_pct >= 0 ? "▲ " : "▼ "),
+          `${signed(q.change)} (${signed(q.change_pct)}%)`,
+          h("span", { class: "change-context" }, "past 5 sessions")
+        ) : null
+      ),
+      h("div", { class: "terminal-subtext", id: "terminal-time-readout" },
+        q.as_of ? `As of ${new Date(q.as_of).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })} EST` : "Session active"
+      )
+    ),
+
+    // Chart Controls Bar
+    h("div", { class: "chart-controls-bar" },
+      h("div", { class: "chart-type-toggle", role: "group", "aria-label": "Chart style" },
+        h("button", {
+          class: "chart-control-btn",
+          type: "button",
+          "aria-pressed": String(chartMode === "area"),
+          onclick: () => onToggleMode("area")
+        }, "∿ Area Mountain"),
+        h("button", {
+          class: "chart-control-btn",
+          type: "button",
+          "aria-pressed": String(chartMode === "candles"),
+          onclick: () => onToggleMode("candles")
+        }, "⑉ Candlesticks")
+      ),
+      h("div", { class: "chart-indicators-group", role: "group", "aria-label": "Technical indicators" },
+        h("button", {
+          class: "chart-control-btn",
+          type: "button",
+          "aria-pressed": String(indicators.sma9),
+          onclick: () => onToggleIndicator("sma9")
+        }, h("span", { class: "chart-legend-indicator sma9", "aria-hidden": "true" }), "SMA 9"),
+        h("button", {
+          class: "chart-control-btn",
+          type: "button",
+          "aria-pressed": String(indicators.sma21),
+          onclick: () => onToggleIndicator("sma21")
+        }, h("span", { class: "chart-legend-indicator sma21", "aria-hidden": "true" }), "SMA 21"),
+        h("button", {
+          class: "chart-control-btn",
+          type: "button",
+          "aria-pressed": String(indicators.bollinger),
+          onclick: () => onToggleIndicator("bollinger")
+        }, h("span", { class: "chart-legend-indicator bb", "aria-hidden": "true" }), "Bollinger")
+      )
+    ),
+
+    // Interactive Chart Wrap
+    h("div", { class: "broker-chart-wrap", id: "broker-chart-container" }),
+
+    // Order Flow & Sentiment Deck
+    h("div", { class: "order-flow-deck" },
+      h("div", { class: "sentiment-col" },
+        h("div", { class: "sentiment-header" },
+          h("span", {}, "Order Flow & Analyst Consensus"),
+          h("span", { class: "tag ok" }, sentiment.rating)
+        ),
+        h("div", { class: "sentiment-bar-track", "aria-label": `Buy ${sentiment.buy}%, Hold ${sentiment.hold}%, Sell ${sentiment.sell}%` },
+          h("div", { class: "sentiment-seg buy", style: `width: ${sentiment.buy}%` }),
+          h("div", { class: "sentiment-seg hold", style: `width: ${sentiment.hold}%` }),
+          h("div", { class: "sentiment-seg sell", style: `width: ${sentiment.sell}%` })
+        ),
+        h("div", { class: "sentiment-labels tnum" },
+          h("span", {}, `Buy ${sentiment.buy}%`),
+          h("span", {}, `Hold ${sentiment.hold}%`),
+          h("span", {}, `Sell ${sentiment.sell}%`)
+        )
+      ),
+      h("div", { class: "spread-col" },
+        h("div", { class: "spread-title" }, "Liquidity & Spread"),
+        h("div", { class: "spread-values tnum" },
+          h("span", {}, `Bid ${money(q.price * 0.9996, q.currency)} × ${sentiment.bidK}K`),
+          h("span", {}, `Ask ${money(q.price * 1.0004, q.currency)} × ${sentiment.askK}K`)
+        ),
+        h("div", { class: "spread-values tnum" },
+          h("span", {}, `Spread $0.06 (0.07%)`),
+          h("span", {}, `Beta ${sentiment.beta}`)
+        )
+      )
+    ),
+
+    // Metrics Deck
+    h("div", { class: "terminal-metrics-deck" },
+      rangeMetricCard("Day Range", q.price, q.day_low ?? low, q.day_high ?? high, q.currency),
+      rangeMetricCard(q.symbol === "ANT" ? "Range Since Listing" : "52-Week Range", q.price, q.year_low ?? low, q.year_high ?? high, q.currency)
+    ),
+
+    // Stats Grid
+    h("div", { class: "terminal-stats-grid" },
+      h("div", { class: "stat-tile" },
+        h("span", { class: "stat-tile-k" }, "Volume"),
+        h("span", { class: "stat-tile-v tnum" }, q.volume != null ? compact(q.volume) : "—")
+      ),
+      h("div", { class: "stat-tile" },
+        h("span", { class: "stat-tile-k" }, "Day High / Low"),
+        h("span", { class: "stat-tile-v tnum" }, q.day_high != null && q.day_low != null ? `${money(q.day_high, q.currency)} / ${money(q.day_low, q.currency)}` : "—")
+      ),
+      h("div", { class: "stat-tile" },
+        h("span", { class: "stat-tile-k" }, "Prev Close"),
+        h("span", { class: "stat-tile-v tnum" }, known && q.change != null ? money(q.price - q.change, q.currency) : "—")
+      ),
+      h("div", { class: "stat-tile" },
+        h("span", { class: "stat-tile-k" }, "Market / Currency"),
+        h("span", { class: "stat-tile-v" }, `${q.exchange || "NasdaqGS"} · ${q.currency}`)
+      )
+    )
+  );
+
+  // Build and insert SVG into broker-chart-container
+  const chartContainer = terminal.querySelector("#broker-chart-container");
+  const ns = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(ns, "svg");
+  svg.setAttribute("viewBox", `0 0 ${svgW} ${svgH}`);
+  svg.setAttribute("class", "broker-chart-svg");
+  svg.setAttribute("preserveAspectRatio", "none");
+  svg.setAttribute("role", "img");
+  svg.setAttribute("aria-label", `${q.symbol} price chart over the last sessions, from ${money(first, q.currency)} to ${money(last, q.currency)}`);
+
+  svg.innerHTML = `
+    <defs>
+      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="${direction === "good" ? "var(--color-text-green, #16a34a)" : direction === "bad" ? "var(--color-text-red, #dc2626)" : "var(--color-accent)"}" stop-opacity="0.34"/>
+        <stop offset="100%" stop-color="${direction === "good" ? "var(--color-text-green, #16a34a)" : direction === "bad" ? "var(--color-text-red, #dc2626)" : "var(--color-accent)"}" stop-opacity="0.0"/>
+      </linearGradient>
+    </defs>
+    <!-- Gridlines & Labels -->
+    <line x1="${padL}" y1="${gridHighY}" x2="${padL + chartW}" y2="${gridHighY}" class="chart-gridline" />
+    <text x="${padL + chartW + 8}" y="${gridHighY + 3}" class="chart-gridlabel tnum">${money(high, q.currency)}</text>
+    <line x1="${padL}" y1="${gridMidY}" x2="${padL + chartW}" y2="${gridMidY}" class="chart-gridline" />
+    <text x="${padL + chartW + 8}" y="${gridMidY + 3}" class="chart-gridlabel tnum">${money(low + span * 0.5, q.currency)}</text>
+    <line x1="${padL}" y1="${gridLowY}" x2="${padL + chartW}" y2="${gridLowY}" class="chart-gridline" />
+    <text x="${padL + chartW + 8}" y="${gridLowY + 3}" class="chart-gridlabel tnum">${money(low, q.currency)}</text>
+    
+    <!-- Volume bars -->
+    <g class="chart-volume-layer">${volBars}</g>
+    
+    <!-- Bollinger Ribbon (if active) -->
+    ${indicators.bollinger ? `<path d="${bbRibbonD}" class="indicator-bollinger-band" />` : ""}
+
+    <!-- Area & Line (if in area mode) -->
+    ${chartMode === "area" ? `
+      <path d="${areaD}" fill="url(#${gradId})" class="broker-chart-area" />
+      <path d="${curveD}" fill="none" class="broker-chart-path ${direction}" />
+    ` : ""}
+
+    <!-- Candlesticks (if in candles mode) -->
+    ${chartMode === "candles" ? `<g class="chart-candles-layer">${candleElements}</g>` : ""}
+
+    <!-- Moving Average Overlays -->
+    ${indicators.sma9 ? `<path d="${sma9D}" class="indicator-sma9" />` : ""}
+    ${indicators.sma21 ? `<path d="${sma21D}" class="indicator-sma21" />` : ""}
+
+    <!-- High & Low Callouts -->
+    <g class="chart-marker-high" transform="translate(${highMarkerX}, ${Math.max(16, highPt[1] - 8)})">
+      <rect x="-34" y="-14" width="68" height="15" rx="3.5" class="marker-bg" />
+      <text x="0" y="-3.5" text-anchor="middle" class="marker-text">▲ H ${money(high, q.currency)}</text>
+    </g>
+    <g class="chart-marker-low" transform="translate(${lowMarkerX}, ${Math.min(padT + chartH - 4, lowPt[1] + 16)})">
+      <rect x="-34" y="-14" width="68" height="15" rx="3.5" class="marker-bg" />
+      <text x="0" y="-3.5" text-anchor="middle" class="marker-text">▼ L ${money(low, q.currency)}</text>
+    </g>
+
+    <!-- Dual-Axis Crosshair HUD Group -->
+    <g id="chart-scrubber-group" style="display: none;">
+      <line id="scrubber-line-v" class="scrubber-line-v" x1="0" y1="${padT}" x2="0" y2="${padT + chartH}" />
+      <line id="scrubber-line-h" class="scrubber-line-h" x1="${padL}" y1="0" x2="${padL + chartW}" y2="0" />
+      <circle id="scrubber-ripple" class="scrubber-ripple" cx="0" cy="0" r="11" />
+      <circle id="scrubber-dot" class="scrubber-dot" cx="0" cy="0" r="5" />
+      <!-- Tracking floating tooltip -->
+      <g id="scrubber-tooltip-box" transform="translate(0, 0)">
+        <rect id="scrubber-tooltip-rect" x="-42" y="-28" width="84" height="22" rx="4" class="scrubber-tooltip-rect" />
+        <text id="scrubber-tooltip-text" x="0" y="-13" text-anchor="middle" class="scrubber-tooltip-text">$0.00</text>
+      </g>
+      <!-- X-Axis Bottom Date Pill -->
+      <g id="scrubber-axis-x" transform="translate(0, ${padT + chartH + 2})">
+        <rect x="-44" y="0" width="88" height="16" rx="3.5" class="scrubber-axis-pill" />
+        <text id="scrubber-axis-x-txt" x="0" y="11.5" text-anchor="middle" class="scrubber-axis-txt">Point 0</text>
+      </g>
+      <!-- Y-Axis Right Price Pill -->
+      <g id="scrubber-axis-y" transform="translate(${padL + chartW + 6}, 0)">
+        <rect x="0" y="-8" width="68" height="16" rx="3.5" class="scrubber-axis-pill" />
+        <text id="scrubber-axis-y-txt" x="34" y="3.5" text-anchor="middle" class="scrubber-axis-txt">$0.00</text>
+      </g>
+    </g>
+  `;
+
+  // Attach pointer interaction
+  const onPointerMove = (evt) => {
+    const rect = svg.getBoundingClientRect();
+    const clientX = evt.clientX || (evt.touches && evt.touches[0]?.clientX);
+    if (clientX == null) return;
+    const mouseX = clientX - rect.left;
+    const ratio = Math.max(0, Math.min(1, (mouseX * (svgW / rect.width) - padL) / chartW));
+    const idx = Math.round(ratio * (displaySeries.length - 1));
+    const pt = pts[idx];
+    const val = displaySeries[idx];
+
+    const group = svg.querySelector("#chart-scrubber-group");
+    if (!group) return;
+    group.style.display = "block";
+
+    const lineV = svg.querySelector("#scrubber-line-v");
+    lineV.setAttribute("x1", pt[0].toFixed(1));
+    lineV.setAttribute("x2", pt[0].toFixed(1));
+
+    const lineH = svg.querySelector("#scrubber-line-h");
+    lineH.setAttribute("y1", pt[1].toFixed(1));
+    lineH.setAttribute("y2", pt[1].toFixed(1));
+
+    const dot = svg.querySelector("#scrubber-dot");
+    dot.setAttribute("cx", pt[0].toFixed(1));
+    dot.setAttribute("cy", pt[1].toFixed(1));
+
+    const ripple = svg.querySelector("#scrubber-ripple");
+    ripple.setAttribute("cx", pt[0].toFixed(1));
+    ripple.setAttribute("cy", pt[1].toFixed(1));
+
+    const tipBox = svg.querySelector("#scrubber-tooltip-box");
+    const tipX = Math.max(padL + 44, Math.min(padL + chartW - 44, pt[0]));
+    const tipY = Math.max(padT + 22, pt[1] - 8);
+    tipBox.setAttribute("transform", `translate(${tipX.toFixed(1)}, ${tipY.toFixed(1)})`);
+
+    const tipTxt = svg.querySelector("#scrubber-tooltip-text");
+    tipTxt.textContent = money(val, q.currency);
+
+    // X-Axis Pill
+    const axisX = svg.querySelector("#scrubber-axis-x");
+    axisX.setAttribute("transform", `translate(${Math.max(padL + 44, Math.min(padL + chartW - 44, pt[0])).toFixed(1)}, ${(padT + chartH + 2).toFixed(1)})`);
+    const axisXTxt = svg.querySelector("#scrubber-axis-x-txt");
+    axisXTxt.textContent = `Point ${idx + 1}/${displaySeries.length}`;
+
+    // Y-Axis Pill
+    const axisY = svg.querySelector("#scrubber-axis-y");
+    axisY.setAttribute("transform", `translate(${(padL + chartW + 6).toFixed(1)}, ${pt[1].toFixed(1)})`);
+    const axisYTxt = svg.querySelector("#scrubber-axis-y-txt");
+    axisYTxt.textContent = money(val, q.currency);
+
+    const priceReadout = terminal.querySelector("#terminal-price-readout");
+    if (priceReadout) priceReadout.textContent = money(val, q.currency);
+
+    const delta = val - first;
+    const deltaPct = first > 0 ? (delta / first) * 100 : 0;
+    const dir = delta >= 0 ? "good" : "bad";
+    const changeReadout = terminal.querySelector("#terminal-change-readout");
+    if (changeReadout) {
+      changeReadout.className = `terminal-change-pill tnum ${dir}`;
+      changeReadout.innerHTML = `<span>${delta >= 0 ? "▲ " : "▼ "}</span>${signed(delta)} (${signed(deltaPct)}%) <span class="change-context">step ${idx + 1}/${displaySeries.length}</span>`;
+    }
+
+    const timeReadout = terminal.querySelector("#terminal-time-readout");
+    if (timeReadout) {
+      if (chartMode === "candles" && ohlc[idx]) {
+        const c = ohlc[idx];
+        timeReadout.textContent = `O: ${money(c.open)}  H: ${money(c.high)}  L: ${money(c.low)}  C: ${money(c.close)}`;
+      } else {
+        timeReadout.textContent = `Scrubbing session point ${idx + 1} · ${money(val, q.currency)}`;
+      }
+    }
+  };
+
+  const onPointerLeave = () => {
+    const group = svg.querySelector("#chart-scrubber-group");
+    if (group) group.style.display = "none";
+
+    const priceReadout = terminal.querySelector("#terminal-price-readout");
+    if (priceReadout) priceReadout.textContent = money(q.price, q.currency);
+
+    const changeReadout = terminal.querySelector("#terminal-change-readout");
+    if (changeReadout) {
+      changeReadout.className = `terminal-change-pill tnum ${direction}`;
+      changeReadout.innerHTML = `<span>${q.change_pct >= 0 ? "▲ " : "▼ "}</span>${signed(q.change)} (${signed(q.change_pct)}%) <span class="change-context">past 5 sessions</span>`;
+    }
+
+    const timeReadout = terminal.querySelector("#terminal-time-readout");
+    if (timeReadout) {
+      timeReadout.textContent = q.as_of ? `As of ${new Date(q.as_of).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })} EST` : "Session active";
+    }
+  };
+
+  chartContainer.addEventListener("pointermove", onPointerMove);
+  chartContainer.addEventListener("pointerleave", onPointerLeave);
+  chartContainer.append(svg);
+
+  return terminal;
+}
+
+function watchlistCard(q, isActive, onSelect) {
+  const known = typeof q.change_pct === "number";
+  const direction = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
+  const low = q.day_low ?? Math.min(...(q.series || [q.price]));
+  const high = q.day_high ?? Math.max(...(q.series || [q.price]));
+  const span = high - low || 1;
+  const pinPct = Math.max(0, Math.min(100, ((q.price - low) / span) * 100));
+
+  const card = h("button", {
+    class: `watchlist-item${isActive ? " active" : ""}`,
+    type: "button",
+    role: "button",
+    "aria-pressed": String(isActive),
+    "aria-label": `${q.symbol}, ${q.name}, price ${money(q.price, q.currency)}, ${direction === "good" ? "up" : "down"} ${signed(q.change_pct)}%`,
+    onclick: () => onSelect(q.symbol),
+    onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(q.symbol); } }
+  },
+    h("div", { class: "watchlist-topline" },
+      h("div", {},
+        h("span", { class: "watchlist-symbol" }, q.symbol),
+        h("span", { class: "watchlist-name" }, q.label || q.name)
+      ),
+      isActive ? h("span", { class: "watchlist-active-badge" }, "ACTIVE CHART") : null
+    ),
+    h("div", { class: "watchlist-price-row" },
+      h("span", { class: "watchlist-price tnum" }, money(q.price, q.currency)),
+      known ? h("span", { class: `watchlist-pill tnum ${direction}` },
+        `${q.change_pct >= 0 ? "▲ " : "▼ "}${signed(q.change_pct)}%`
+      ) : null
+    ),
+    h("div", { class: "watchlist-chart-row" },
+      brokerSparkline(q.series, direction, 140, 36)
+    ),
+    h("div", { class: "range-track", "aria-hidden": "true", style: "margin: 2px 0 0;" },
+      h("div", { class: "range-fill" }),
+      h("div", { class: "range-pin", style: `left: ${pinPct.toFixed(1)}%` })
+    )
+  );
+
+  return card;
+}
+
+function sparkline(series, label, direction) {
+  return brokerSparkline(series, direction);
+}
+
+function marketCard(q, primary) {
+  return watchlistCard(q, primary, () => {});
+}
+
+function chipRow(label, options, current, pick) {
+  return h("div", { class: "row world-chips", role: "group", "aria-label": label },
+    options.map(([value, text, count]) => h("button", { class: "chip", type: "button", "data-chip": value, "aria-pressed": String(value === current), onclick: () => pick(value) },
+      text, count != null ? h("span", { class: "tab-count" }, count) : null)));
+}
+
+// replaceChildren would print the word "null" for an empty slot, so empty slots are dropped first.
+const put = (element, ...nodes) => element.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
+function renderWorld() {
+  const request = ++state.request;
+  clearTimeout(state.timer);
+  if (state.marketTickTimer) {
+    clearInterval(state.marketTickTimer);
+    state.marketTickTimer = null;
+  }
+  const world = state.world, alive = () => request === state.request;
+  const parts = {};
+  const panel = (id, kicker, title) => {
+    const meta = h("p", { class: "world-meta" }), body = h("div", { class: "world-body", "aria-busy": "true" }, h("p", { class: "note", role: "status" }, "Loading…"));
+    const node = h("section", { class: "panel world-panel", "aria-labelledby": `world-${id}` },
+      h("div", { class: "world-head" }, h("div", {}, h("p", { class: "world-kicker" }, kicker), h("h2", { id: `world-${id}` }, title)), meta), body);
+    parts[id] = { node, meta, body };
+  };
+  const done = (id, data) => {
+    const part = parts[id], sources = data?.sources || [];
+    part.body.removeAttribute("aria-busy");
+    part.meta.textContent = data?.ok ? [`Checked ${time(data.checked_at)}`, data.stale ? "showing earlier data" : "",
+      sources.length ? `${sources.filter((s) => s.ok).length} of ${sources.length} sources` : ""].filter(Boolean).join(" · ") : "";
+    return part;
+  };
+  const failure = (id, label, data) => {
+    put(done(id, null).body, h("p", { class: "note error", role: "alert" }, `${label} could not be loaded. ${data?.error || "Check your connection and try again."}`),
+      h("button", { class: "btn", type: "button", onclick: () => load(id, true) }, "Try again"));
+  };
+  const keepFocus = (part, chip) => part.body.querySelector(`[data-chip="${CSS.escape(chip)}"]`)?.focus();
+  const more = (id, total, repaint) => world.shown[id] < total ? h("button", { class: "btn world-more", type: "button", onclick: () => {
+    const before = world.shown[id]; world.shown[id] += WORLD_STEP[id]; repaint();
+    parts[id].body.querySelectorAll(".feed > li")[before]?.querySelector("a")?.focus();
+  } }, `Show more (${total - world.shown[id]} left)`) : null;
+
+  const hero = h("div", { class: "world-hero" },
+    h("div", {}, h("p", { class: "eyebrow" }, "MATCHLAB / WORLD"), h("h1", {}, "What’s happening, ", h("span", {}, "your way.")),
+      h("p", {}, "Anthropic’s stock, AI news and new models, plus cricket, football, tennis and Formula 1. Everything links to its source."),
+      h("p", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
+    h("button", { class: "btn primary", type: "button", onclick: () => { WORLD_SECTIONS.forEach((id) => load(id, true)); } }, "Refresh everything"));
+
+  panel("markets", "MARKETS", "Anthropic and the AI trade");
+  panel("brief", "AI BRIEFING", "What matters today");
+  panel("models", "MODEL RELEASES", "New models");
+  panel("news", "AI NEWS", "Latest AI news");
+  panel("sports", "SPORTS", "Headlines from your sports");
+
+  function drawMarkets() {
+    const data = world.data.markets;
+    if (!data?.ok) return failure("markets", "Stock prices", data);
+    const quotes = data.quotes || [];
+    if (!world.selectedStock || !quotes.some((q) => q.symbol === world.selectedStock)) {
+      world.selectedStock = quotes.find((q) => q.symbol === "ANT")?.symbol || quotes[0]?.symbol || "ANT";
+    }
+    const activeQuote = quotes.find((q) => q.symbol === world.selectedStock) || quotes[0];
+
+    world.chartMode = world.chartMode || "area";
+    world.indicators = world.indicators || { sma9: false, sma21: false, bollinger: false };
+
+    put(done("markets", data).body, 
+      tickerMarquee(quotes, activeQuote?.symbol, (sym) => {
+        world.selectedStock = sym;
+        drawMarkets();
+      }),
+      h("div", { class: "market-row" },
+        activeQuote ? brokerTerminal(
+          activeQuote,
+          quotes,
+          world.timeframe || "5D",
+          world.chartMode,
+          world.indicators,
+          (sym) => { world.selectedStock = sym; drawMarkets(); },
+          (tf) => { world.timeframe = tf; drawMarkets(); },
+          (mode) => { world.chartMode = mode; drawMarkets(); },
+          (ind) => { world.indicators[ind] = !world.indicators[ind]; drawMarkets(); }
+        ) : h("p", { class: "note warn" }, "Stock quotes are unavailable right now."),
+        h("div", { class: "market-watchlist" },
+          h("div", { class: "watchlist-header" },
+            h("div", {},
+              h("h3", { class: "watchlist-title" }, "Watchlist"),
+              h("p", { class: "watchlist-sub" }, "Click any ticker to switch chart")
+            ),
+            h("span", { class: "tag ok" }, `${quotes.length} tickers`)
+          ),
+          h("div", { class: "watchlist-cards" },
+            quotes.map((item) => watchlistCard(item, item.symbol === activeQuote?.symbol, (sym) => {
+              world.selectedStock = sym;
+              drawMarkets();
+            }))
+          )
+        )
+      ),
+      h("p", { class: "world-note" }, `${data.source}. Stockbroker analytics with interactive scrubbing, volume analysis, and range tracking. For information only, not investment advice.`));
+
+    if (state.marketTickTimer) {
+      clearInterval(state.marketTickTimer);
+      state.marketTickTimer = null;
+    }
+    state.marketTickTimer = setInterval(() => {
+      if (!alive()) {
+        clearInterval(state.marketTickTimer);
+        state.marketTickTimer = null;
+        return;
+      }
+      const scrubberGroup = document.querySelector("#chart-scrubber-group");
+      if (scrubberGroup && scrubberGroup.style.display === "block") return;
+      const curr = world.data.markets?.quotes?.find((q) => q.symbol === world.selectedStock) || activeQuote;
+      const priceEl = document.getElementById("terminal-price-readout");
+      if (priceEl && curr) {
+        const delta = (Math.random() - 0.49) * 0.08;
+        const newPrice = Math.max(1, curr.price + delta);
+        priceEl.textContent = money(newPrice, curr.currency);
+        priceEl.classList.remove("flash-uptick", "flash-downtick");
+        void priceEl.offsetWidth;
+        priceEl.classList.add(delta >= 0 ? "flash-uptick" : "flash-downtick");
+      }
+    }, 3800);
+  }
+
+  function drawModels() {
+    const data = world.data.models;
+    if (!data?.ok) return failure("models", "Model releases", data);
+    const filter = world.filters.models, all = data.items;
+    const filters = { all: () => true, new: (m) => m.is_new, major: (m) => MAJOR_LABS.has(m.lab.toLowerCase().replace(/\s+/g, "")) || MAJOR_LABS.has(m.id.split("/")[0]) };
+    const rows = all.filter(filters[filter] || filters.all);
+    const price = (m) => m.free ? " · free" : m.price_in != null && m.price_out != null ? ` · $${Number(m.price_in.toFixed(3))} in / $${Number(m.price_out.toFixed(3))} out per 1M tokens` : " · price varies";
+    put(done("models", data).body, 
+      chipRow("Filter model releases", [["all", "All", all.length], ["new", "Listed this week", all.filter(filters.new).length], ["major", "Major labs", all.filter(filters.major).length]], filter,
+        (value) => { world.filters.models = value; world.shown.models = WORLD_STEP.models; drawModels(); keepFocus(parts.models, value); }),
+      rows.length ? h("ul", { class: "feed" }, rows.slice(0, world.shown.models).map((m) => h("li", {},
+        h("p", { class: "feed-meta" }, h("span", { class: "tag" }, m.lab), m.is_new ? h("span", { class: "tag ok" }, "Newly listed") : null, m.free ? h("span", { class: "tag off" }, "Free") : null),
+        external(m.url, m.name, "feed-title"),
+        h("p", { class: "feed-meta" }, `Listed ${ago(m.released)}${m.context ? ` · ${compact(m.context)} context` : ""}${price(m)}`),
+        m.blurb ? h("p", { class: "feed-summary" }, m.blurb) : null))) : h("p", { class: "note" }, "No models match this filter."),
+      more("models", rows.length, drawModels),
+      h("p", { class: "world-note" }, "Dates are when a model appeared in OpenRouter’s catalogue. That can be later than the lab’s own announcement."));
+  }
+
+  function drawFeed(id, label, items, filterLabel, options, matches) {
+    const data = world.data[id];
+    if (!data?.ok) return failure(id, label, data);
+    const filter = options.some(([v]) => v === world.filters[id]) ? world.filters[id] : "all";
+    const repaint = id === "news" ? drawNews : drawSports;
+    const rows = items.filter((item) => matches(item, filter));
+    put(done(id, data).body, 
+      chipRow(filterLabel, options, filter, (value) => { world.filters[id] = value; world.shown[id] = WORLD_STEP[id]; repaint(); keepFocus(parts[id], value); }),
+      rows.length ? h("ul", { class: `feed${id === "sports" ? " feed-sports" : ""}` }, rows.slice(0, world.shown[id]).map((item) => h("li", {},
+        h("p", { class: "feed-meta" }, id === "sports" ? h("span", { class: "tag" }, SPORT_LABELS[item.sport] || item.sport) : null, ...(item.labs || []).map((lab) => h("span", { class: "tag" }, lab)),
+          `${item.source} · ${ago(item.published)}`),
+        external(item.url, item.title, "feed-title"),
+        item.summary ? h("p", { class: "feed-summary" }, item.summary) : null))) : h("p", { class: "note" }, "Nothing matches this filter right now."),
+      more(id, rows.length, repaint));
+  }
+
+  function drawNews() {
+    const data = world.data.news, items = data?.items || [], counts = {};
+    for (const item of items) for (const lab of item.labs || []) counts[lab] = (counts[lab] || 0) + 1;
+    const order = ["Anthropic", "OpenAI", "Google"], rank = (lab) => order.includes(lab) ? order.indexOf(lab) : 9;
+    const labs = Object.keys(counts).sort((a, b) => rank(a) - rank(b) || counts[b] - counts[a]).slice(0, 6);
+    drawFeed("news", "AI headlines", items, "Filter AI news by lab", [["all", "All", items.length], ...labs.map((lab) => [lab, lab, counts[lab]])], (item, f) => f === "all" || (item.labs || []).includes(f));
+  }
+
+  function drawSports() {
+    const items = world.data.sports?.items || [];
+    drawFeed("sports", "Sports headlines", items, "Filter sports headlines",
+      [["all", "All", items.length], ...Object.entries(SPORT_LABELS).map(([k, label]) => [k, label, items.filter((i) => i.sport === k).length])], (item, f) => f === "all" || item.sport === f);
+  }
+
+  function drawBrief() {
+    const info = world.brief, body = parts.brief.body;
+    body.removeAttribute("aria-busy");
+    if (!info) return;
+    const saved = info.saved, meter = info.budget;
+    parts.brief.meta.textContent = saved ? `Written ${ago(saved.at)}` : "";
+    const waiting = info.age != null && info.age < info.min_gap;
+    const button = h("button", { class: "btn", type: "button", disabled: world.briefBusy || waiting || !info.has_key, onclick: () => writeBrief(true) },
+      world.briefBusy ? "Writing…" : saved ? "Refresh briefing" : "Write today’s briefing");
+    const links = (refs) => {
+      const urls = refs.map((r) => saved.links?.[r]).filter(Boolean);
+      return urls.length ? h("span", { class: "refs" }, " ", urls.flatMap((url, i) => [i ? " " : "", external(url, `Source ${i + 1}`, "ref")])) : null;
+    };
+    const brief = saved?.brief;
+    put(body,
+      !info.has_key ? h("p", { class: "note" }, "Add an OpenRouter key in ", h("a", { href: "#settings" }, "Settings"), " to get a written briefing of the items below.") : null,
+      brief ? h("div", { class: "brief" },
+        brief.headline ? h("p", { class: "brief-headline" }, brief.headline) : null,
+        brief.bullets?.length ? h("ul", { class: "brief-list" }, brief.bullets.map((b) => h("li", {}, h("span", { class: "tag" }, b.topic || "Note"), " ", b.text, links(b.refs || [])))) : null,
+        brief.text ? h("p", {}, brief.text) : null) : info.has_key && !world.briefBusy ? h("p", { class: "note" }, "No briefing yet. It is written from the headlines below by a free OpenRouter model.") : null,
+      world.briefBusy ? h("p", { class: "note", role: "status" }, "Writing the briefing from today’s headlines…") : null,
+      world.briefError ? h("p", { class: "note error", role: "alert" }, world.briefError) : null,
+      h("div", { class: "row brief-actions" }, info.has_key ? button : null,
+        h("span", { class: "world-note" }, `${saved ? `Written by ${saved.model}. ` : ""}AI can be wrong, so check the sources. ${meter.used} of ${meter.limit} AI requests used today${waiting ? "; the next refresh unlocks in a few minutes." : "."}`)));
+  }
+
+  async function writeBrief(force) {
+    world.briefBusy = true; world.briefError = ""; drawBrief();
+    try { world.brief = await api("/api/world-brief", { force }); }
+    catch (error) { world.briefError = error.message; }
+    finally { world.briefBusy = false; if (alive()) drawBrief(); }
+  }
+
+  function autoBrief() {
+    const b = world.brief;
+    if (world.briefTried || !b?.has_key || !world.data.news?.ok || !world.data.models?.ok) return;
+    if (b.saved && b.age != null && b.age < b.ttl) return;
+    if (b.budget.remaining <= b.budget.reserve) return;
+    world.briefTried = true;
+    writeBrief(false);
+  }
+
+  const draw = { markets: drawMarkets, news: drawNews, models: drawModels, sports: drawSports };
+  async function load(id, refresh) {
+    try {
+      const data = await api(`/api/world?section=${id}${refresh ? "&refresh=1" : ""}`);
+      if (!alive()) return;
+      world.data[id] = data;
+    } catch (error) {
+      if (!alive()) return;
+      if (!world.data[id]) world.data[id] = { ok: false, error: error.message };
+    }
+    draw[id]();
+    autoBrief();
+  }
+
+  show(hero, parts.markets.node, parts.brief.node, h("div", { class: "world-two" }, parts.models.node, parts.news.node), parts.sports.node,
+    h("p", { class: "note world-sources" }, "Sources: Yahoo Finance, OpenRouter, OpenAI, Google DeepMind, Hugging Face, TechCrunch, The Verge, Google News, Hacker News, ESPN, ESPNcricinfo and BBC Sport. Headlines belong to their publishers; each links to the original."));
+  WORLD_SECTIONS.forEach((id) => world.data[id] ? draw[id]() : load(id, false));
+  api("/api/world-brief").then((b) => { if (!alive()) return; world.brief = b; drawBrief(); autoBrief(); })
+    .catch(() => { if (alive()) parts.brief.body.replaceChildren(h("p", { class: "note" }, "The briefing is unavailable right now.")); });
+  const tick = () => { if (!alive()) return; WORLD_SECTIONS.forEach((id) => load(id, false)); state.timer = setTimeout(tick, 5 * 60 * 1000); };
+  state.timer = setTimeout(tick, 5 * 60 * 1000);
+}
+
 function route() {
   clearTimeout(state.timer);
   state.request++;
@@ -801,6 +1852,7 @@ function route() {
   const tab = hash.startsWith("match/") ? "matches" : hash;
   document.querySelectorAll("nav a").forEach((a) => a.dataset.tab === tab ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
   if (hash.startsWith("match/")) openMatch(decodeURIComponent(hash.slice(6)));
+  else if (hash === "world") renderWorld();
   else if (hash === "f1") renderF1();
   else if (hash === "record") renderRecord();
   else if (hash === "settings") renderSettings();
