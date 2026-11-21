@@ -1015,3 +1015,8 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .sub,.note,.why,.feed-summary,.brief-list li,.hero-copy>p,.world-hero p{max-width:70ch}
 .tag{font-size:11px}
 @media(max-width:760px){.utility-bar,.budget{font-size:11px}}
+
+/* Data age. Level is also spelled out in the text, so colour is never the only signal. */
+.freshness{display:inline-block;font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;background:var(--color-background-green);color:var(--color-text-green)}
+.freshness.stale{background:var(--color-background-yellow);color:var(--color-text-primary)}
+.freshness.old,.freshness.unknown{background:var(--color-background-red);color:var(--color-text-red)}

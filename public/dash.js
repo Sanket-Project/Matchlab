@@ -228,6 +228,29 @@ function card(match, index = 0) {
     h("div", { class: "card-action" }, "Explore match", h("span", { "aria-hidden": "true" }, "↗")));
 }
 
+// How old the data is, in words, with a level the page can style. Thresholds are minutes.
+function freshness(iso, limits = [20, 60]) {
+  const minutes = Math.round((Date.now() - Date.parse(iso)) / 60000);
+  if (!Number.isFinite(minutes)) return { level: "unknown", text: "Check time unknown" };
+  const age = minutes < 2 ? "just now" : minutes < 60 ? `${minutes} min ago` : `${Math.floor(minutes / 60)} h ${minutes % 60} min ago`;
+  if (minutes <= limits[0]) return { level: "fresh", text: `Checked ${age}` };
+  if (minutes <= limits[1]) return { level: "stale", text: `Checked ${age}. Scores may be a little behind.` };
+  return { level: "old", text: `Checked ${age}. Scores may be out of date: press Refresh.` };
+}
+function freshnessChip(iso) {
+  const info = freshness(iso);
+  return h("span", { class: `freshness ${info.level}`, "data-freshness": iso }, info.text);
+}
+// Ages are re-worded in place every 30 seconds, so a page left open never claims old data is fresh.
+function updateFreshness() {
+  document.querySelectorAll("[data-freshness]").forEach((node) => {
+    const info = freshness(node.dataset.freshness);
+    if (node.textContent !== info.text) node.textContent = info.text;
+    const next = `freshness ${info.level}`;
+    if (node.className !== next) node.className = next;
+  });
+}
+
 function renderMatches() {
   const data = state.schedule;
   const all = Object.entries((data && data.sports) || {}).flatMap(([sport, rows]) => SPORTS[sport] ? rows.map((row) => ({ ...row, sport })) : []);
@@ -264,7 +287,7 @@ function renderMatches() {
         h("span", { class: "hero-date" }, new Date().toLocaleDateString([], { weekday: "long", day: "numeric", month: "long" }))),
       h("div", { class: "hero-stats" }, heroStatsNodes)),
     h("div", { class: "head matches-heading" }, h("div", {}, h("p", { class: "eyebrow" }, "YOUR MATCH CENTRE"), h("h2", {}, "On the schedule"),
-      h("p", { class: "sub" }, data && data.last_updated ? `Last checked ${time(data.last_updated)} · Open a match to explore its forecast.` : "Loading fixtures…")), refresh),
+      h("p", { class: "sub" }, data && data.last_updated ? [freshnessChip(data.last_updated), " Open a match to explore its forecast."] : "Loading fixtures…")), refresh),
     h("div", { class: "filter-bar" }, filters, search),
     data && data.refresh_error ? h("p", { class: "note error" }, data.refresh_error) : null,
     data && (data.sources || []).filter((s) => s.error).map((s) => h("p", { class: "note warn" }, `${s.name}: ${s.error}`)),
@@ -281,7 +304,7 @@ async function refreshSchedule() {
     state.schedule = await api("/api/refresh-today-matches", {});
     showBudgets(state.schedule.budget);
   } catch (error) {
-    if (state.schedule) state.schedule.refresh_error = error.message;
+    if (state.schedule) state.schedule.refresh_error = `${String(error.message).replace(/[.\s]*$/, ".")} Showing the last saved schedule. Try Refresh again in a moment.`;
   }
   state.refreshing = false;
   if (!location.hash || location.hash === "#matches") renderMatches();
@@ -696,8 +719,13 @@ async function openMatch(id, manual, forceRefresh = false) {
     const statusMessage = document.getElementById("match-refresh-error");
     if (statusMessage) {
       statusMessage.hidden = false;
-      statusMessage.className = forecast.refresh_error ? "note warn" : "note";
-      statusMessage.textContent = forecast.refresh_error || `Updated at ${new Date().toLocaleTimeString()}. Scores and predictions may stay the same until the feed reports a change.`;
+      const feedAt = forecast.scoreboard?.checked_at;
+      const live = (forecast.intel?.state || forecast.scoreboard?.state) === "in";
+      const feedAge = feedAt ? Math.round((Date.now() - Date.parse(feedAt)) / 60000) : null;
+      const behind = live && feedAge != null && feedAge > 5;
+      statusMessage.className = forecast.refresh_error || behind ? "note warn" : "note";
+      statusMessage.textContent = forecast.refresh_error ? `${forecast.refresh_error} It retries by itself every minute, or press Refresh now.`
+        : `Updated at ${new Date().toLocaleTimeString()}.${feedAge != null ? ` Live feed last checked ${feedAge < 2 ? "just now" : feedAge + " min ago"}${behind ? ", so the score may be behind" : ""}.` : ""} Scores and predictions stay the same until the feed reports a change.`;
     }
     if (forecast.ai && forecast.ai.due && sport === "tennis" && !state.aiBusy && !state.aiTried[aiKey(id, forecast)]) askAi(id, sport, forecast);
     if (manual || state.autoRefreshed) {
@@ -1373,11 +1401,14 @@ function route() {
     state.schedule = schedule;
     showBudgets(schedule.budget);
   } catch (error) {
-    show(h("p", { class: "note error" }, `MatchLab could not load: ${error.message}`));
+    show(h("h1", {}, "MatchLab could not start"),
+      h("p", { class: "note error", role: "alert", style: "margin-top:14px" }, `The local server did not answer (${error.message}). Check that MatchLab is still running in its terminal window, then try again.`),
+      h("button", { class: "btn primary", type: "button", style: "margin-top:12px", onclick: () => location.reload() }, "Try again"));
     return;
   }
   window.addEventListener("hashchange", route);
   route();
   refreshSchedule();
   setInterval(() => { if (!location.hash || location.hash === "#matches") refreshSchedule(); }, 5 * 60 * 1000);
+  setInterval(updateFreshness, 30 * 1000);
 })();
