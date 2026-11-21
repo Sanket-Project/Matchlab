@@ -37,7 +37,7 @@ READ_ONLY = ("This public copy of MatchLab is read-only. Forecasts, AI checks an
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; "
        "font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
 # Seconds a response may be served from the CDN, then for how long a stale copy may be served while it refreshes.
-CDN = {"snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 120), "world": (300, 1800)}
+CDN = {"snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 600), "world": (300, 1800)}
 WORKERS = threading.BoundedSemaphore(2)       # feed workers running at once in one instance
 LIMIT, WINDOW = 60, 60.0                       # requests per client per minute
 _hits, _hits_lock = {}, threading.Lock()
@@ -90,8 +90,9 @@ def _worker(script, *args, ttl=60, timeout=25):
         WORKERS.release()
     if data is None and hit:
         return hit[1]
+    life = (ttl(data) if callable(ttl) else ttl) if data is not None else 60    # a failing feed is left alone for a minute
     with _cache_lock:
-        _cache[key] = (time.monotonic() + (ttl if data is not None else 10), data)
+        _cache[key] = (time.monotonic() + life, data)
     return data
 
 
@@ -190,7 +191,8 @@ class handler(BaseHTTPRequestHandler):
                     raise ValueError()
             except ValueError:
                 return self._send(400, {"error": "Choose a season and round."})
-            data = _worker("fetch_f1_timing.py", season, round_number, ttl=20, timeout=40)
+            data = _worker("fetch_f1_timing.py", season, round_number, timeout=40,
+                           ttl=lambda d: 3600 if d.get("state") == "post" and d.get("laps") else 20)   # a finished race does not change
             return self._send(200, data, cdn="timing") if data is not None else self._send(503, {"error": "Lap timing is temporarily unavailable."})
         return self._send(404, {"error": "Not found"})
 
