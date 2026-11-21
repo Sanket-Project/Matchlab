@@ -1,0 +1,554 @@
+[
+ {
+  "page": "root",
+  "url": "/",
+  "w": 360,
+  "ms": 3496,
+  "title": "MatchLab",
+  "h1": "Every match.A clearer picture.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/root-360.webp"
+ },
+ {
+  "page": "matches",
+  "url": "/#matches",
+  "w": 360,
+  "ms": 3608,
+  "title": "MatchLab",
+  "h1": "Every match.A clearer picture.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/matches-360.webp"
+ },
+ {
+  "page": "match",
+  "url": "/#match/tennis-187528",
+  "w": 360,
+  "ms": 9165,
+  "title": "MatchLab",
+  "h1": "Ben Shelton v Carlos Alcaraz",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/match-360.webp"
+ },
+ {
+  "page": "world",
+  "url": "/#world",
+  "w": 360,
+  "ms": 7104,
+  "title": "MatchLab",
+  "h1": "What\u00e2\u20ac\u2122s happening, your way.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/world",
+   "200 /api/world-brief",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/world-360.webp"
+ },
+ {
+  "page": "f1",
+  "url": "/#f1",
+  "w": 360,
+  "ms": 6482,
+  "title": "MatchLab",
+  "h1": "The championship, in focus.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/f1-dashboard",
+   "200 /api/f1-timing",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/f1-360.webp"
+ },
+ {
+  "page": "record",
+  "url": "/#record",
+  "w": 360,
+  "ms": 6597,
+  "title": "MatchLab",
+  "h1": "What the model said,and how it did.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/track-record",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/record-360.webp"
+ },
+ {
+  "page": "settings",
+  "url": "/#settings",
+  "w": 360,
+  "ms": 3209,
+  "title": "MatchLab",
+  "h1": "Settings",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/settings-360.webp"
+ },
+ {
+  "page": "lab",
+  "url": "/lab",
+  "w": 360,
+  "ms": 3334,
+  "title": "MatchLab \u00c2\u00b7 Sports predictions",
+  "h1": "Who's going to win?",
+  "dashboard": false,
+  "overflowX": false,
+  "api": [
+   "200 /api/state",
+   "200 /api/today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/lab-360.webp"
+ },
+ {
+  "page": "root",
+  "url": "/",
+  "w": 768,
+  "ms": 3500,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/root-768.webp"
+ },
+ {
+  "page": "matches",
+  "url": "/#matches",
+  "w": 768,
+  "ms": 4312,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/matches-768.webp"
+ },
+ {
+  "page": "match",
+  "url": "/#match/tennis-187528",
+  "w": 768,
+  "ms": 9210,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/match-768.webp"
+ },
+ {
+  "page": "world",
+  "url": "/#world",
+  "w": 768,
+  "ms": 6379,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/world-768.webp"
+ },
+ {
+  "page": "f1",
+  "url": "/#f1",
+  "w": 768,
+  "ms": 7875,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/f1-768.webp"
+ },
+ {
+  "page": "record",
+  "url": "/#record",
+  "w": 768,
+  "ms": 6160,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/record-768.webp"
+ },
+ {
+  "page": "settings",
+  "url": "/#settings",
+  "w": 768,
+  "ms": 3164,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/settings-768.webp"
+ },
+ {
+  "page": "lab",
+  "url": "/lab",
+  "w": 768,
+  "ms": 3212,
+  "title": "MatchLab \u00c2\u00b7 Sports predictions",
+  "h1": "Who's going to win?",
+  "dashboard": false,
+  "overflowX": false,
+  "api": [],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/lab-768.webp"
+ },
+ {
+  "page": "root",
+  "url": "/",
+  "w": 1280,
+  "ms": 3191,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/root-1280.webp"
+ },
+ {
+  "page": "matches",
+  "url": "/#matches",
+  "w": 1280,
+  "ms": 3196,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/matches-1280.webp"
+ },
+ {
+  "page": "match",
+  "url": "/#match/tennis-187528",
+  "w": 1280,
+  "ms": 9213,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/match-1280.webp"
+ },
+ {
+  "page": "world",
+  "url": "/#world",
+  "w": 1280,
+  "ms": 6230,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/world-1280.webp"
+ },
+ {
+  "page": "f1",
+  "url": "/#f1",
+  "w": 1280,
+  "ms": 6230,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/f1-1280.webp"
+ },
+ {
+  "page": "record",
+  "url": "/#record",
+  "w": 1280,
+  "ms": 6202,
+  "title": "MatchLab",
+  "h1": "",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/record-1280.webp"
+ },
+ {
+  "page": "settings",
+  "url": "/#settings",
+  "w": 1280,
+  "ms": 3340,
+  "title": "MatchLab",
+  "h1": "Settings",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/settings-1280.webp"
+ },
+ {
+  "page": "lab",
+  "url": "/lab",
+  "w": 1280,
+  "ms": 3509,
+  "title": "MatchLab \u00c2\u00b7 Sports predictions",
+  "h1": "Who's going to win?",
+  "dashboard": false,
+  "overflowX": false,
+  "api": [
+   "200 /api/state",
+   "200 /api/today-matches",
+   "200 /api/analyze"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/lab-1280.webp"
+ },
+ {
+  "page": "root",
+  "url": "/",
+  "w": 1920,
+  "ms": 3790,
+  "title": "MatchLab",
+  "h1": "Every match.A clearer picture.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/root-1920.webp"
+ },
+ {
+  "page": "matches",
+  "url": "/#matches",
+  "w": 1920,
+  "ms": 3775,
+  "title": "MatchLab",
+  "h1": "Every match.A clearer picture.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/matches-1920.webp"
+ },
+ {
+  "page": "match",
+  "url": "/#match/tennis-187528",
+  "w": 1920,
+  "ms": 9546,
+  "title": "MatchLab",
+  "h1": "Ben Shelton v Carlos Alcaraz",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/tennis-forecast",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/match-1920.webp"
+ },
+ {
+  "page": "world",
+  "url": "/#world",
+  "w": 1920,
+  "ms": 7443,
+  "title": "MatchLab",
+  "h1": "What\u00e2\u20ac\u2122s happening, your way.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/world",
+   "200 /api/world-brief",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/world-1920.webp"
+ },
+ {
+  "page": "f1",
+  "url": "/#f1",
+  "w": 1920,
+  "ms": 7455,
+  "title": "MatchLab",
+  "h1": "The championship, in focus.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/f1-dashboard",
+   "200 /api/f1-timing",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/f1-1920.webp"
+ },
+ {
+  "page": "record",
+  "url": "/#record",
+  "w": 1920,
+  "ms": 7244,
+  "title": "MatchLab",
+  "h1": "What the model said,and how it did.",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/track-record",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/record-1920.webp"
+ },
+ {
+  "page": "settings",
+  "url": "/#settings",
+  "w": 1920,
+  "ms": 3319,
+  "title": "MatchLab",
+  "h1": "Settings",
+  "dashboard": true,
+  "overflowX": false,
+  "api": [
+   "200 /api/session",
+   "200 /api/today-matches",
+   "200 /api/refresh-today-matches"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/settings-1920.webp"
+ },
+ {
+  "page": "lab",
+  "url": "/lab",
+  "w": 1920,
+  "ms": 3607,
+  "title": "MatchLab \u00c2\u00b7 Sports predictions",
+  "h1": "Who's going to win?",
+  "dashboard": false,
+  "overflowX": false,
+  "api": [
+   "200 /api/state",
+   "200 /api/today-matches",
+   "200 /api/analyze"
+  ],
+  "errors": [],
+  "failed": [],
+  "file": "docs/screens/before/local/lab-1920.webp"
+ }
+]

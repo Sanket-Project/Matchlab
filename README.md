@@ -140,3 +140,17 @@ node --check web/app.js
 The suite covers downloaded-weight CPU inference, historical cutoffs, outcome and score validation, model and data integrity, localhost endpoints, the badminton importer and seeded Formula 1 forecasts. Set `MATCHLAB_REAL_TESTS=1` to include the three downloaded-weight tests.
 
 Run `.\.venv\Scripts\python.exe tools\evaluate_models.py --sports cricket badminton f1` to reproduce the current stages and overall top-pick accuracy. Models freeze fitting before a chronological 80/20 split. Earlier completed results may enter later features. The current reports are [EVALUATION.md](EVALUATION.md), [MODEL_COMPARISON.md](MODEL_COMPARISON.md) and [the results JSON](artifacts/model-comparison.json). The older 32-match pretrained and Chronos evaluation remains in `artifacts/evaluation.json`.
+
+## Public read-only copy (Vercel)
+
+https://matchlab-ten.vercel.app/ serves this dashboard as a read-only mirror: the schedule and forecasts this
+MatchLab saved, as last published, plus the free F1 and World feeds. It holds no keys and cannot make forecasts or
+spend any budget. To update it:
+
+```
+python tools/publish_snapshot.py
+git add data/public && git commit -m "data: publish snapshot" && git push
+```
+
+Preview it locally first with `python tools/mirror_preview.py` (http://127.0.0.1:8767/). Design and trade-offs:
+`docs/hosting-decision.md`.

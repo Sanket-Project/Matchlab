@@ -1,5 +1,92 @@
 # MatchLab UI audit
 
+Two passes are recorded here. **Pass 2** (below) is the current one: it audits the dashboard as it stood at
+`3dd42a1`, after Pass 1's fixes landed, plus the hosted site. **Pass 1** is kept underneath as history; its items
+were fixed in commits `ada9b61` to `cea792c`.
+
+---
+
+# Pass 2: 2026-11-21, hosted site, Track Record, photos, product focus
+
+Scope: `web/dash.*`, `app.py`, `api/index.py`, `vercel.json`, `matchlab/tracker.py`, `matchlab/ai_check.py`,
+`matchlab/world.py`, the owner's new portraits. Method: source read. Both sites driven with headless Chromium at 360,
+768, 1280 and 1920 px (`tools/ui-checks/capture.cjs`; screenshots in `docs/screens/before/{live,local}/` and
+`docs/screens/after/{live,local}/`). Three-theme contrast sweep (`tools/ui-checks/contrast.cjs`), a scripted
+keyboard walk, and an independent recomputation of every Track Record number (`tools/verify_track_record.py`).
+
+Specialists: **UX** senior UI/UX designer, **FE** front-end, **BE** back-end, **FS** full-stack, **PM** product,
+**ML** AI engineer, **GenAI** Gen-AI engineer. Status: **Fixed** (in this pass, with commit), **Open** (owner decision
+or later work).
+
+## Critical
+
+| ID | Area | Finding | Status |
+|---|---|---|---|
+| P2-C1 | Hosting (FS) | The public URL showed the legacy lab at `/` and `/lab`. `/dash` showed "MatchLab could not start" at every width, because every `/api/*` call returned 403 from `app.py`'s localhost guard. Root cause in `hosting-decision.md`. Evidence: `docs/screens/before/live/*`, `log.json`. | **Fixed** `07798e5`, `580b804` |
+| P2-C2 | Security (BE) | `matchlab/supabase_db.py` hard-coded a Supabase key. The unused `api/index.py` let anyone save or clear the OpenRouter key and stored it in a table that key can read. The API budget ledger was read and written in that table, so anyone could reset the count and drain quotas. | **Fixed** `0bebd08`, `07798e5`. **Open**: rotate the key and check RLS (owner) |
+| P2-C3 | Performance (BE) | `/api/track-record` graded pending events before replying: 2,352 ms measured, up to about 12 s with six pending. | **Fixed** `b0e5e3c` |
+
+## Major
+
+| ID | Area | Finding | Status |
+|---|---|---|---|
+| P2-M1 | Product (PM, UX) | The owner's main question, "is this forecast locked?", needed a click into each match. The card said "Forecast ready" whether or not anything was saved. | **Fixed** `81ff745`: "Locked 6:14 PM" badge and the locked pick on the card; "Not locked yet" otherwise |
+| P2-M2 | Honesty (BE) | A failed save of the prediction log was swallowed (`except Exception: pass`), so the page could show a forecast as locked that was never written. | **Fixed** `b0e5e3c`: a failed write raises and the forecast request reports it |
+| P2-M3 | Track Record (ML) | "Winner with AI check" and "Winner picked" used different samples with no like-for-like comparison. | **Fixed**: the AI rate now shows "model alone on the same n" |
+| P2-M4 | Track Record (ML, UX) | No calibration view: only a sentence saying calibration is not active. | **Fixed**: reliability table (5 bins, n per bin, average chance vs observed) |
+| P2-M5 | Track Record (FE) | Every saved row drawn at once (100 per sport, sent twice); the view was blank text until the reply. | **Fixed**: skeleton, 25 rows plus "Show more", in-place update after background grading |
+| P2-M6 | GenAI (BE) | A stored AI check's shift was applied without the ±5 cap (only new replies were capped). | **Fixed** `d7acbdf`, test added |
+| P2-M7 | Images (UX, FE) | The owner's 20 portraits were 1.8–2.0 MB PNGs (38 MB). The F1 ones print a ranking and team ("#1 – Lando Norris (McLaren)") that goes stale. | **Fixed** `61d14f2`: WebP 2–25 KB each, caption strip cropped |
+| P2-M8 | Formula 1 (UX) | The hub had only text tables: no driver imagery, and the leader card did not say by how much he leads. | **Fixed**: leader portrait, gap to P2, top-six driver cards with faces |
+| P2-M9 | Hosted copy (UX) | Copy written for the local app ("press Refresh", "Check that MatchLab is still running in its terminal window", "Add an OpenRouter key") is wrong on a public read-only site. | **Fixed**: hosted wording throughout; Settings explains the copy |
+| P2-M10 | Status (PM) | On the hosted copy, match states (Live / Finished) and scores are only as fresh as the last snapshot, so a finished match can still read "Live" hours later. | **Mitigated**: every view says "Snapshot from N min ago", and past 60 minutes "Scores and match states may be out of date". **Open**: a live schedule on the host (see Risks) |
+
+## Minor
+
+| ID | Finding | Status |
+|---|---|---|
+| P2-m1 | A disabled "Checking…" button faded to 2.36:1 (Butter) and 2.88:1 (Chocolate). Disabled controls are exempt in WCAG, but this one carries status. | **Fixed** `7b2d804` |
+| P2-m2 | The F1 Track Record rows and the F1 hub linked to `/lab`, which the hosted site no longer serves. | **Fixed** on the hosted copy (links to `#f1`); kept locally, where the race forecast lives |
+| P2-m3 | Coin-flip forecasts (50.1% v 49.9%) are graded as winner picks: 2 of the 5 correct cricket picks are coin flips. The page is honest (the 50–60% bin shows 3 of 7), but the headline rate includes them. | **Open**, owner decision: changing grading changes the record |
+| P2-m4 | Astryx references `--spacing-1…4` but never defines them, so those declarations do nothing. New code uses `--ml-s1…4` (4/8/12/16 px). Defining the Astryx tokens globally would move existing layouts. | **Open** (needs its own visual pass) |
+| P2-m5 | Four web fonts are shipped (Outfit, Figtree, Albert Sans, Fraunces). Each theme uses two (heading plus body), so the two-per-theme rule holds. `font-display: swap` with the default font preloaded. | Pass, no change |
+| P2-m6 | Contrast over photographs (hero eyebrows and headlines over the F1 and Track Record photos) cannot be computed from CSS. The sweep flags them as "unknown". Screenshots show light text over a dark overlay in all themes. | Pass by inspection |
+| P2-m7 | The footer link "Open the older lab view" competes with the dashboard. | **Fixed** on hosted (removed); kept locally for the F1 race forecast |
+
+## Checks that pass (measured)
+
+- **Keyboard**: skip link, logo, 5 nav links, Refresh, 4 filter chips (Enter toggles, focus stays, `aria-pressed`
+  updates), search, then cards. Track Record chips, then table links. Settings: theme select first. Every stop
+  shows a 3 px outline. On route change, focus moves to the new `h1`.
+- **Console and CSP**: no errors or CSP violations at any width on either site after the fix. Image, font and
+  feed origins are unchanged; no new external origin.
+- **Contrast (WCAG 2.2 AA)**: after P2-m1, zero computed failures in Butter, Neutral and Chocolate across Matches,
+  match detail, World, F1, Track Record and Settings (`artifacts/contrast-after.json`). Only over-photo text is unknown.
+- **Tabular numerals**: scores (`.teams b`), pick and win percentages (`.num`), Track Record cells, calibration
+  table, F1 points and positions.
+- **Motion**: the skeleton pulse is opacity only and stops under `prefers-reduced-motion`. No new continuous motion.
+  Values on the 12 s / 25 s polls are patched in place by the existing keyed morph, with one brief highlight on a
+  real change.
+- **Live regions**: one polite region with deliberate messages only. A score change is announced once per poll, and
+  only when the score text differs.
+- **Images**: `srcset` + `sizes`, explicit `width` / `height`, `loading="lazy"` except the first four tennis cards,
+  `decoding="async"`, initials fallback on missing or failed images (no broken-image icon, no shift). `alt=""` on
+  faces next to a visible name; "Illustrated portrait of …" on standalone portraits.
+- **Watermarks**: none. The 20 portraits are stylised illustrations, not agency photos; no press or agency marks
+  were found. They are likenesses of real athletes: whether you may publish them is your decision (Risks).
+
+## Product focus (PM)
+
+The owner's main task is "what is on today, and is each forecast locked?" The shortest path is now the Matches view:
+each card answers it without a click (lock badge with time, locked pick). On the hosted copy, opening a card shows
+only the saved forecast and its grade. Removed or demoted: on the hosted copy, Refresh, budget chips, the lab link,
+the OpenRouter key form and every action that would compute or spend. Kept locally: the older lab view, because the
+F1 race forecast still lives there.
+
+---
+
+# Pass 1 (history)
+
 Date: 2026-11-21. Scope: `web/dash.html`, `web/dash.js`, `web/dash.css`, `app.py`, `matchlab/world.py`.
 Method: source read, then the live app on `127.0.0.1:8766` driven with headless Chromium at 360, 768, 1280 and
 1920 px for all five views plus a match detail page, and a three-theme computed-contrast sweep.
