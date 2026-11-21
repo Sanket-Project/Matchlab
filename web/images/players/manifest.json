@@ -1,0 +1,282 @@
+{
+ "arvid lindblad": {
+  "name": "Arvid Lindblad",
+  "slug": "arvid-lindblad",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "charles leclerc": {
+  "name": "Charles Leclerc",
+  "slug": "charles-leclerc",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "george russell": {
+  "name": "George Russell",
+  "slug": "george-russell",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "isack hadjar": {
+  "name": "Isack Hadjar",
+  "slug": "isack-hadjar",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "kimi antonelli": {
+  "name": "Kimi Antonelli",
+  "slug": "kimi-antonelli",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "lando norris": {
+  "name": "Lando Norris",
+  "slug": "lando-norris",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "liam lawson": {
+  "name": "Liam Lawson",
+  "slug": "liam-lawson",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "max verstappen": {
+  "name": "Max Verstappen",
+  "slug": "max-verstappen",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "oscar piastri": {
+  "name": "Oscar Piastri",
+  "slug": "oscar-piastri",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "lewis hamilton": {
+  "name": "Lewis Hamilton",
+  "slug": "lewis-hamilton",
+  "sport": "f1",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 0.9975
+ },
+ "alexander zverev": {
+  "name": "Alexander Zverev",
+  "slug": "alexander-zverev",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "arthur fils": {
+  "name": "Arthur Fils",
+  "slug": "arthur-fils",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "ben shelton": {
+  "name": "Ben Shelton",
+  "slug": "ben-shelton",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "daniil medvedev": {
+  "name": "Daniil Medvedev",
+  "slug": "daniil-medvedev",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "flavio cobolli": {
+  "name": "Flavio Cobolli",
+  "slug": "flavio-cobolli",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "frances tiafoe": {
+  "name": "Frances Tiafoe",
+  "slug": "frances-tiafoe",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "jannik sinner": {
+  "name": "Jannik Sinner",
+  "slug": "jannik-sinner",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "rafael jodar": {
+  "name": "Rafael Jódar",
+  "slug": "rafael-jodar",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "carlos alcaraz": {
+  "name": "Carlos Alcaraz",
+  "slug": "carlos-alcaraz",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ },
+ "taylor fritz": {
+  "name": "Taylor Fritz",
+  "slug": "taylor-fritz",
+  "sport": "tennis",
+  "card": [
+   320,
+   640
+  ],
+  "face": [
+   96,
+   192
+  ],
+  "ratio": 1.0942
+ }
+}
