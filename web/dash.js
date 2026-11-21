@@ -985,7 +985,7 @@ const MAJOR_LABS = new Set(["anthropic", "openai", "google", "meta", "mistral", 
 const SPORT_LABELS = { cricket: "Cricket", football: "Football", tennis: "Tennis", f1: "Formula 1" };
 const WORLD_SECTIONS = ["markets", "news", "models", "sports"];
 const WORLD_STEP = { news: 10, models: 8, sports: 12 };
-state.world = { data: {}, filters: { news: "all", models: "all", sports: "all" }, shown: { ...WORLD_STEP }, brief: null, briefBusy: false, briefError: "", briefTried: false, selectedStock: "ANT", timeframe: "5D", chartMode: "area", indicators: { sma9: false, sma21: false, bollinger: false } };
+state.world = { data: {}, filters: { news: "all", models: "all", sports: "all" }, shown: { ...WORLD_STEP }, brief: null, briefBusy: false, briefError: "", briefTried: false, selectedStock: "ANT" };
 
 const ago = (iso) => {
   const mins = Math.round((Date.now() - Date.parse(iso)) / 60000);
@@ -999,6 +999,17 @@ const money = (n, currency = "USD") => new Intl.NumberFormat([], { style: "curre
 const compact = (n) => new Intl.NumberFormat([], { notation: "compact", maximumFractionDigits: 1 }).format(n);
 const signed = (n, digits = 2) => `${n > 0 ? "+" : n < 0 ? "−" : ""}${Math.abs(n).toFixed(digits)}`;
 const external = (href, text, cls) => h("a", { class: cls, href, target: "_blank", rel: "noopener noreferrer" }, text, h("span", { class: "vh" }, " (opens in a new tab)"));
+
+// Markets use only what the quote feed supplies: price, change against the start of the 5-day window,
+// the day and 52-week ranges, volume and the 30-minute closes. Nothing is estimated or simulated.
+const SVG_NS = "http://www.w3.org/2000/svg";
+let sparkId = 0;
+function svgEl(tag, attrs, ...children) {
+  const node = document.createElementNS(SVG_NS, tag);
+  for (const [key, value] of Object.entries(attrs || {})) if (value != null && value !== false) node.setAttribute(key, String(value));
+  for (const child of children.flat()) if (child) node.append(child);
+  return node;
+}
 
 function smoothBezierPath(pts) {
   if (!pts || pts.length < 2) return "";
@@ -1021,539 +1032,107 @@ function brokerSparkline(series, direction, width = 140, height = 36) {
   if (!Array.isArray(series) || series.length < 2) return null;
   const low = Math.min(...series), high = Math.max(...series), span = high - low || 1;
   const padY = 3;
-  const pts = series.map((v, i) => [
-    (i / (series.length - 1)) * width,
-    height - padY - ((v - low) / span) * (height - 2 * padY)
-  ]);
+  const pts = series.map((v, i) => [(i / (series.length - 1)) * width, height - padY - ((v - low) / span) * (height - 2 * padY)]);
   const curveD = smoothBezierPath(pts);
-  const areaD = `${curveD} L ${width},${height} L 0,${height} Z`;
-  const gradId = `spark-grad-${Math.random().toString(36).slice(2, 8)}`;
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-  svg.setAttribute("class", `mini-broker-spark ${direction}`);
-  svg.setAttribute("preserveAspectRatio", "none");
-  svg.setAttribute("role", "presentation");
-  svg.innerHTML = `
-    <defs>
-      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="currentColor" stop-opacity="0.32"/>
-        <stop offset="100%" stop-color="currentColor" stop-opacity="0.0"/>
-      </linearGradient>
-    </defs>
-    <path d="${areaD}" fill="url(#${gradId})" />
-    <path d="${curveD}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-  `;
-  return svg;
+  const gradId = `spark-grad-${++sparkId}`;
+  return svgEl("svg", { viewBox: `0 0 ${width} ${height}`, class: `mini-broker-spark ${direction}`, preserveAspectRatio: "none", "aria-hidden": "true", focusable: "false" },
+    svgEl("defs", {}, svgEl("linearGradient", { id: gradId, x1: 0, y1: 0, x2: 0, y2: 1 },
+      svgEl("stop", { offset: "0%", "stop-color": "currentColor", "stop-opacity": 0.32 }),
+      svgEl("stop", { offset: "100%", "stop-color": "currentColor", "stop-opacity": 0 }))),
+    svgEl("path", { d: `${curveD} L ${width},${height} L 0,${height} Z`, fill: `url(#${gradId})` }),
+    svgEl("path", { d: curveD, fill: "none", stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }));
 }
 
-function rangeMetricCard(label, current, lowVal, highVal, currency) {
-  const min = lowVal != null ? lowVal : current;
-  const max = highVal != null ? highVal : current;
-  const span = max - min || 1;
-  const pct = Math.max(0, Math.min(100, ((current - min) / span) * 100));
+// A range card is drawn only when the feed supplied both ends of the range.
+function rangeMetricCard(label, current, low, high, currency) {
+  if (low == null || high == null || high <= low) return null;
+  const share = Math.max(0, Math.min(100, ((current - low) / (high - low)) * 100));
   return h("div", { class: "range-metric-card" },
-    h("div", { class: "range-title-row" },
-      h("span", { class: "range-label" }, label),
-      h("span", { class: "range-current tnum" }, `${pct.toFixed(0)}% in range`)
-    ),
-    h("div", { class: "range-track", "aria-hidden": "true" },
-      h("div", { class: "range-fill" }),
-      h("div", { class: "range-pin", style: `left: ${pct.toFixed(1)}%` })
-    ),
-    h("div", { class: "range-extremes" },
-      h("span", { class: "tnum" }, `Low ${money(min, currency)}`),
-      h("span", { class: "tnum" }, `High ${money(max, currency)}`)
-    )
-  );
+    h("div", { class: "range-title-row" }, h("span", { class: "range-label" }, label), h("span", { class: "range-current tnum" }, `${share.toFixed(0)}% of the way up`)),
+    h("div", { class: "range-track", "aria-hidden": "true" }, h("div", { class: "range-fill" }), h("div", { class: "range-pin", style: `--pin:${share.toFixed(1)}` })),
+    h("div", { class: "range-extremes" }, h("span", { class: "tnum" }, `Low ${money(low, currency)}`), h("span", { class: "tnum" }, `High ${money(high, currency)}`)));
 }
 
-function computeOHLC(series) {
-  if (!Array.isArray(series) || series.length < 2) return [];
-  return series.map((val, i) => {
-    const prev = i > 0 ? series[i - 1] : val * 0.998;
-    const open = prev;
-    const close = val;
-    const delta = Math.abs(close - open);
-    const high = Math.max(open, close) + delta * 0.42 + (val * 0.002);
-    const low = Math.min(open, close) - delta * 0.42 - (val * 0.002);
-    return { open, high, low, close, isUp: close >= open };
+function tickerStrip(quotes, activeSymbol, onSelect) {
+  return h("div", { class: "ticker-marquee-wrap", role: "group", "aria-label": "Tickers" },
+    h("div", { class: "ticker-marquee-track" }, quotes.map((q) => {
+      const known = typeof q.change_pct === "number";
+      return h("button", { class: `ticker-marquee-item${q.symbol === activeSymbol ? " active" : ""}`, type: "button", "aria-pressed": String(q.symbol === activeSymbol), onclick: () => onSelect(q.symbol) },
+        h("span", { class: "item-sym" }, q.symbol), h("span", { class: "item-price tnum" }, money(q.price, q.currency)),
+        known ? h("span", { class: `item-pill tnum ${q.change_pct >= 0 ? "good" : "bad"}` }, `${q.change_pct >= 0 ? "▲" : "▼"} ${signed(q.change_pct)}%`) : null);
+    })));
+}
+
+function priceChart(q, series, direction, onScrub, onLeave) {
+  const svgW = 860, svgH = 220, padL = 16, padR = 84, padT = 18, padB = 18;
+  const chartW = svgW - padL - padR, chartH = svgH - padT - padB;
+  const low = Math.min(...series), high = Math.max(...series), span = high - low || 1;
+  const pts = series.map((v, i) => [padL + (i / (series.length - 1)) * chartW, padT + (1 - (v - low) / span) * chartH]);
+  const curveD = smoothBezierPath(pts);
+  const gradId = `terminal-grad-${++sparkId}`;
+  const tone = direction === "good" ? "var(--color-text-success)" : direction === "bad" ? "var(--color-text-error)" : "var(--color-accent)";
+  const grid = [[high, padT], [low + span / 2, padT + chartH / 2], [low, padT + chartH]].flatMap(([value, y]) => [
+    svgEl("line", { x1: padL, y1: y, x2: padL + chartW, y2: y, class: "chart-gridline" }),
+    svgEl("text", { x: padL + chartW + 8, y: y + 3, class: "chart-gridlabel tnum" }, money(value, q.currency))]);
+  const cursor = svgEl("g", { class: "chart-cursor", hidden: "" },
+    svgEl("line", { class: "scrubber-line-v", y1: padT, y2: padT + chartH }), svgEl("circle", { class: "scrubber-dot", r: 5 }));
+  const svg = svgEl("svg", { viewBox: `0 0 ${svgW} ${svgH}`, class: "broker-chart-svg", preserveAspectRatio: "none", role: "img",
+    "aria-label": `${q.symbol} closing prices over the last 5 sessions: from ${money(series[0], q.currency)} to ${money(series[series.length - 1], q.currency)}, low ${money(low, q.currency)}, high ${money(high, q.currency)}` },
+    svgEl("defs", {}, svgEl("linearGradient", { id: gradId, x1: 0, y1: 0, x2: 0, y2: 1 },
+      svgEl("stop", { offset: "0%", "stop-color": tone, "stop-opacity": 0.3 }), svgEl("stop", { offset: "100%", "stop-color": tone, "stop-opacity": 0 }))),
+    grid,
+    svgEl("path", { d: `${curveD} L ${pts[pts.length - 1][0].toFixed(1)},${padT + chartH} L ${pts[0][0].toFixed(1)},${padT + chartH} Z`, fill: `url(#${gradId})`, class: "broker-chart-area" }),
+    svgEl("path", { d: curveD, fill: "none", class: `broker-chart-path ${direction}` }),
+    cursor);
+  const wrap = h("div", { class: "broker-chart-wrap" }, svg);
+  wrap.addEventListener("pointermove", (event) => {
+    const box = svg.getBoundingClientRect();
+    if (!box.width) return;
+    const ratio = Math.max(0, Math.min(1, ((event.clientX - box.left) * (svgW / box.width) - padL) / chartW));
+    const index = Math.round(ratio * (series.length - 1));
+    const [x, y] = pts[index];
+    cursor.removeAttribute("hidden");
+    cursor.firstChild.setAttribute("x1", x.toFixed(1)); cursor.firstChild.setAttribute("x2", x.toFixed(1));
+    cursor.lastChild.setAttribute("cx", x.toFixed(1)); cursor.lastChild.setAttribute("cy", y.toFixed(1));
+    onScrub(series[index]);
   });
+  wrap.addEventListener("pointerleave", () => { cursor.setAttribute("hidden", ""); onLeave(); });
+  return wrap;
 }
 
-function computeSMA(series, period) {
-  const result = [];
-  for (let i = 0; i < series.length; i++) {
-    const start = Math.max(0, i - period + 1);
-    const slice = series.slice(start, i + 1);
-    const avg = slice.reduce((a, b) => a + b, 0) / slice.length;
-    result.push(avg);
-  }
-  return result;
-}
-
-function computeBollinger(series, period = 12, mult = 1.8) {
-  const uppers = [], lowers = [], mids = [];
-  for (let i = 0; i < series.length; i++) {
-    const start = Math.max(0, i - period + 1);
-    const slice = series.slice(start, i + 1);
-    const mean = slice.reduce((a, b) => a + b, 0) / slice.length;
-    const variance = slice.reduce((sum, v) => sum + Math.pow(v - mean, 2), 0) / slice.length;
-    const std = Math.sqrt(variance);
-    mids.push(mean);
-    uppers.push(mean + mult * std);
-    lowers.push(mean - mult * std);
-  }
-  return { uppers, lowers, mids };
-}
-
-const MARKET_SENTIMENT = {
-  ANT: { buy: 84, hold: 13, sell: 3, bidK: 1.8, askK: 2.4, rating: "Strong Buy", beta: "1.34" },
-  NVDA: { buy: 89, hold: 8, sell: 3, bidK: 4.2, askK: 5.1, rating: "Strong Buy", beta: "1.68" },
-  GOOGL: { buy: 78, hold: 18, sell: 4, bidK: 2.1, askK: 2.6, rating: "Moderate Buy", beta: "1.12" },
-  AMZN: { buy: 81, hold: 16, sell: 3, bidK: 2.9, askK: 3.3, rating: "Strong Buy", beta: "1.25" },
-  MSFT: { buy: 83, hold: 14, sell: 3, bidK: 2.5, askK: 3.0, rating: "Strong Buy", beta: "1.18" }
-};
-
-function tickerMarquee(quotes, activeSymbol, onSelect) {
-  const items = quotes.concat(quotes);
-  return h("div", { class: "ticker-marquee-wrap", "aria-label": "Live Markets Ticker Tape" },
-    h("div", { class: "ticker-marquee-track" },
-      items.map((q) => {
-        const known = typeof q.change_pct === "number";
-        const dir = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
-        return h("button", {
-          class: `ticker-marquee-item ${q.symbol === activeSymbol ? "active" : ""}`,
-          type: "button",
-          onclick: () => onSelect(q.symbol),
-          title: `Switch to ${q.symbol}`
-        },
-          h("span", { class: "item-sym" }, q.symbol),
-          h("span", { class: "item-price tnum" }, money(q.price, q.currency)),
-          known ? h("span", { class: `item-pill tnum ${dir}` }, `${q.change_pct >= 0 ? "▲" : "▼"} ${signed(q.change_pct)}%`) : null
-        );
-      })
-    )
-  );
-}
-
-function brokerTerminal(q, quotes, timeframe, chartMode, indicators, onSelectStock, onSelectTimeframe, onToggleMode, onToggleIndicator) {
+function brokerTerminal(q) {
   const known = typeof q.change_pct === "number";
   const direction = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
-  const rawSeries = Array.isArray(q.series) && q.series.length >= 2 ? q.series : [q.price, q.price];
-  
-  let displaySeries = rawSeries;
-  if (timeframe === "1D" && rawSeries.length > 8) {
-    displaySeries = rawSeries.slice(-Math.max(8, Math.floor(rawSeries.length * 0.35)));
-  }
-
-  const low = Math.min(...displaySeries);
-  const high = Math.max(...displaySeries);
-  const span = high - low || 1;
-  const first = displaySeries[0];
-  const last = displaySeries[displaySeries.length - 1];
-
-  const svgW = 860, svgH = 260;
-  const padL = 16, padR = 80, padT = 26, padB = 40;
-  const chartW = svgW - padL - padR;
-  const chartH = svgH - padT - padB;
-
-  const pts = displaySeries.map((v, i) => [
-    padL + (i / (displaySeries.length - 1)) * chartW,
-    padT + (1 - (v - low) / span) * chartH
-  ]);
-
-  const curveD = smoothBezierPath(pts);
-  const areaD = `${curveD} L ${pts[pts.length - 1][0].toFixed(1)},${(padT + chartH).toFixed(1)} L ${pts[0][0].toFixed(1)},${(padT + chartH).toFixed(1)} Z`;
-  const gradId = `broker-terminal-grad-${q.symbol}`;
-
-  // Indicators calculations
-  const sma9Series = computeSMA(displaySeries, 5);
-  const sma21Series = computeSMA(displaySeries, 9);
-  const bbData = computeBollinger(displaySeries, 8, 1.8);
-
-  const sma9Pts = sma9Series.map((v, i) => [
-    padL + (i / (displaySeries.length - 1)) * chartW,
-    padT + (1 - (v - low) / span) * chartH
-  ]);
-  const sma21Pts = sma21Series.map((v, i) => [
-    padL + (i / (displaySeries.length - 1)) * chartW,
-    padT + (1 - (v - low) / span) * chartH
-  ]);
-  const bbUpperPts = bbData.uppers.map((v, i) => [
-    padL + (i / (displaySeries.length - 1)) * chartW,
-    padT + (1 - (Math.min(high + span * 0.2, Math.max(low - span * 0.2, v)) - low) / span) * chartH
-  ]);
-  const bbLowerPts = bbData.lowers.map((v, i) => [
-    padL + (i / (displaySeries.length - 1)) * chartW,
-    padT + (1 - (Math.min(high + span * 0.2, Math.max(low - span * 0.2, v)) - low) / span) * chartH
-  ]);
-
-  const sma9D = smoothBezierPath(sma9Pts);
-  const sma21D = smoothBezierPath(sma21Pts);
-  const bbUpperD = smoothBezierPath(bbUpperPts);
-  const bbLowerRevD = smoothBezierPath(bbLowerPts.slice().reverse());
-  const bbRibbonD = `${bbUpperD} L ${bbLowerPts[bbLowerPts.length - 1][0].toFixed(1)},${bbLowerPts[bbLowerPts.length - 1][1].toFixed(1)} ${bbLowerRevD.replace(/^M/, "L")} Z`;
-
-  // Grid levels
-  const gridHighY = padT;
-  const gridMidY = padT + chartH * 0.5;
-  const gridLowY = padT + chartH;
-
-  // Volume bars
-  const volBars = displaySeries.map((v, i) => {
-    const x = pts[i][0] - (chartW / displaySeries.length) * 0.28;
-    const w = Math.max(3, (chartW / displaySeries.length) * 0.56);
-    const prev = i > 0 ? displaySeries[i - 1] : v;
-    const isUp = v >= prev;
-    const barH = Math.min(30, Math.max(6, 6 + (Math.abs(v - prev) / span) * 40));
-    const y = padT + chartH - barH;
-    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${w.toFixed(1)}" height="${barH.toFixed(1)}" rx="1.5" class="chart-volbar ${isUp ? "good" : "bad"}" />`;
-  }).join("");
-
-  // Candlestick rendering
-  const ohlc = computeOHLC(displaySeries);
-  const candleElements = ohlc.map((c, i) => {
-    const x = pts[i][0];
-    const candleW = Math.max(4, Math.min(14, (chartW / displaySeries.length) * 0.65));
-    const openY = padT + (1 - (c.open - low) / span) * chartH;
-    const closeY = padT + (1 - (c.close - low) / span) * chartH;
-    const highY = padT + (1 - (c.high - low) / span) * chartH;
-    const lowY = padT + (1 - (c.low - low) / span) * chartH;
-    const topY = Math.min(openY, closeY);
-    const bodyH = Math.max(2, Math.abs(closeY - openY));
-    const cls = c.isUp ? "good" : "bad";
-    return `
-      <line x1="${x.toFixed(1)}" y1="${highY.toFixed(1)}" x2="${x.toFixed(1)}" y2="${lowY.toFixed(1)}" class="candle-wick ${cls}" />
-      <rect x="${(x - candleW / 2).toFixed(1)}" y="${topY.toFixed(1)}" width="${candleW.toFixed(1)}" height="${bodyH.toFixed(1)}" class="candle-body ${cls}" />
-    `;
-  }).join("");
-
-  // Extremes markers
-  const highIdx = displaySeries.indexOf(high);
-  const lowIdx = displaySeries.indexOf(low);
-  const highPt = pts[highIdx] || pts[0];
-  const lowPt = pts[lowIdx] || pts[0];
-  const highMarkerX = Math.max(padL + 36, Math.min(padL + chartW - 36, highPt[0]));
-  const lowMarkerX = Math.max(padL + 36, Math.min(padL + chartW - 36, lowPt[0]));
-
-  const TIMEFRAMES = ["1D", "5D", "1M", "6M", "YTD", "ALL"];
-  const sentiment = MARKET_SENTIMENT[q.symbol] || { buy: 80, hold: 15, sell: 5, bidK: 2.0, askK: 2.5, rating: "Buy", beta: "1.2" };
-
-  const terminal = h("article", { class: "broker-terminal primary", "aria-label": `${q.name}, ${q.symbol} Financial Terminal` },
-    // Topbar
-    h("div", { class: "terminal-topbar" },
-      h("div", { class: "terminal-ticker-info" },
-        h("span", { class: "terminal-symbol" }, q.symbol),
-        h("span", { class: "terminal-name" }, q.name),
-        h("span", { class: "terminal-exchange" }, q.exchange || "NasdaqGS"),
-        h("span", { class: "live-status-pill", role: "status" },
-          h("span", { class: "live-pulse-dot", "aria-hidden": "true" }),
-          "REGULAR TRADING"
-        )
-      ),
-      h("div", { class: "timeframe-group", role: "tablist", "aria-label": "Select timeframe" },
-        TIMEFRAMES.map((tf) => h("button", {
-          class: "timeframe-btn",
-          type: "button",
-          role: "tab",
-          "aria-selected": String(tf === timeframe),
-          "aria-pressed": String(tf === timeframe),
-          onclick: () => onSelectTimeframe(tf)
-        }, tf))
-      )
-    ),
-
-    // Hero price row
-    h("div", { class: "terminal-hero-row" },
-      h("div", { class: "terminal-price-stack" },
-        h("div", { class: "terminal-price tnum", id: "terminal-price-readout" }, money(q.price, q.currency)),
-        known ? h("div", { class: `terminal-change-pill tnum ${direction}`, id: "terminal-change-readout" },
-          h("span", { "aria-hidden": "true" }, q.change_pct >= 0 ? "▲ " : "▼ "),
-          `${signed(q.change)} (${signed(q.change_pct)}%)`,
-          h("span", { class: "change-context" }, "past 5 sessions")
-        ) : null
-      ),
-      h("div", { class: "terminal-subtext", id: "terminal-time-readout" },
-        q.as_of ? `As of ${new Date(q.as_of).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })} EST` : "Session active"
-      )
-    ),
-
-    // Chart Controls Bar
-    h("div", { class: "chart-controls-bar" },
-      h("div", { class: "chart-type-toggle", role: "group", "aria-label": "Chart style" },
-        h("button", {
-          class: "chart-control-btn",
-          type: "button",
-          "aria-pressed": String(chartMode === "area"),
-          onclick: () => onToggleMode("area")
-        }, "∿ Area Mountain"),
-        h("button", {
-          class: "chart-control-btn",
-          type: "button",
-          "aria-pressed": String(chartMode === "candles"),
-          onclick: () => onToggleMode("candles")
-        }, "⑉ Candlesticks")
-      ),
-      h("div", { class: "chart-indicators-group", role: "group", "aria-label": "Technical indicators" },
-        h("button", {
-          class: "chart-control-btn",
-          type: "button",
-          "aria-pressed": String(indicators.sma9),
-          onclick: () => onToggleIndicator("sma9")
-        }, h("span", { class: "chart-legend-indicator sma9", "aria-hidden": "true" }), "SMA 9"),
-        h("button", {
-          class: "chart-control-btn",
-          type: "button",
-          "aria-pressed": String(indicators.sma21),
-          onclick: () => onToggleIndicator("sma21")
-        }, h("span", { class: "chart-legend-indicator sma21", "aria-hidden": "true" }), "SMA 21"),
-        h("button", {
-          class: "chart-control-btn",
-          type: "button",
-          "aria-pressed": String(indicators.bollinger),
-          onclick: () => onToggleIndicator("bollinger")
-        }, h("span", { class: "chart-legend-indicator bb", "aria-hidden": "true" }), "Bollinger")
-      )
-    ),
-
-    // Interactive Chart Wrap
-    h("div", { class: "broker-chart-wrap", id: "broker-chart-container" }),
-
-    // Order Flow & Sentiment Deck
-    h("div", { class: "order-flow-deck" },
-      h("div", { class: "sentiment-col" },
-        h("div", { class: "sentiment-header" },
-          h("span", {}, "Order Flow & Analyst Consensus"),
-          h("span", { class: "tag ok" }, sentiment.rating)
-        ),
-        h("div", { class: "sentiment-bar-track", "aria-label": `Buy ${sentiment.buy}%, Hold ${sentiment.hold}%, Sell ${sentiment.sell}%` },
-          h("div", { class: "sentiment-seg buy", style: `width: ${sentiment.buy}%` }),
-          h("div", { class: "sentiment-seg hold", style: `width: ${sentiment.hold}%` }),
-          h("div", { class: "sentiment-seg sell", style: `width: ${sentiment.sell}%` })
-        ),
-        h("div", { class: "sentiment-labels tnum" },
-          h("span", {}, `Buy ${sentiment.buy}%`),
-          h("span", {}, `Hold ${sentiment.hold}%`),
-          h("span", {}, `Sell ${sentiment.sell}%`)
-        )
-      ),
-      h("div", { class: "spread-col" },
-        h("div", { class: "spread-title" }, "Liquidity & Spread"),
-        h("div", { class: "spread-values tnum" },
-          h("span", {}, `Bid ${money(q.price * 0.9996, q.currency)} × ${sentiment.bidK}K`),
-          h("span", {}, `Ask ${money(q.price * 1.0004, q.currency)} × ${sentiment.askK}K`)
-        ),
-        h("div", { class: "spread-values tnum" },
-          h("span", {}, `Spread $0.06 (0.07%)`),
-          h("span", {}, `Beta ${sentiment.beta}`)
-        )
-      )
-    ),
-
-    // Metrics Deck
+  const series = Array.isArray(q.series) && q.series.length >= 2 ? q.series : null;
+  const quoteTime = q.as_of ? `Quote as of ${new Date(q.as_of).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })}` : "Quote time not supplied";
+  const price = h("div", { class: "terminal-price tnum" }, money(q.price, q.currency));
+  const changeLine = (delta, pctChange, context) => [h("span", { "aria-hidden": "true" }, delta >= 0 ? "▲ " : "▼ "), `${signed(delta)} (${signed(pctChange)}%)`, h("span", { class: "change-context" }, context)];
+  const change = known ? h("div", { class: `terminal-change-pill tnum ${direction}` }, changeLine(q.change, q.change_pct, "since 5 sessions ago")) : null;
+  const note = h("div", { class: "terminal-subtext" }, quoteTime);
+  const chart = series ? priceChart(q, series, direction, (value) => {
+    price.textContent = money(value, q.currency);
+    const delta = value - series[0];
+    if (change) { change.className = `terminal-change-pill tnum ${delta >= 0 ? "good" : "bad"}`; change.replaceChildren(...changeLine(delta, series[0] > 0 ? (delta / series[0]) * 100 : 0, "vs first close shown")); }
+    note.textContent = "Reading the chart: 30-minute closes";
+  }, () => {
+    price.textContent = money(q.price, q.currency);
+    if (change) { change.className = `terminal-change-pill tnum ${direction}`; change.replaceChildren(...changeLine(q.change, q.change_pct, "since 5 sessions ago")); }
+    note.textContent = quoteTime;
+  }) : h("p", { class: "note" }, "No price history was supplied for this ticker.");
+  const tile = (label, value) => h("div", { class: "stat-tile" }, h("span", { class: "stat-tile-k" }, label), h("span", { class: "stat-tile-v tnum" }, value));
+  return h("article", { class: "broker-terminal primary", "aria-label": `${q.name}, ${q.symbol}` },
+    h("div", { class: "terminal-topbar" }, h("div", { class: "terminal-ticker-info" },
+      h("span", { class: "terminal-symbol" }, q.symbol), h("span", { class: "terminal-name" }, q.name), q.exchange ? h("span", { class: "terminal-exchange" }, q.exchange) : null)),
+    h("div", { class: "terminal-hero-row" }, h("div", { class: "terminal-price-stack" }, price, change), note),
+    chart,
     h("div", { class: "terminal-metrics-deck" },
-      rangeMetricCard("Day Range", q.price, q.day_low ?? low, q.day_high ?? high, q.currency),
-      rangeMetricCard(q.symbol === "ANT" ? "Range Since Listing" : "52-Week Range", q.price, q.year_low ?? low, q.year_high ?? high, q.currency)
-    ),
-
-    // Stats Grid
+      rangeMetricCard("Day range", q.price, q.day_low, q.day_high, q.currency),
+      rangeMetricCard("52-week range", q.price, q.year_low, q.year_high, q.currency)),
     h("div", { class: "terminal-stats-grid" },
-      h("div", { class: "stat-tile" },
-        h("span", { class: "stat-tile-k" }, "Volume"),
-        h("span", { class: "stat-tile-v tnum" }, q.volume != null ? compact(q.volume) : "—")
-      ),
-      h("div", { class: "stat-tile" },
-        h("span", { class: "stat-tile-k" }, "Day High / Low"),
-        h("span", { class: "stat-tile-v tnum" }, q.day_high != null && q.day_low != null ? `${money(q.day_high, q.currency)} / ${money(q.day_low, q.currency)}` : "—")
-      ),
-      h("div", { class: "stat-tile" },
-        h("span", { class: "stat-tile-k" }, "Prev Close"),
-        h("span", { class: "stat-tile-v tnum" }, known && q.change != null ? money(q.price - q.change, q.currency) : "—")
-      ),
-      h("div", { class: "stat-tile" },
-        h("span", { class: "stat-tile-k" }, "Market / Currency"),
-        h("span", { class: "stat-tile-v" }, `${q.exchange || "NasdaqGS"} · ${q.currency}`)
-      )
-    )
-  );
-
-  // Build and insert SVG into broker-chart-container
-  const chartContainer = terminal.querySelector("#broker-chart-container");
-  const ns = "http://www.w3.org/2000/svg";
-  const svg = document.createElementNS(ns, "svg");
-  svg.setAttribute("viewBox", `0 0 ${svgW} ${svgH}`);
-  svg.setAttribute("class", "broker-chart-svg");
-  svg.setAttribute("preserveAspectRatio", "none");
-  svg.setAttribute("role", "img");
-  svg.setAttribute("aria-label", `${q.symbol} price chart over the last sessions, from ${money(first, q.currency)} to ${money(last, q.currency)}`);
-
-  svg.innerHTML = `
-    <defs>
-      <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="${direction === "good" ? "var(--color-text-green, #16a34a)" : direction === "bad" ? "var(--color-text-red, #dc2626)" : "var(--color-accent)"}" stop-opacity="0.34"/>
-        <stop offset="100%" stop-color="${direction === "good" ? "var(--color-text-green, #16a34a)" : direction === "bad" ? "var(--color-text-red, #dc2626)" : "var(--color-accent)"}" stop-opacity="0.0"/>
-      </linearGradient>
-    </defs>
-    <!-- Gridlines & Labels -->
-    <line x1="${padL}" y1="${gridHighY}" x2="${padL + chartW}" y2="${gridHighY}" class="chart-gridline" />
-    <text x="${padL + chartW + 8}" y="${gridHighY + 3}" class="chart-gridlabel tnum">${money(high, q.currency)}</text>
-    <line x1="${padL}" y1="${gridMidY}" x2="${padL + chartW}" y2="${gridMidY}" class="chart-gridline" />
-    <text x="${padL + chartW + 8}" y="${gridMidY + 3}" class="chart-gridlabel tnum">${money(low + span * 0.5, q.currency)}</text>
-    <line x1="${padL}" y1="${gridLowY}" x2="${padL + chartW}" y2="${gridLowY}" class="chart-gridline" />
-    <text x="${padL + chartW + 8}" y="${gridLowY + 3}" class="chart-gridlabel tnum">${money(low, q.currency)}</text>
-    
-    <!-- Volume bars -->
-    <g class="chart-volume-layer">${volBars}</g>
-    
-    <!-- Bollinger Ribbon (if active) -->
-    ${indicators.bollinger ? `<path d="${bbRibbonD}" class="indicator-bollinger-band" />` : ""}
-
-    <!-- Area & Line (if in area mode) -->
-    ${chartMode === "area" ? `
-      <path d="${areaD}" fill="url(#${gradId})" class="broker-chart-area" />
-      <path d="${curveD}" fill="none" class="broker-chart-path ${direction}" />
-    ` : ""}
-
-    <!-- Candlesticks (if in candles mode) -->
-    ${chartMode === "candles" ? `<g class="chart-candles-layer">${candleElements}</g>` : ""}
-
-    <!-- Moving Average Overlays -->
-    ${indicators.sma9 ? `<path d="${sma9D}" class="indicator-sma9" />` : ""}
-    ${indicators.sma21 ? `<path d="${sma21D}" class="indicator-sma21" />` : ""}
-
-    <!-- High & Low Callouts -->
-    <g class="chart-marker-high" transform="translate(${highMarkerX}, ${Math.max(16, highPt[1] - 8)})">
-      <rect x="-34" y="-14" width="68" height="15" rx="3.5" class="marker-bg" />
-      <text x="0" y="-3.5" text-anchor="middle" class="marker-text">▲ H ${money(high, q.currency)}</text>
-    </g>
-    <g class="chart-marker-low" transform="translate(${lowMarkerX}, ${Math.min(padT + chartH - 4, lowPt[1] + 16)})">
-      <rect x="-34" y="-14" width="68" height="15" rx="3.5" class="marker-bg" />
-      <text x="0" y="-3.5" text-anchor="middle" class="marker-text">▼ L ${money(low, q.currency)}</text>
-    </g>
-
-    <!-- Dual-Axis Crosshair HUD Group -->
-    <g id="chart-scrubber-group" style="display: none;">
-      <line id="scrubber-line-v" class="scrubber-line-v" x1="0" y1="${padT}" x2="0" y2="${padT + chartH}" />
-      <line id="scrubber-line-h" class="scrubber-line-h" x1="${padL}" y1="0" x2="${padL + chartW}" y2="0" />
-      <circle id="scrubber-ripple" class="scrubber-ripple" cx="0" cy="0" r="11" />
-      <circle id="scrubber-dot" class="scrubber-dot" cx="0" cy="0" r="5" />
-      <!-- Tracking floating tooltip -->
-      <g id="scrubber-tooltip-box" transform="translate(0, 0)">
-        <rect id="scrubber-tooltip-rect" x="-42" y="-28" width="84" height="22" rx="4" class="scrubber-tooltip-rect" />
-        <text id="scrubber-tooltip-text" x="0" y="-13" text-anchor="middle" class="scrubber-tooltip-text">$0.00</text>
-      </g>
-      <!-- X-Axis Bottom Date Pill -->
-      <g id="scrubber-axis-x" transform="translate(0, ${padT + chartH + 2})">
-        <rect x="-44" y="0" width="88" height="16" rx="3.5" class="scrubber-axis-pill" />
-        <text id="scrubber-axis-x-txt" x="0" y="11.5" text-anchor="middle" class="scrubber-axis-txt">Point 0</text>
-      </g>
-      <!-- Y-Axis Right Price Pill -->
-      <g id="scrubber-axis-y" transform="translate(${padL + chartW + 6}, 0)">
-        <rect x="0" y="-8" width="68" height="16" rx="3.5" class="scrubber-axis-pill" />
-        <text id="scrubber-axis-y-txt" x="34" y="3.5" text-anchor="middle" class="scrubber-axis-txt">$0.00</text>
-      </g>
-    </g>
-  `;
-
-  // Attach pointer interaction
-  const onPointerMove = (evt) => {
-    const rect = svg.getBoundingClientRect();
-    const clientX = evt.clientX || (evt.touches && evt.touches[0]?.clientX);
-    if (clientX == null) return;
-    const mouseX = clientX - rect.left;
-    const ratio = Math.max(0, Math.min(1, (mouseX * (svgW / rect.width) - padL) / chartW));
-    const idx = Math.round(ratio * (displaySeries.length - 1));
-    const pt = pts[idx];
-    const val = displaySeries[idx];
-
-    const group = svg.querySelector("#chart-scrubber-group");
-    if (!group) return;
-    group.style.display = "block";
-
-    const lineV = svg.querySelector("#scrubber-line-v");
-    lineV.setAttribute("x1", pt[0].toFixed(1));
-    lineV.setAttribute("x2", pt[0].toFixed(1));
-
-    const lineH = svg.querySelector("#scrubber-line-h");
-    lineH.setAttribute("y1", pt[1].toFixed(1));
-    lineH.setAttribute("y2", pt[1].toFixed(1));
-
-    const dot = svg.querySelector("#scrubber-dot");
-    dot.setAttribute("cx", pt[0].toFixed(1));
-    dot.setAttribute("cy", pt[1].toFixed(1));
-
-    const ripple = svg.querySelector("#scrubber-ripple");
-    ripple.setAttribute("cx", pt[0].toFixed(1));
-    ripple.setAttribute("cy", pt[1].toFixed(1));
-
-    const tipBox = svg.querySelector("#scrubber-tooltip-box");
-    const tipX = Math.max(padL + 44, Math.min(padL + chartW - 44, pt[0]));
-    const tipY = Math.max(padT + 22, pt[1] - 8);
-    tipBox.setAttribute("transform", `translate(${tipX.toFixed(1)}, ${tipY.toFixed(1)})`);
-
-    const tipTxt = svg.querySelector("#scrubber-tooltip-text");
-    tipTxt.textContent = money(val, q.currency);
-
-    // X-Axis Pill
-    const axisX = svg.querySelector("#scrubber-axis-x");
-    axisX.setAttribute("transform", `translate(${Math.max(padL + 44, Math.min(padL + chartW - 44, pt[0])).toFixed(1)}, ${(padT + chartH + 2).toFixed(1)})`);
-    const axisXTxt = svg.querySelector("#scrubber-axis-x-txt");
-    axisXTxt.textContent = `Point ${idx + 1}/${displaySeries.length}`;
-
-    // Y-Axis Pill
-    const axisY = svg.querySelector("#scrubber-axis-y");
-    axisY.setAttribute("transform", `translate(${(padL + chartW + 6).toFixed(1)}, ${pt[1].toFixed(1)})`);
-    const axisYTxt = svg.querySelector("#scrubber-axis-y-txt");
-    axisYTxt.textContent = money(val, q.currency);
-
-    const priceReadout = terminal.querySelector("#terminal-price-readout");
-    if (priceReadout) priceReadout.textContent = money(val, q.currency);
-
-    const delta = val - first;
-    const deltaPct = first > 0 ? (delta / first) * 100 : 0;
-    const dir = delta >= 0 ? "good" : "bad";
-    const changeReadout = terminal.querySelector("#terminal-change-readout");
-    if (changeReadout) {
-      changeReadout.className = `terminal-change-pill tnum ${dir}`;
-      changeReadout.innerHTML = `<span>${delta >= 0 ? "▲ " : "▼ "}</span>${signed(delta)} (${signed(deltaPct)}%) <span class="change-context">step ${idx + 1}/${displaySeries.length}</span>`;
-    }
-
-    const timeReadout = terminal.querySelector("#terminal-time-readout");
-    if (timeReadout) {
-      if (chartMode === "candles" && ohlc[idx]) {
-        const c = ohlc[idx];
-        timeReadout.textContent = `O: ${money(c.open)}  H: ${money(c.high)}  L: ${money(c.low)}  C: ${money(c.close)}`;
-      } else {
-        timeReadout.textContent = `Scrubbing session point ${idx + 1} · ${money(val, q.currency)}`;
-      }
-    }
-  };
-
-  const onPointerLeave = () => {
-    const group = svg.querySelector("#chart-scrubber-group");
-    if (group) group.style.display = "none";
-
-    const priceReadout = terminal.querySelector("#terminal-price-readout");
-    if (priceReadout) priceReadout.textContent = money(q.price, q.currency);
-
-    const changeReadout = terminal.querySelector("#terminal-change-readout");
-    if (changeReadout) {
-      changeReadout.className = `terminal-change-pill tnum ${direction}`;
-      changeReadout.innerHTML = `<span>${q.change_pct >= 0 ? "▲ " : "▼ "}</span>${signed(q.change)} (${signed(q.change_pct)}%) <span class="change-context">past 5 sessions</span>`;
-    }
-
-    const timeReadout = terminal.querySelector("#terminal-time-readout");
-    if (timeReadout) {
-      timeReadout.textContent = q.as_of ? `As of ${new Date(q.as_of).toLocaleString([], { weekday: "short", hour: "numeric", minute: "2-digit" })} EST` : "Session active";
-    }
-  };
-
-  chartContainer.addEventListener("pointermove", onPointerMove);
-  chartContainer.addEventListener("pointerleave", onPointerLeave);
-  chartContainer.append(svg);
-
-  return terminal;
+      tile("Volume", q.volume != null ? compact(q.volume) : "—"),
+      tile("Day high / low", q.day_high != null && q.day_low != null ? `${money(q.day_high, q.currency)} / ${money(q.day_low, q.currency)}` : "—"),
+      tile("Close 5 sessions ago", known && q.change != null ? money(q.price - q.change, q.currency) : "—"),
+      tile("Currency", q.currency || "—")));
 }
 
 function watchlistCard(q, isActive, onSelect) {
@@ -1561,49 +1140,17 @@ function watchlistCard(q, isActive, onSelect) {
   const direction = !known ? "flat" : q.change_pct >= 0 ? "good" : "bad";
   const low = q.day_low ?? Math.min(...(q.series || [q.price]));
   const high = q.day_high ?? Math.max(...(q.series || [q.price]));
-  const span = high - low || 1;
-  const pinPct = Math.max(0, Math.min(100, ((q.price - low) / span) * 100));
-
-  const card = h("button", {
-    class: `watchlist-item${isActive ? " active" : ""}`,
-    type: "button",
-    role: "button",
-    "aria-pressed": String(isActive),
-    "aria-label": `${q.symbol}, ${q.name}, price ${money(q.price, q.currency)}, ${direction === "good" ? "up" : "down"} ${signed(q.change_pct)}%`,
-    onclick: () => onSelect(q.symbol),
-    onkeydown: (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); onSelect(q.symbol); } }
-  },
-    h("div", { class: "watchlist-topline" },
-      h("div", {},
-        h("span", { class: "watchlist-symbol" }, q.symbol),
-        h("span", { class: "watchlist-name" }, q.label || q.name)
-      ),
-      isActive ? h("span", { class: "watchlist-active-badge" }, "ACTIVE CHART") : null
-    ),
-    h("div", { class: "watchlist-price-row" },
-      h("span", { class: "watchlist-price tnum" }, money(q.price, q.currency)),
-      known ? h("span", { class: `watchlist-pill tnum ${direction}` },
-        `${q.change_pct >= 0 ? "▲ " : "▼ "}${signed(q.change_pct)}%`
-      ) : null
-    ),
-    h("div", { class: "watchlist-chart-row" },
-      brokerSparkline(q.series, direction, 140, 36)
-    ),
-    h("div", { class: "range-track", "aria-hidden": "true", style: "margin: 2px 0 0;" },
-      h("div", { class: "range-fill" }),
-      h("div", { class: "range-pin", style: `left: ${pinPct.toFixed(1)}%` })
-    )
-  );
-
-  return card;
-}
-
-function sparkline(series, label, direction) {
-  return brokerSparkline(series, direction);
-}
-
-function marketCard(q, primary) {
-  return watchlistCard(q, primary, () => {});
+  const pinPct = Math.max(0, Math.min(100, ((q.price - low) / ((high - low) || 1)) * 100));
+  return h("button", {
+    class: `watchlist-item${isActive ? " active" : ""}`, type: "button", "aria-pressed": String(isActive),
+    "aria-label": `${q.symbol}, ${q.name}, ${money(q.price, q.currency)}${known ? `, ${q.change_pct >= 0 ? "up" : "down"} ${Math.abs(q.change_pct).toFixed(2)} percent over 5 sessions` : ""}`,
+    onclick: () => onSelect(q.symbol) },
+    h("div", { class: "watchlist-topline" }, h("div", {}, h("span", { class: "watchlist-symbol" }, q.symbol), h("span", { class: "watchlist-name" }, q.label || q.name)),
+      isActive ? h("span", { class: "watchlist-active-badge" }, "Shown") : null),
+    h("div", { class: "watchlist-price-row" }, h("span", { class: "watchlist-price tnum" }, money(q.price, q.currency)),
+      known ? h("span", { class: `watchlist-pill tnum ${direction}` }, `${q.change_pct >= 0 ? "▲ " : "▼ "}${signed(q.change_pct)}%`) : null),
+    h("div", { class: "watchlist-chart-row" }, brokerSparkline(q.series, direction, 140, 36)),
+    h("div", { class: "range-track", "aria-hidden": "true", style: "margin: 2px 0 0;" }, h("div", { class: "range-fill" }), h("div", { class: "range-pin", style: `--pin:${pinPct.toFixed(1)}` })));
 }
 
 function chipRow(label, options, current, pick) {
@@ -1617,10 +1164,6 @@ const put = (element, ...nodes) => element.replaceChildren(...nodes.flat().filte
 function renderWorld() {
   const request = ++state.request;
   clearTimeout(state.timer);
-  if (state.marketTickTimer) {
-    clearInterval(state.marketTickTimer);
-    state.marketTickTimer = null;
-  }
   const world = state.world, alive = () => request === state.request;
   const parts = {};
   const panel = (id, kicker, title) => {
@@ -1666,68 +1209,17 @@ function renderWorld() {
       world.selectedStock = quotes.find((q) => q.symbol === "ANT")?.symbol || quotes[0]?.symbol || "ANT";
     }
     const activeQuote = quotes.find((q) => q.symbol === world.selectedStock) || quotes[0];
-
-    world.chartMode = world.chartMode || "area";
-    world.indicators = world.indicators || { sma9: false, sma21: false, bollinger: false };
-
-    put(done("markets", data).body, 
-      tickerMarquee(quotes, activeQuote?.symbol, (sym) => {
-        world.selectedStock = sym;
-        drawMarkets();
-      }),
+    const select = (symbol) => { world.selectedStock = symbol; drawMarkets(); };
+    put(done("markets", data).body,
+      quotes.length ? tickerStrip(quotes, activeQuote?.symbol, select) : null,
       h("div", { class: "market-row" },
-        activeQuote ? brokerTerminal(
-          activeQuote,
-          quotes,
-          world.timeframe || "5D",
-          world.chartMode,
-          world.indicators,
-          (sym) => { world.selectedStock = sym; drawMarkets(); },
-          (tf) => { world.timeframe = tf; drawMarkets(); },
-          (mode) => { world.chartMode = mode; drawMarkets(); },
-          (ind) => { world.indicators[ind] = !world.indicators[ind]; drawMarkets(); }
-        ) : h("p", { class: "note warn" }, "Stock quotes are unavailable right now."),
+        activeQuote ? brokerTerminal(activeQuote) : h("p", { class: "note warn" }, "Stock quotes are unavailable right now."),
         h("div", { class: "market-watchlist" },
           h("div", { class: "watchlist-header" },
-            h("div", {},
-              h("h3", { class: "watchlist-title" }, "Watchlist"),
-              h("p", { class: "watchlist-sub" }, "Click any ticker to switch chart")
-            ),
-            h("span", { class: "tag ok" }, `${quotes.length} tickers`)
-          ),
-          h("div", { class: "watchlist-cards" },
-            quotes.map((item) => watchlistCard(item, item.symbol === activeQuote?.symbol, (sym) => {
-              world.selectedStock = sym;
-              drawMarkets();
-            }))
-          )
-        )
-      ),
-      h("p", { class: "world-note" }, `${data.source}. Stockbroker analytics with interactive scrubbing, volume analysis, and range tracking. For information only, not investment advice.`));
-
-    if (state.marketTickTimer) {
-      clearInterval(state.marketTickTimer);
-      state.marketTickTimer = null;
-    }
-    state.marketTickTimer = setInterval(() => {
-      if (!alive()) {
-        clearInterval(state.marketTickTimer);
-        state.marketTickTimer = null;
-        return;
-      }
-      const scrubberGroup = document.querySelector("#chart-scrubber-group");
-      if (scrubberGroup && scrubberGroup.style.display === "block") return;
-      const curr = world.data.markets?.quotes?.find((q) => q.symbol === world.selectedStock) || activeQuote;
-      const priceEl = document.getElementById("terminal-price-readout");
-      if (priceEl && curr) {
-        const delta = (Math.random() - 0.49) * 0.08;
-        const newPrice = Math.max(1, curr.price + delta);
-        priceEl.textContent = money(newPrice, curr.currency);
-        priceEl.classList.remove("flash-uptick", "flash-downtick");
-        void priceEl.offsetWidth;
-        priceEl.classList.add(delta >= 0 ? "flash-uptick" : "flash-downtick");
-      }
-    }, 3800);
+            h("div", {}, h("h3", { class: "watchlist-title" }, "Watchlist"), h("p", { class: "watchlist-sub" }, "Choose a ticker to show its chart")),
+            h("span", { class: "tag ok" }, `${quotes.length} tickers`)),
+          h("div", { class: "watchlist-cards" }, quotes.map((item) => watchlistCard(item, item.symbol === activeQuote?.symbol, select))))),
+      h("p", { class: "world-note" }, `${data.source}. Prices may be delayed. Changes are measured against the close 5 sessions ago. For information only, not investment advice.`));
   }
 
   function drawModels() {
