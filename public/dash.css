@@ -389,12 +389,12 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 @media(max-width:760px){.matchday-hero{grid-template-columns:1fr;padding:24px}.hero-copy h1{font-size:36px}.hero-stats>div:first-child{border:1px solid var(--color-border);padding:16px 12px}.hero-stats>div{padding:16px 12px;gap:12px}.hero-stats strong{font-size:32px}.palette-control{font-size:12px}.palette-control select{min-width:100px;max-width:128px}.bar nav a{font-size:14px}.filter-bar .row{gap:2px}.chip{font-size:12px;padding:8px}.hero-copy>p:not(.eyebrow){max-width:100%}.filter-bar{padding:10px}.match-search{width:100%}}
 @media(max-width:480px){.hero-copy h1{font-size:34px}.hero-stats span{font-size:11px}.hero-stats strong{font-size:28px}.hero-stats{gap:6px}.hero-stats>div,.hero-stats>div:first-child{padding:14px 10px}.matches-heading h2{font-size:23px}.palette-control{gap:6px}.palette-control select{font-size:12px}.card .teams{font-size:18px}}
 /* Improve secondary-copy contrast in Chocolate's dense data views. */
-:root[data-astryx-theme=chocolate]{--color-text-secondary:color-mix(in srgb,var(--color-text-primary) 80%,var(--color-background-body))}
+:root[data-astryx-theme=chocolate]{--color-text-secondary:color-mix(in srgb,var(--color-text-primary) 80%,var(--color-background-body));--color-text-red:#7a0000;--color-text-error:#7a0000;--color-text-green:#3a4d00;--color-text-success:#3a4d00}
 @media(max-width:760px){.bar nav a{white-space:nowrap;padding:10px 8px}.matches-heading{flex-wrap:nowrap;align-items:center;gap:12px}.matches-heading .btn{max-width:none;flex-shrink:0}.matches-heading .sub{line-height:1.5}.matchday-hero{gap:20px}.hero-copy h1{margin:12px 0}.hero-date{margin-top:12px}}
 .appearance-settings .palette-control{margin:18px 0 0;justify-content:flex-start;font-size:14px;gap:16px}
 .appearance-settings .palette-control select{min-width:180px;max-width:100%;min-height:44px;font-size:14px}
 /* Formula One championship dashboard */
-.f1-hero{background:linear-gradient(115deg,rgba(15,36,28,.92) 0%,rgba(15,36,28,.74) 55%,rgba(15,36,28,.90) 100%),url("/images/f1-hero.jpg") center/cover no-repeat;color:#fff;border-radius:20px;padding:clamp(28px,5vw,56px);margin-bottom:24px;box-shadow:0 12px 36px rgba(15,36,28,.16);position:relative;overflow:hidden}.f1-hero h1{color:inherit;font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;max-width:12ch;margin:12px 0}.f1-hero p{color:#d6e5d8}.f1-kicker,.f1-label{font-size:.72rem;letter-spacing:.13em;font-weight:700;text-transform:uppercase}.f1-hero-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:30px;font-size:.85rem}.f1-overview,.f1-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}.f1-overview .panel,.f1-grid .panel{margin:0}.f1-label{color:#667766;margin:0 0 12px}.f1-points{font-size:1.8rem;font-weight:700;margin:12px 0 0}.f1-source{margin:20px 0}@media(max-width:760px){.f1-grid,.f1-overview{grid-template-columns:1fr}}
+.f1-hero{background:linear-gradient(115deg,rgba(15,36,28,.92) 0%,rgba(15,36,28,.74) 55%,rgba(15,36,28,.90) 100%),url("/images/f1-hero.jpg") center/cover no-repeat;color:#fff;border-radius:20px;padding:clamp(28px,5vw,56px);margin-bottom:24px;box-shadow:0 12px 36px rgba(15,36,28,.16);position:relative;overflow:hidden}.f1-hero h1{color:inherit;font-size:clamp(2.2rem,5vw,4rem);line-height:1.05;max-width:12ch;margin:12px 0}.f1-hero p{color:#d6e5d8}.f1-kicker,.f1-label{font-size:.72rem;letter-spacing:.13em;font-weight:700;text-transform:uppercase}.f1-hero-bottom{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:30px;font-size:.85rem}.f1-overview,.f1-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-bottom:16px}.f1-overview .panel,.f1-grid .panel{margin:0}.f1-label{color:var(--ink2);margin:0 0 12px}.f1-points{font-size:1.8rem;font-weight:700;margin:12px 0 0}.f1-source{margin:20px 0}@media(max-width:760px){.f1-grid,.f1-overview{grid-template-columns:1fr}}
 .record-filters, .lap-controls {
   gap: var(--spacing-2);
   margin-block: var(--spacing-3);
@@ -938,20 +938,22 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 
 .record-hero{display:grid;grid-template-columns:1.35fr 1fr;align-items:center;gap:36px;background:linear-gradient(115deg,rgba(20,38,31,.93) 0%,rgba(20,38,31,.78) 55%,rgba(20,38,31,.90) 100%),url("/images/track-record-hero.jpg") center/cover no-repeat;color:#fff;border-radius:20px;padding:36px 42px;margin-bottom:24px;position:relative;overflow:hidden;box-shadow:0 12px 36px rgba(20,38,31,.12)}
 .record-hero-copy{position:relative;z-index:1}
-.record-hero-copy .eyebrow{color:var(--hero-text);font-size:10px;letter-spacing:2px;font-weight:750}
+.record-hero{--on-photo:#fff;--on-photo-2:#e3ede6}
+.record-hero-copy h1{color:var(--on-photo)}
+.record-hero-copy .eyebrow{color:var(--on-photo-2);font-size:10px;letter-spacing:2px;font-weight:750}
 .record-hero-copy h1{font-size:clamp(30px,3.2vw,44px);line-height:1.1;margin:14px 0;letter-spacing:-1.6px}
 .record-hero-copy h1 span{color:var(--accent)}
-.record-hero-copy p{color:var(--hero-text);font-size:14px;line-height:1.6;max-width:440px}
+.record-hero-copy p,.record-hero-copy .hero-date{color:var(--on-photo-2);font-size:14px;line-height:1.6;max-width:440px}
 .record-hero-stat{padding:20px 24px;border-left:1px solid #ffffff26;display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
-.record-hero-stat span{font-size:12px;color:var(--hero-text);text-transform:uppercase;letter-spacing:1px;font-weight:650}
+.record-hero-stat span{font-size:12px;color:var(--on-photo-2);text-transform:uppercase;letter-spacing:1px;font-weight:650}
 .record-hero-stat strong{font-size:48px;font-weight:700;line-height:1;letter-spacing:-2px;color:var(--accent)}
-.record-hero-stat .sub{color:var(--hero-text);margin-top:2px;font-size:13px}
+.record-hero-stat .sub{color:var(--on-photo-2);margin-top:2px;font-size:13px}
 @media (max-width:760px){.record-hero{grid-template-columns:1fr;gap:20px;padding:26px}.record-hero-stat{border-left:0;border-top:1px solid #ffffff26;padding:16px 0 0}}
 
 
 
 
-.world-chips .tab-count { margin-left: 6px; font-size: 12px; font-weight: 600; opacity: .75; }
+.world-chips .tab-count { margin-left: 6px; font-size: 12px; font-weight: 600; }
 
 /* Themed select: native control for keyboard and touch, drawn with Astryx tokens. The chevron uses currentColor so every theme matches. */
 .select-wrap { position: relative; display: inline-flex; min-width: min(100%, 22rem); color: var(--ink2); }
@@ -1004,3 +1006,5 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
               color 0.16s var(--ease-press),
               box-shadow 0.16s var(--ease-press)
 }
+
+.utility-divider{color:var(--color-text-secondary)}
