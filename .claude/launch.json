@@ -4,8 +4,21 @@
     {
       "name": "matchlab",
       "runtimeExecutable": ".venv/Scripts/python.exe",
-      "runtimeArgs": ["app.py", "--port", "8766"],
+      "runtimeArgs": [
+        "app.py",
+        "--port",
+        "8766"
+      ],
       "port": 8766
+    },
+    {
+      "name": "mirror",
+      "runtimeExecutable": ".venv/Scripts/python.exe",
+      "runtimeArgs": [
+        "tools/mirror_preview.py",
+        "8767"
+      ],
+      "port": 8767
     }
   ]
 }

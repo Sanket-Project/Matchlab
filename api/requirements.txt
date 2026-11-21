@@ -1,0 +1,2 @@
+# The hosted mirror (api/index.py) and the feed readers it runs use only the Python standard library.
+# Keeping this file empty stops Vercel installing the model stack from the root requirements.txt.
