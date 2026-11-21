@@ -103,11 +103,11 @@ details.player .main{font-weight:700;font-variant-numeric:tabular-nums;white-spa
 details.player .side{font-size:12.5px;color:var(--muted);white-space:nowrap}
 details.player[open]{border-color:var(--primary)}
 details.player .body{padding:0 14px 12px 44px}
-details.player,details.more{transition:border-color 0.2s ease,box-shadow 0.2s ease}
+details.player,details.more{transition:border-color 0.2s var(--ease-press),box-shadow 0.2s var(--ease-press)}
 details.player[open] .body,details.more[open]>*:not(summary){animation:accordion-unfold 0.24s var(--ease-out-expo) both}
 @keyframes accordion-unfold{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 details.more{margin-top:8px}
-details.more>summary{cursor:pointer;color:var(--primary);font-weight:550;font-size:14px;transition:color 0.16s ease,transform 0.16s ease}
+details.more>summary{cursor:pointer;color:var(--primary);font-weight:550;font-size:14px;transition:color 0.16s var(--ease-press),transform 0.16s var(--ease-press)}
 details.more>summary:hover{color:var(--color-accent)}
 
 .live{border-color:var(--danger)}
@@ -189,18 +189,18 @@ input[type=password]{font:inherit;padding:7px 10px;border:1px solid var(--line);
 /* Responsive dashboard layout. Theme values are supplied by Astryx below. */
 body{font-family:"Segoe UI",Arial,sans-serif}
 button,a,input,select{ -webkit-tap-highlight-color:transparent }
-button,a,select{transition:transform var(--duration-fast, 125ms) var(--ease-press),background .16s ease,border-color .16s ease,box-shadow .16s ease,color .16s ease}
+button,a,select{transition:transform var(--duration-fast, 125ms) var(--ease-press),background .16s var(--ease-press),border-color .16s var(--ease-press),box-shadow .16s var(--ease-press),color .16s var(--ease-press)}
 .skip-link{position:fixed;top:-80px;left:16px;z-index:100;background:var(--surface);padding:12px 20px;border:2px solid var(--primary);border-radius:8px}
 .skip-link:focus{top:10px}
 .bar{min-height:82px;padding:14px max(24px,calc((100vw - 1680px)/2));background:var(--surface);color:var(--ink);border-bottom:1px solid var(--line);gap:44px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink);font-size:24px;letter-spacing:-1px}
 .brand-period{color:var(--orange);margin-left:-10px}
-.brand-symbol{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--rail);border-radius:11px;color:white;font-size:22px;font-style:italic;position:relative;transition:transform 0.24s var(--ease-spring),box-shadow 0.24s ease;will-change:transform}
+.brand-symbol{display:flex;align-items:center;justify-content:center;width:38px;height:38px;background:var(--rail);border-radius:11px;color:white;font-size:22px;font-style:italic;position:relative;transition:transform 0.24s var(--ease-spring),box-shadow 0.24s var(--ease-press)}
 .brand-symbol span{font-size:18px;color:var(--accent);margin-left:-4px;align-self:flex-start;display:inline-block;transition:transform 0.24s var(--ease-spring)}
 .brand:hover .brand-symbol{transform:translateY(-1.5px) rotate(-3deg);box-shadow:0 4px 14px color-mix(in srgb,var(--color-accent) 30%,transparent)}
 .brand:hover .brand-symbol span{transform:translate(2.5px,-2.5px)}
 .bar nav{gap:8px}
-.bar nav a{color:var(--muted);padding:11px 17px;font-size:14px;border-radius:9px;transition:transform 0.16s var(--ease-press),background-color 0.18s ease,color 0.18s ease,box-shadow 0.18s ease}.bar nav a:hover{color:var(--ink);background:var(--subtle);transform:translateY(-1px)}.bar nav a:active{transform:scale(0.96)}
+.bar nav a{color:var(--muted);padding:11px 17px;font-size:14px;border-radius:9px;transition:transform 0.16s var(--ease-press),background-color 0.18s var(--ease-press),color 0.18s var(--ease-press),box-shadow 0.18s var(--ease-press)}.bar nav a:hover{color:var(--ink);background:var(--subtle);transform:translateY(-1px)}.bar nav a:active{transform:scale(0.96)}
 .bar nav a:hover{color:var(--ink);background:var(--subtle)}
 .bar nav a[aria-current=page]{color:var(--primary);background:var(--soft);font-weight:700}
 .palette-control{margin-left:auto;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px;font-weight:600}
@@ -215,7 +215,7 @@ h1{font-size:36px;letter-spacing:-1.4px}h2{font-size:20px;letter-spacing:-.5px}h
 
 #view.view-enter{animation:view-enter 0.32s var(--ease-out-expo) both}
 @keyframes view-enter{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.matchday-hero,.world-hero,.f1-hero,.record-hero{animation:hero-enter 0.4s var(--ease-out-expo) both}
+.matchday-hero,.world-hero,.f1-hero,.record-hero{animation:hero-enter 0.32s var(--ease-out-expo) both}
 @keyframes hero-enter{from{opacity:0;transform:translateY(12px) scale(0.992)}to{opacity:1;transform:translateY(0) scale(1)}}
 
 .matchday-hero{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:40px;background:linear-gradient(110deg,rgba(13,41,32,.92) 0%,rgba(13,41,32,.78) 48%,rgba(13,41,32,.90) 100%),url("/images/hero-matchday.jpg") center/cover no-repeat;color:#fff;padding:36px 42px;border-radius:22px;position:relative;overflow:hidden;box-shadow:0 12px 36px rgba(13,41,32,.14)}
@@ -268,18 +268,18 @@ input[type=password]{min-width:0;width:min(100%,360px);min-height:44px;backgroun
     transition-duration: 0.001ms !important;
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
+    animation-delay: 0s !important;
+    scroll-behavior: auto !important;
   }
-  .tag.live::before { animation: none !important; }
-  .winbar .a::after, .probability-bar div::after { display: none !important; }
+  .tag.live::after { animation: none !important; display: none; }
   .ticker-marquee-track { animation: none !important; overflow-x: auto !important; }
 }
-.match-card{display:flex;flex-direction:column;align-items:stretch;position:relative;overflow:hidden;animation:match-card-cascade 0.35s var(--ease-out-expo) both;animation-delay:calc(min(var(--stagger, 0), 12) * var(--motion-stagger-step, 28ms))}
+.match-card{display:flex;flex-direction:column;align-items:stretch;position:relative;overflow:hidden;animation:match-card-cascade 0.28s var(--ease-out-expo) both;animation-delay:calc(min(var(--stagger, 0), 12) * var(--motion-stagger-step, 28ms))}
 @keyframes match-card-cascade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
 .card-action span{display:inline-block;transition:transform 0.22s var(--ease-spring)}
 .match-card:hover .card-action span{transform:translate(3px,-3px)}
 .match-card.is-live{border-top:3px solid var(--color-text-red, #dc2626);position:relative}
-.match-card.is-live::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);animation:live-bar-glow 2.4s ease-in-out infinite;pointer-events:none}
-@keyframes live-bar-glow{0%,100%{opacity:0.3}50%{opacity:1}}
+.match-card.is-live::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,rgba(220,38,38,0.7),transparent);pointer-events:none}
 .card .teams>span{flex-wrap:wrap;gap:4px 12px}
 .card .teams .team-name{flex:1 1 140px;min-width:0}
 .card .teams b{max-width:100%;font-size:15px;overflow-wrap:anywhere}
@@ -328,7 +328,7 @@ button,input,select{font-family:var(--font-family-body)}
 .hero-stats>div:first-child strong{color:var(--color-text-error)}
 .hero-stats>div:nth-child(2) strong{color:var(--color-text-accent)}
 .matches-heading h2{font-size:25px;letter-spacing:-.6px;font-weight:650}.matches-heading .eyebrow{font-size:10px;letter-spacing:1.5px}
-.btn{border-radius:var(--radius-element);border-color:var(--color-border-emphasized);font-weight:600;background:var(--surface);color:var(--ink);min-height:44px;transition:transform var(--duration-fast, 125ms) var(--ease-press),background var(--duration-fast, 125ms) ease,border-color var(--duration-fast, 125ms) ease,box-shadow var(--duration-fast, 125ms) ease,filter var(--duration-fast, 125ms) ease;will-change:transform}
+.btn{border-radius:var(--radius-element);border-color:var(--color-border-emphasized);font-weight:600;background:var(--surface);color:var(--ink);min-height:44px;transition:transform var(--duration-fast, 125ms) var(--ease-press),background var(--duration-fast, 125ms) var(--ease-press),border-color var(--duration-fast, 125ms) var(--ease-press),box-shadow var(--duration-fast, 125ms) var(--ease-press),filter var(--duration-fast, 125ms) var(--ease-press)}
 .btn:hover{background:var(--color-background-muted);transform:translateY(-1.5px);box-shadow:var(--shadow-low)}
 .btn:active{transform:translateY(0.5px) scale(0.975)}
 .btn.primary{background:var(--color-accent);border-color:var(--color-accent);color:var(--color-on-accent)}
@@ -337,17 +337,17 @@ button,input,select{font-family:var(--font-family-body)}
 :root[data-astryx-theme=butter] .btn:not(.primary){border:1.5px solid var(--color-accent);color:var(--color-accent);background:transparent}
 :root[data-astryx-theme=butter] .btn:not(.primary):hover{background:var(--color-accent-muted)}
 .filter-bar{border:0;background:var(--color-background-surface);padding:12px;border-radius:var(--radius-container);gap:16px}
-.filter-bar .row{gap:4px}.chip{border-radius:var(--radius-element);min-height:40px;font-size:14px;transition:transform 0.16s var(--ease-spring),background-color 0.16s ease,border-color 0.16s ease,color 0.16s ease,box-shadow 0.16s ease;will-change:transform}
+.filter-bar .row{gap:4px}.chip{border-radius:var(--radius-element);min-height:40px;font-size:14px;transition:transform 0.16s var(--ease-spring),background-color 0.16s var(--ease-press),border-color 0.16s var(--ease-press),color 0.16s var(--ease-press),box-shadow 0.16s var(--ease-press)}
 .chip:hover:not([aria-pressed=true]){background:var(--color-background-muted);transform:translateY(-1px)}
 .chip:active{transform:scale(0.95)}
 .chip[aria-pressed=true]{background:var(--color-accent);color:var(--color-on-accent);border-color:var(--color-accent);box-shadow:none;animation:chip-select-pop 0.22s var(--ease-spring)}
 @keyframes chip-select-pop{0%{transform:scale(0.94)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
-.match-search{min-height:40px;border-radius:var(--radius-element);background:var(--color-background-body);border-color:var(--color-border-emphasized);font-size:13px;transition:width 0.25s var(--ease-out-expo),border-color 0.2s ease,box-shadow 0.2s ease}.match-search:focus{width:320px;border-color:var(--color-accent);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--color-accent) 22%,transparent)}
+.match-search{min-height:40px;border-radius:var(--radius-element);background:var(--color-background-body);border-color:var(--color-border-emphasized);font-size:13px;transition:border-color 0.2s var(--ease-press),box-shadow 0.2s var(--ease-press)}.match-search:focus{border-color:var(--color-accent);box-shadow:0 0 0 3.5px color-mix(in srgb,var(--color-accent) 22%,transparent)}
 .section>h2{font-weight:600;font-size:18px}.count{background:var(--color-background-muted);color:var(--ink2);border-radius:var(--radius-inner);font-size:12px}
 .cards{gap:16px}.card,.panel,.scoreboard{border-radius:var(--radius-container)}
 .card{box-shadow:none;border-color:var(--color-border);padding:18px}
 .match-card.is-live{border:1px solid var(--color-border);padding-top:18px}
-button.card,.match-card{transition:transform var(--duration-fast-max, 165ms) var(--ease-out-expo),box-shadow var(--duration-fast-max, 165ms) var(--ease-out-expo),border-color var(--duration-fast, 125ms) ease,background-color var(--duration-fast, 125ms) ease;will-change:transform,box-shadow}
+button.card,.match-card{transition:transform var(--duration-fast-max, 165ms) var(--ease-out-expo),box-shadow var(--duration-fast-max, 165ms) var(--ease-out-expo),border-color var(--duration-fast, 125ms) var(--ease-press),background-color var(--duration-fast, 125ms) var(--ease-press)}
 button.card:hover,.match-card:hover{transform:translateY(-3.5px) translateZ(0);border-color:var(--color-accent);box-shadow:var(--shadow-med),0 10px 24px -4px color-mix(in srgb,var(--color-accent) 14%,transparent)}
 button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .card .meta{font-size:11px}.card .meta>span:first-child{letter-spacing:.3px;font-weight:500}
@@ -356,8 +356,10 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .card .teams>span{padding:4px 0}.card .tour{font-size:12px;min-height:32px}.card .foot2{font-size:12px;margin-top:16px}
 .tag{border-radius:var(--radius-inner);font-size:10px;font-weight:600;letter-spacing:.25px;text-transform:none;background:var(--color-info-muted);color:var(--color-on-info-muted)}
 .tag.live{background:var(--color-background-red);color:var(--color-text-red)}
-.tag.live::before{content:"";display:inline-block;width:6.5px;height:6.5px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:1px;box-shadow:0 0 0 0 currentColor;animation:live-dot-ping 1.8s cubic-bezier(0.2, 0.8, 0.2, 1) infinite}
-@keyframes live-dot-ping{0%{box-shadow:0 0 0 0 color-mix(in srgb,currentColor 65%,transparent);transform:scale(0.92)}50%{box-shadow:0 0 0 4.5px color-mix(in srgb,currentColor 0%,transparent);transform:scale(1.06)}100%{box-shadow:0 0 0 0 color-mix(in srgb,currentColor 0%,transparent);transform:scale(0.92)}}
+.tag.live{position:relative}
+.tag.live::before{content:"";display:inline-block;width:6.5px;height:6.5px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:1px}
+.tag.live::after{content:"";position:absolute;left:8px;top:50%;width:6.5px;height:6.5px;margin-top:-3.25px;border:1.5px solid currentColor;border-radius:50%;box-sizing:border-box;opacity:0;pointer-events:none;animation:live-ring 1.8s var(--ease-out-expo) infinite}
+@keyframes live-ring{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.6);opacity:0}}
 .tag.ok{background:var(--color-background-green);color:var(--color-text-green)}
 .tag.off{background:var(--color-background-muted);color:var(--color-text-secondary)}
 .card-action{margin:16px -18px -18px;padding:11px 18px;background:transparent;color:var(--color-accent);border-color:var(--line);font-size:12px;font-weight:600}
@@ -369,12 +371,14 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 .scoreboard{background:var(--color-background-muted);color:var(--ink);border:1px solid var(--line);box-shadow:none}
 .score-side{border-color:var(--color-border-emphasized)}.score-side span,.score-status{color:var(--ink2)}
 .winbar{color:var(--color-on-accent);position:relative;box-shadow:inset 0 1px 2px rgba(0,0,0,0.1)}
-.winbar div{transition:width 0.75s var(--ease-out-expo);position:relative;overflow:hidden;will-change:width}
+.winbar div{position:relative;min-width:4px}
 .winbar .b{background:var(--color-text-orange);color:var(--color-on-dark)}
-.winbar .a::after,.probability-bar div::after{content:"";position:absolute;top:0;left:0;bottom:0;width:70px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);animation:bar-sweep 2.4s var(--ease-in-out-smooth) infinite;pointer-events:none}
-@keyframes bar-sweep{0%{transform:translateX(-90px)}60%,100%{transform:translateX(550px)}}
-.probability-bar div{transition:width 0.75s var(--ease-out-expo);position:relative;overflow:hidden;will-change:width}
-.setrow .fill{transition:width 0.65s var(--ease-out-expo);will-change:width}
+.probability-bar div{position:relative}
+.setrow .fill{}
+/* First reveal only: bars grow with a transform. Values that change later update in place, with no motion. */
+@keyframes bar-reveal{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.winbar .a,.probability-bar div,.setrow .fill{transform-origin:left center;animation:bar-reveal 600ms var(--ease-out-expo) both}
+.winbar .b{transform-origin:right center;animation:bar-reveal 600ms var(--ease-out-expo) both}
 .panel.ai{background:var(--color-background-surface);border-color:var(--color-accent)}
 .good{color:var(--color-text-success)}.bad{color:var(--color-text-error)}
 .foot{font-size:12px}
@@ -432,7 +436,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   cursor: pointer;
   padding: 4px 10px;
   border-radius: var(--radius-inner);
-  transition: all 0.16s ease;
+  transition: background-color 0.16s var(--ease-press), border-color 0.16s var(--ease-press), color 0.16s var(--ease-press), transform 0.16s var(--ease-press);
   white-space: nowrap;
 }
 .ticker-marquee-item:hover {
@@ -485,7 +489,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
   position: relative;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s var(--ease-press), box-shadow 0.2s var(--ease-press);
 }
 .broker-terminal:hover {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.07);
@@ -547,7 +551,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   letter-spacing: -1.2px;
   line-height: 1;
   color: var(--color-text-primary);
-  transition: color 0.12s ease;
+  transition: color 0.12s var(--ease-press);
 }
 .terminal-change-pill {
   display: inline-flex;
@@ -557,7 +561,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   font-weight: 700;
   padding: 4px 10px;
   border-radius: 999px;
-  transition: background 0.18s ease, color 0.18s ease;
+  transition: background 0.18s var(--ease-press), color 0.18s var(--ease-press);
 }
 .terminal-change-pill.good {
   background: var(--color-background-green);
@@ -609,7 +613,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   opacity: 0.75;
 }
 .broker-chart-area {
-  animation: chart-fade-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: chart-fade-in 0.6s var(--ease-out-expo);
 }
 .broker-chart-path {
   stroke-width: 2.75px;
@@ -618,7 +622,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   vector-effect: non-scaling-stroke;
   stroke-dasharray: 2400;
   stroke-dashoffset: 2400;
-  animation: chart-stroke-draw 0.85s var(--ease-out-expo) forwards;
+  animation: chart-stroke-draw 0.6s var(--ease-out-expo) forwards;
 }
 @keyframes chart-stroke-draw {
   from { stroke-dashoffset: 2400; }
@@ -788,7 +792,7 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
   cursor: pointer;
   width: 100%;
   color: inherit;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: background-color 0.2s var(--ease-out-expo), border-color 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo), transform 0.2s var(--ease-out-expo);
   position: relative;
 }
 .watchlist-item:hover {
@@ -979,24 +983,21 @@ button.card:active,.match-card:active{transform:translateY(-0.5px) scale(0.992)}
 :root[data-astryx-theme] .match-card {
   transition: transform var(--duration-fast-max, 165ms) var(--ease-out-expo),
               box-shadow var(--duration-fast-max, 165ms) var(--ease-out-expo),
-              border-color var(--duration-fast, 125ms) ease,
-              background-color var(--duration-fast, 125ms) ease,
-              color var(--duration-fast, 125ms) ease;
-  will-change: transform, box-shadow;
+              border-color var(--duration-fast, 125ms) var(--ease-press),
+              background-color var(--duration-fast, 125ms) var(--ease-press),
+              color var(--duration-fast, 125ms) var(--ease-press)
 }
 :root[data-astryx-theme] .btn {
   transition: transform var(--duration-fast, 125ms) var(--ease-press),
-              background-color var(--duration-fast, 125ms) ease,
-              border-color var(--duration-fast, 125ms) ease,
-              box-shadow var(--duration-fast, 125ms) ease,
-              color var(--duration-fast, 125ms) ease;
-  will-change: transform;
+              background-color var(--duration-fast, 125ms) var(--ease-press),
+              border-color var(--duration-fast, 125ms) var(--ease-press),
+              box-shadow var(--duration-fast, 125ms) var(--ease-press),
+              color var(--duration-fast, 125ms) var(--ease-press)
 }
 :root[data-astryx-theme] .chip {
   transition: transform 0.16s var(--ease-spring),
-              background-color 0.16s ease,
-              border-color 0.16s ease,
-              color 0.16s ease,
-              box-shadow 0.16s ease;
-  will-change: transform;
+              background-color 0.16s var(--ease-press),
+              border-color 0.16s var(--ease-press),
+              color 0.16s var(--ease-press),
+              box-shadow 0.16s var(--ease-press)
 }

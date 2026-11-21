@@ -280,13 +280,7 @@ function matchScoreboard(board) {
 function winOutlook(teams, win, reasons) {
   const favourite = win[0] >= win[1] ? 0 : 1;
   const even = pct(win[0]) === pct(win[1]);
-  const bar = h("div", { class: "probability-bar", "aria-hidden": "true" }, h("div", { style: "width:0%" }));
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      const fill = bar.firstElementChild;
-      if (fill) fill.style.width = `${win[0] * 100}%`;
-    });
-  });
+  const bar = h("div", { class: "probability-bar", "aria-hidden": "true" }, h("div", { style: `width:${(win[0] * 100).toFixed(1)}%` }));
   return h("div", { class: "outlook" },
     h("div", { class: "outlook-head" }, h("h3", {}, even ? "Too close to call" : `${teams[favourite].name} favoured to win`),
       h("span", { class: "tag" }, "Model forecast")),
@@ -472,19 +466,13 @@ function aiPanel(f, id, sport) {
 
 function winPanel(f, title) {
   const [a, b] = f.teams, win = f.live ? [a.win, b.win] : nowWin(f);
-  const barA = h("div", { class: "a", style: "width:0%" }, pct(win[0]));
-  const barB = h("div", { class: "b", style: "width:0%" }, `${100 - Math.round(win[0] * 100)}%`);
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      barA.style.width = `${Math.max(8, win[0] * 100)}%`;
-      barB.style.width = `${Math.max(8, win[1] * 100)}%`;
-    });
-  });
+  const barA = h("div", { class: "a", style: `width:${(win[0] * 100).toFixed(1)}%` });
+  const barB = h("div", { class: "b", style: `width:${(win[1] * 100).toFixed(1)}%` });
   return h("section", { class: "panel" },
     h("h2", {}, title),
     h("div", { class: "winbar", role: "img", "aria-label": `${a.name} ${pct(win[0])}, ${b.name} ${100 - Math.round(win[0] * 100)}%` },
       barA, barB),
-    h("div", { class: "winlabels" }, h("span", {}, a.name), h("span", {}, b.name)),
+    h("div", { class: "winlabels" }, h("span", { class: "num" }, `${a.name} ${pct(win[0])}`), h("span", { class: "num" }, `${b.name} ${100 - Math.round(win[0] * 100)}%`)),
     !f.live && f.ai && f.ai.check && f.ai.check.shift ? h("p", { class: "sub" }, `Model alone: ${a.name} ${pct(f.ai.model_win[0])}. The AI check moved it ${f.ai.check.shift > 0 ? "+" : ""}${f.ai.check.shift} points.`) : null,
     a.win_model != null ? h("p", { class: "sub" }, `Corrected from past results: the model alone said ${a.name} ${pct(a.win_model)}. Across ${f.calibration.graded} graded forecasts its favourites were given ${pct(f.calibration.favourite_expected)} on average and won ${pct(f.calibration.favourite_won)}, so its chances are ${f.calibration.factor < 1 ? "pulled toward" : "pushed away from"} 50%.`) : null,
     a.win_parts ? h("p", { class: "sub" }, `What goes into the model's number: player-by-player simulation ${pct(a.win_parts.simulation)} for ${a.name}, team results rating ${pct(a.win_parts.rating)}.`) : null);
@@ -493,12 +481,7 @@ function winPanel(f, title) {
 // ---- tennis match page ----------------------------------------------------------------
 function setRows(rows) {
   return rows.map((row) => {
-    const fill = h("div", { class: "fill", style: "width:0%" });
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        fill.style.width = `${Math.round(row.chance * 100)}%`;
-      });
-    });
+    const fill = h("div", { class: "fill", style: `width:${Math.round(row.chance * 100)}%` });
     return h("div", { class: "setrow" },
       h("span", {}, `${row.winner} ${row.score.split("-").sort().reverse().join("-")}`),
       h("div", { class: "track" }, fill),
