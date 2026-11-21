@@ -11,3 +11,7 @@ artifacts/
 data/real/cricket_global/
 data/raw/*
 !data/raw/tennis_tour/
+node_modules/
+dist/
+.vercel/
+

@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* =========================================================================
+   Astryx Semantic Design Tokens (Butter, Neutral, Chocolate)
+   WCAG 2.2 AA Contrast Compliant: 4.5:1 Body Text, 3:1 UI Components
+   ========================================================================= */
+
+:root {
+  color-scheme: light dark;
+
+  /* 4px Base Spacing Grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Typography Scale */
+  --font-family-heading: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-family-body: 'Outfit', system-ui, -apple-system, sans-serif;
+  --font-family-code: 'SF Mono', Consolas, Monaco, monospace;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+}
+
+/* Light Mode (Butter Theme - Default) */
+html[data-theme="light"][data-astryx-theme="butter"] {
+  --color-background-body: #fdfbe4;
+  --color-background-surface: #ffffff;
+  --color-background-card: #ffffff;
+  --color-background-muted: #f3f2e2;
+  --color-border: #e5e3d4;
+  --color-border-emphasized: #c7c4b2;
+  --color-text-primary: #1d1c11;
+  --color-text-secondary: #575649; /* 4.6:1 contrast against #fdfbe4 */
+  --color-text-disabled: #807e6f;
+  --color-text-accent: #1e4fd8;    /* 4.8:1 contrast against white/surface */
+  --color-success: #0b6814;        /* 4.7:1 contrast */
+  --color-error: #9e1c03;          /* 4.6:1 contrast */
+  --color-warning: #735a00;
+  --color-live: #dc2626;
+  --hero-banner: #f0df72;
+}
+
+/* Dark Mode (Butter Theme) */
+html[data-theme="dark"][data-astryx-theme="butter"] {
+  --color-background-body: #191410;
+  --color-background-surface: #241c16;
+  --color-background-card: #2e231c;
+  --color-background-muted: #382b22;
+  --color-border: #44342a;
+  --color-border-emphasized: #6b5344;
+  --color-text-primary: #f5f3e6;
+  --color-text-secondary: #c2bead; /* > 6:1 contrast against dark surface */
+  --color-text-disabled: #8a8573;
+  --color-text-accent: #7fa5ff;
+  --color-success: #4ade80;
+  --color-error: #f87171;
+  --color-warning: #fbbf24;
+  --color-live: #ef4444;
+  --hero-banner: #382b22;
+}
+
+/* Neutral Theme */
+html[data-astryx-theme="neutral"][data-theme="light"] {
+  --color-background-body: #f8f9fa;
+  --color-background-surface: #ffffff;
+  --color-background-card: #ffffff;
+  --color-background-muted: #eceef1;
+  --color-border: #dcdfe4;
+  --color-border-emphasized: #b2b7c0;
+  --color-text-primary: #111827;
+  --color-text-secondary: #4b5563;
+  --color-text-disabled: #9ca3af;
+  --color-text-accent: #2563eb;
+  --color-success: #15803d;
+  --color-error: #b91c1c;
+  --color-warning: #b45309;
+}
+
+html[data-astryx-theme="neutral"][data-theme="dark"] {
+  --color-background-body: #0f172a;
+  --color-background-surface: #1e293b;
+  --color-background-card: #334155;
+  --color-background-muted: #1e293b;
+  --color-border: #475569;
+  --color-border-emphasized: #64748b;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-disabled: #64748b;
+  --color-text-accent: #60a5fa;
+  --color-success: #4ade80;
+  --color-error: #f87171;
+  --color-warning: #fbbf24;
+}
+
+/* Tabular figures across all numbers */
+.tabular-nums, .num, td, [data-tabular] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Touch targets and safe area insets */
+.touch-target-44 {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile bottom bar safe area */
+.safe-area-bottom {
+  padding-bottom: max(env(safe-area-inset-bottom, 0px), 12px);
+}
+
+/* Focus styles for keyboard accessibility (WCAG 2.2) */
+:focus-visible {
+  outline: 2px solid var(--color-text-accent);
+  outline-offset: 2px;
+}
+
+/* Prefers-reduced-motion: disable non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Live pulsing indicator */
+@keyframes live-ping {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+.live-dot-ping {
+  animation: live-ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}

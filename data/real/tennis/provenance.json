@@ -1,14 +1,18 @@
 {
-  "source": "Jeff Sackmann / Tennis Abstract, retained archive by Aneeshers; ATP 2023\u20132024",
+  "source": "Jeff Sackmann / Tennis Abstract, retained archive by Aneeshers; ATP 2020\u20132026 + local supplemental match results",
   "url": "https://github.com/Aneeshers/tennis-sackmann-archive",
-  "license": "CC BY-NC-SA 4.0 \u2014 noncommercial use; derived CSVs same license",
+  "license": "CC BY-NC-SA 4.0 \u2014 noncommercial use. Supplemental data follows its sources' noncommercial terms.",
   "limitations": [
     "Only completed best-of-three ATP men's singles; no Grand Slam best-of-five or retirements.",
-    "Source dates are tournament starts. date is conservative result availability (start +14 days); pre_match_date is tournament start. All same-tournament and overlapping unpublished results excluded from features.",
+    "Archive rows use tournament start for pre_match_date and start +14 days for result availability. Supplement rows use the published match day for both. Features use only results available before the prediction day.",
     "Aces only where reported; missing aces omitted, never imputed as zero.",
     "Point threat: fraction of total match points won, derived from both players' serve points and serve points won. No shot-level context.",
-    "ground is the tournament name; surface, level, round and pre-tournament rankings are recorded per match and are blank where the source has none."
+    "Ground is the tournament name. Surface, level and round are included when published. Entry rankings and points are available on archive rows."
   ],
+  "supplement": {
+    "matches": 1115,
+    "manifest": "data/local/tennis_results/snapshot.json"
+  },
   "match_context_columns": [
     "ground",
     "surface",
@@ -20,15 +24,15 @@
     "opponent_rank_points"
   ],
   "sport": "tennis",
-  "matches": 4847,
-  "player_rows": 9322,
-  "interaction_rows": 9322,
-  "earliest": "2023-01-16",
-  "latest": "2024-12-08",
+  "matches": 14965,
+  "player_rows": 28204,
+  "interaction_rows": 28204,
+  "earliest": "2020-01-20",
+  "latest": "2026-11-18",
   "synthetic": false,
   "files": {
-    "interactions.csv": "cc9040558f37c15e7081ef55740361adb8038d05b8232a512c3bba783bdf6495",
-    "matches.csv": "92db404a49bce3a2e88981676a4283b8e050b184047804b552c6229b4f6a0d5a",
-    "players.csv": "d9dce23e14de8120826c891ae27351723f7ae9348de8fb6330b1f7102fc8c341"
+    "interactions.csv": "06a0b4832f8ef50c1de2a864c43423b26e0f02eb6e8a443603e55bbc28a38151",
+    "matches.csv": "c673d9b0e0725b1a93632d8b54592291a9cbdb751ad679ef00f5a182afcb0cd9",
+    "players.csv": "a729d5b3bab75b4b97db14efd01bd3a6e9a8b1e882ca1c12398a48eca533af4d"
   }
 }
