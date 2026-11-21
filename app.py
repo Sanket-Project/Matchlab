@@ -414,17 +414,35 @@ class Handler(BaseHTTPRequestHandler):
             self.server.f1_timing_cache[key] = (time.monotonic() + ttl, data)
         return data
 
-    def _send(self, code, payload, mime="application/json; charset=utf-8"):
+    def _send(self, code, payload, mime="application/json; charset=utf-8", cache="no-store", etag=None):
         body = json.dumps(payload, allow_nan=False).encode() if not isinstance(payload, bytes) else payload
         self.send_response(code)
         self.send_header("Content-Type", mime)
         self.send_header("Content-Length", str(len(body)))
-        self.send_header("Cache-Control", "no-store")
+        self.send_header("Cache-Control", cache)
+        if etag:
+            self.send_header("ETag", etag)
         self.send_header("X-Content-Type-Options", "nosniff")
         self.send_header("Referrer-Policy", "no-referrer")
         self.send_header("Content-Security-Policy", "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
         self.end_headers()
-        self.wfile.write(body)
+        if code != 304:
+            self.wfile.write(body)
+
+    # How long a browser may keep each kind of file. API replies are never cached. Pages, scripts and styles are
+    # revalidated on every load (a 304 costs almost nothing); fonts and images change rarely.
+    STATIC_CACHE = {".html": "no-cache", ".js": "no-cache", ".css": "no-cache", ".svg": "no-cache",
+                    ".woff2": "public, max-age=604800, immutable", ".jpg": "public, max-age=86400",
+                    ".jpeg": "public, max-age=86400", ".png": "public, max-age=86400", ".webp": "public, max-age=86400"}
+
+    def _send_static(self, path, mime):
+        body = path.read_bytes()
+        info = path.stat()
+        etag = f'"{info.st_mtime_ns:x}-{len(body):x}"'
+        cache = self.STATIC_CACHE.get(path.suffix.lower(), "no-cache")
+        if self.headers.get("If-None-Match") == etag:
+            return self._send(304, b"", mime, cache, etag)
+        return self._send(200, body, mime, cache, etag)
 
     def do_GET(self):
         if not self._local_request():
@@ -436,6 +454,11 @@ class Handler(BaseHTTPRequestHandler):
                                         "features": FEATURES, "token": self.server.token, "offline": True,
                                         "demo_config": default_config(), "real_config": self.server.real_config,
                                         "openrouter_key_status": self.server.openrouter_key.status()})
+        if route == "/api/session":
+            # What the dashboard needs to start: the request token and whether a key is saved. /api/state also
+            # carries the full model catalogue (several MB) for the lab page and should not gate the first paint.
+            return self._send(200, {"token": self.server.token, "offline": True,
+                                    "openrouter_key_status": self.server.openrouter_key.status()})
         if route == "/api/health":
             return self._send(200, {"ok": True, "offline": True})
         if route == "/api/today-matches":
@@ -480,14 +503,14 @@ class Handler(BaseHTTPRequestHandler):
             img_rel = route.lstrip("/")
             img_target = (ROOT / "web" / img_rel).resolve()
             web_dir = (ROOT / "web").resolve()
-            if img_target.is_file() and str(img_target).startswith(str(web_dir)):
+            if img_target.is_file() and img_target.is_relative_to(web_dir):
                 ext = img_target.suffix.lower()
                 mime = "image/jpeg" if ext in (".jpg", ".jpeg") else "image/png" if ext == ".png" else "image/webp" if ext == ".webp" else "application/octet-stream"
-                return self._send(200, img_target.read_bytes(), mime)
+                return self._send_static(img_target, mime)
         if route not in files:
             return self._send(404, {"error": "Not found"})
         filename, mime = files[route]
-        return self._send(200, (ROOT / "web" / filename).read_bytes(), mime)
+        return self._send_static(ROOT / "web" / filename, mime)
 
     def _world_section(self, name, refresh=False):
         """One World Pulse section, from cache or a short-lived worker. A refresh is honoured at most every 30 seconds."""

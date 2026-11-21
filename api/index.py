@@ -241,6 +241,11 @@ class handler(BaseHTTPRequestHandler):
         if route == "/api/health":
             return self._send(200, {"ok": True, "service": "MatchLab Cloud", "time": datetime.now(timezone.utc).isoformat()})
 
+        if route == "/api/session":
+            with LOCK:
+                return self._send(200, {"token": TOKEN, "offline": False, "cloud": True,
+                                        "openrouter_key_status": "saved" if _get_openrouter_key() else "missing"})
+
         if route == "/api/state":
             with LOCK:
                 k_status = "saved" if _get_openrouter_key() else "missing"

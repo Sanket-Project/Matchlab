@@ -1339,7 +1339,7 @@ function route() {
 
 (async function start() {
   try {
-    const [app, schedule] = await Promise.all([api("/api/state"), api("/api/today-matches")]);
+    const [app, schedule] = await Promise.all([api("/api/session"), api("/api/today-matches")]);
     state.token = app.token;
     state.keyStatus = app.openrouter_key_status;
     state.schedule = schedule;
