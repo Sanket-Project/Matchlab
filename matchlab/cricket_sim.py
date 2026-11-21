@@ -16,7 +16,7 @@ from functools import lru_cache
 
 import numpy as np
 
-from .live import name_key
+from .live import name_key, team_key  # noqa: F401  (team_key is re-exported)
 
 O = 11                      # outcome classes: 0,1,2,3,4,6, bowler wicket, other wicket, wide, no-ball, bye
 OVERS = np.array([10, 20, 50])
@@ -34,16 +34,6 @@ GROUP_EDGES = [3.5, 5.5, 7.5, 9.5]
 
 def venue_key(name):
     return name_key(str(name or "").split(",")[0])
-
-
-def team_key(name):
-    key = name_key(re.sub(r"\s+\([^)]*\)\s*$", "", str(name or "")))      # "Kathmandu Gorkhas (NPL)"
-    for suffix in (" women", " w"):
-        if key.endswith(suffix):
-            key = key[: -len(suffix)]
-    return {"royal challengers bangalore": "royal challengers bengaluru", "delhi daredevils": "delhi capitals",
-            "kings xi punjab": "punjab kings", "usa": "united states of america", "uae": "united arab emirates",
-            "u a e": "united arab emirates", "png": "papua new guinea"}.get(key, key)
 
 
 class Data:

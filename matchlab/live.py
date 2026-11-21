@@ -74,3 +74,13 @@ def annotate(payload, datasets, race_engine=None):
             else:
                 m["analyzable"] = True
     return payload
+
+
+def team_key(name):
+    key = name_key(re.sub(r"\s+\([^)]*\)\s*$", "", str(name or "")))      # "Kathmandu Gorkhas (NPL)"
+    for suffix in (" women", " w"):
+        if key.endswith(suffix):
+            key = key[: -len(suffix)]
+    return {"royal challengers bangalore": "royal challengers bengaluru", "delhi daredevils": "delhi capitals",
+            "kings xi punjab": "punjab kings", "usa": "united states of america", "uae": "united arab emirates",
+            "u a e": "united arab emirates", "png": "papua new guinea"}.get(key, key)
