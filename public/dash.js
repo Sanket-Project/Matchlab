@@ -5,6 +5,8 @@ const state = { token: "", schedule: null, filter: "all", timer: null, request: 
 const SPORTS = { cricket: "Cricket", tennis: "Tennis", f1: "Formula 1" };
 state.search = "";
 state.pickers = {};
+state.limit = {};
+const PAGE = 12;
 const THEMES = { butter: "Butter", neutral: "Neutral", chocolate: "Chocolate" };
 state.theme = "butter";
 try {
@@ -236,14 +238,20 @@ function renderMatches() {
   const live = by("in"), soon = by("pre"), done = by("post");
   const filters = h("div", { class: "row", role: "group", "aria-label": "Sport" },
     ["all", ...Object.keys(SPORTS)].map((key) => h("button", { class: "chip", type: "button", "aria-pressed": String(state.filter === key),
-      onclick: () => { state.filter = key; renderMatches(); } }, key === "all" ? "All sports" : SPORTS[key])));
+      onclick: () => { state.filter = key; state.limit = {}; renderMatches(); } }, key === "all" ? "All sports" : SPORTS[key])));
   const refresh = h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: refreshSchedule },
     state.refreshing ? "Checking..." : "Refresh");
+  // Long lists are capped at 12 cards with a "show more" button, so the schedule stays scannable and the DOM small.
+  const cards = (key, rows) => {
+    const shown = state.limit[key] || PAGE, left = rows.length - shown;
+    return [h("div", { class: "cards" }, rows.slice(0, shown).map((m, i) => card(m, i))),
+      left > 0 ? h("button", { class: "btn world-more", type: "button", onclick: () => { state.limit[key] = shown + PAGE; renderMatches(); } }, `Show ${Math.min(PAGE, left)} more (${left} left)`) : null];
+  };
   const section = (key, title, rows, empty) => h("section", { class: "section", "data-k": key },
     h("h2", {}, title, h("span", { class: "count" }, rows.length ? `${rows.length}` : "")),
-    rows.length ? h("div", { class: "cards" }, rows.map((m, i) => card(m, i))) : h("p", { class: "note" }, empty));
+    rows.length ? cards(key, rows) : h("p", { class: "note" }, empty));
   const search = h("input", { type: "search", class: "match-search", value: state.search, placeholder: "Search teams, leagues or venues", "aria-label": "Search teams, leagues or venues",
-    oninput: (event) => { state.search = event.target.value; clearTimeout(state.searchTimer); state.searchTimer = setTimeout(renderMatches, 150); } });
+    oninput: (event) => { state.search = event.target.value; state.limit = {}; clearTimeout(state.searchTimer); state.searchTimer = setTimeout(renderMatches, 150); } });
   const heroStatsNodes = [["Live now", "in"], ["Coming up", "pre"], ["Finished", "post"]].map(([label, status]) => {
     const val = data ? all.filter((m) => m.state === status).length : null;
     const numNode = h("strong", { class: "num", "data-countup": val }, val != null ? String(val) : "—");
@@ -262,7 +270,7 @@ function renderMatches() {
     data && (data.sources || []).filter((s) => s.error).map((s) => h("p", { class: "note warn" }, `${s.name}: ${s.error}`)),
     section("live", "Live now", live, state.search ? "No live matches match your search. Try another team or league." : "A quiet moment. No matches are in play for this sport right now."),
     section("soon", "Coming up", soon, state.search ? "No upcoming matches match your search." : "No upcoming fixtures for this selection in the next day."),
-    done.length ? h("details", { class: "section more", "data-k": "done" }, h("summary", {}, `Finished today (${done.length})`), h("div", { class: "cards", style: "margin-top:10px" }, done.map((m, i) => card(m, i)))) : null);
+    done.length ? h("details", { class: "section more", "data-k": "done" }, h("summary", {}, `Finished today (${done.length})`), h("div", { style: "margin-top:10px" }, cards("done", done))) : null);
 }
 
 async function refreshSchedule() {
@@ -626,6 +634,8 @@ function renderForecast(f, id) {
   const fx = f.fixture;
   const supported = f.supported;
   const start = fx.start ? `${day(fx.start)} · ${time(fx.start)}` : "";
+  const preMatchPart = supported ? preMatchPanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Forecast unavailable"), h("p", { class: "sub" }, f.reason));
+  const livePart = supported ? livePanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Live analysis"), h("p", { class: "sub" }, f.reason));
   showMorph(
     h("a", { class: "back", href: "#matches" }, "← All matches"),
     h("div", { class: "head" },
@@ -635,8 +645,8 @@ function renderForecast(f, id) {
       h("button", { id: "refresh-match", class: "btn primary", type: "button", onclick: () => openMatch(id, true, true) }, "Refresh now")),
     h("p", { id: "match-refresh-error", class: "note warn", hidden: true }),
     matchScoreboard(f.scoreboard),
-    supported ? preMatchPanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Forecast unavailable"), h("p", { class: "sub" }, f.reason)),
-    supported ? livePanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Live analysis"), h("p", { class: "sub" }, f.reason)),
+    // While a match is in play the live win chance is what the reader came for, so it comes first.
+    ...(f.scoreboard.state === "in" ? [livePart, preMatchPart] : [preMatchPart, livePart]),
     f.result && f.result.saved_before_start ? resultPanel(f.result) : null,
     supported && f.ai ? aiPanel(f, id, "cricket") : null,
     supported ? analysisPanel(f) : null);
