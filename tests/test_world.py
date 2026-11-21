@@ -203,11 +203,56 @@ class BriefTests(unittest.TestCase):
         self.assertEqual(brief["headline"], "Busy day")
         self.assertEqual([b["refs"] for b in brief["bullets"]], [["m1"], ["q1"]])    # unsupported bullet dropped
 
-    def test_prose_fallback_and_empty_reply(self):
-        brief = world.parse_brief("Plain words about the day.", self.ITEMS)
-        self.assertEqual(brief["bullets"], [])
-        self.assertEqual(brief["text"], "Plain words about the day.")
+    def test_uncited_prose_and_empty_replies_are_refused(self):
+        self.assertIsNone(world.parse_brief("Plain words about the day.", self.ITEMS))
         self.assertIsNone(world.parse_brief("   ", self.ITEMS))
+        self.assertIsNone(world.parse_brief(json.dumps({"headline": "Only a headline", "bullets": []}), self.ITEMS))
+        self.assertIsNone(world.parse_brief(json.dumps({"headline": "x", "bullets": [{"text": "No source.", "refs": []}]}), self.ITEMS))
+
+    def test_removed_statements_are_counted_not_shown(self):
+        raw = json.dumps({"headline": "Busy day", "bullets": [
+            {"topic": "Models", "text": "Model X arrived.", "refs": ["m1"]},
+            {"topic": "Invented", "text": "Something happened.", "refs": ["zzz"]},
+            {"topic": "Blank", "text": "  ", "refs": ["m1"]}]})
+        brief = world.parse_brief(raw, self.ITEMS)
+        self.assertEqual(len(brief["bullets"]), 1)
+        self.assertEqual(brief["dropped"], 2)
+        self.assertNotIn("Something happened", json.dumps(brief))
+
+    def test_numbers_must_appear_in_the_cited_item(self):
+        items = {"q1": "ANT (Anthropic, PBC): 88.91, -8.50% over the last 5 sessions", "n1": "Nvidia drops 14% as Claude 5 ships"}
+        raw = json.dumps({"headline": "ANT slips 8.5%", "bullets": [
+            {"text": "ANT closed at 88.91, down 8.5%.", "refs": ["q1"]},          # 8.5 equals -8.50
+            {"text": "ANT closed at 91.20.", "refs": ["q1"]},                     # invented price
+            {"text": "Nvidia fell 14% and Claude 5 shipped.", "refs": ["n1"]},
+            {"text": "Nvidia fell 14%.", "refs": ["q1"]}]})                       # real figure, wrong source
+        brief = world.parse_brief(raw, items)
+        self.assertEqual([b["text"] for b in brief["bullets"]], ["ANT closed at 88.91, down 8.5%.", "Nvidia fell 14% and Claude 5 shipped."])
+        self.assertEqual(brief["dropped"], 2)
+        self.assertEqual(brief["headline"], "ANT slips 8.5%")
+        self.assertFalse(brief["headline_removed"])
+
+    def test_headline_with_an_unsupported_number_is_removed(self):
+        raw = json.dumps({"headline": "ANT crashes 40%", "bullets": [{"text": "ANT fell.", "refs": ["q1"]}]})
+        brief = world.parse_brief(raw, {"q1": "ANT: 88.91, -8.50% over the last 5 sessions"})
+        self.assertEqual(brief["headline"], "")
+        self.assertTrue(brief["headline_removed"])
+
+    def test_briefings_saved_before_the_current_validation_are_not_reused(self):
+        import tempfile
+        from pathlib import Path
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / "brief.json"
+            path.write_text(json.dumps({"at": "2026-11-21T00:00:00+00:00", "model": "m", "brief": {"headline": "old"}, "links": {}}), encoding="utf-8")
+            self.assertIsNone(world.BriefStore(path).load())
+            store = world.BriefStore(path)
+            store.save({"headline": "new", "bullets": [], "text": ""}, "m", {})
+            self.assertEqual(world.BriefStore(path).load()["brief"]["headline"], "new")
+
+    def test_market_items_are_labelled_with_the_window_the_change_covers(self):
+        _, ids = world.brief_context({"markets": {"ok": True, "quotes": [{"symbol": "ANT", "name": "A", "price": 88.91, "change_pct": -8.5}]}})
+        self.assertIn("over the last 5 sessions", ids["q1"])
+        self.assertNotIn("on the day", ids["q1"])
 
     def test_brief_context_lists_only_supplied_items_with_ids(self):
         sections = {"news": {"ok": True, "items": [{"title": "Claude launches", "url": "https://x/1", "source": "S", "published": "2026-11-21T01:00:00+00:00"}]},

@@ -23,6 +23,7 @@ from xml.etree import ElementTree
 # Seconds a section stays fresh. Markets move; model catalogues and news do not.
 TTL = {"markets": 300, "news": 900, "models": 1800, "sports": 900}
 BRIEF_TTL = 3 * 3600
+BRIEF_VERSION = 2            # bump when validation changes: older saved briefings are not shown again
 BRIEF_MIN_GAP = 600           # a manual refresh needs at least ten minutes since the last briefing
 MAX_FEED_BYTES = 5_000_000
 MAX_AGE_DAYS = 14
@@ -349,7 +350,7 @@ def _brief_items(sections):
     rows = []
     for i, q in enumerate(quotes[:6], 1):
         rows.append({"id": f"q{i}", "kind": "market", "title": f"{q.get('symbol')} ({q.get('name')}): {q.get('price')}"
-                     + (f", {q['change_pct']:+.2f}% on the day" if isinstance(q.get("change_pct"), (int, float)) else ""), "url": None})
+                     + (f", {q['change_pct']:+.2f}% over the last 5 sessions" if isinstance(q.get("change_pct"), (int, float)) else ""), "url": None})
     for i, n in enumerate(news[:12], 1):
         rows.append({"id": f"n{i}", "kind": "ai news", "title": n.get("title"), "source": n.get("source"), "published": n.get("published"),
                      "summary": n.get("summary") or None, "url": n.get("url")})
@@ -368,18 +369,38 @@ def _brief_items(sections):
 
 
 def brief_context(sections):
-    """What the model sees, and the id to title map used to validate its references."""
+    """What the model sees, and the id to source-text map used to validate its references and figures."""
     rows = _brief_items(sections)
     context = {"items": [{k: v for k, v in row.items() if k != "url" and v is not None} for row in rows]}
-    return context, {row["id"]: row["title"] for row in rows}
+    return context, {row["id"]: f"{row['title']} {row.get('summary') or ''}".strip() for row in rows}
 
 
 def brief_links(sections):
     return {row["id"]: row["url"] for row in _brief_items(sections) if row.get("url")}
 
 
+_FIGURE = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _figures(text):
+    """The numbers in a text, normalised so 8.5 and 8.50 and 1,000 and 1000 compare equal."""
+    found = set()
+    for raw in _FIGURE.findall(str(text or "")):
+        try:
+            found.add(float(raw.replace(",", "")))
+        except ValueError:
+            continue
+    return found
+
+
 def parse_brief(text, ids):
-    """A validated briefing from the model's reply, or None. Bullets citing nothing real are dropped."""
+    """A validated briefing from the model's reply, or None.
+
+    `ids` maps each item id to its source text. A bullet is kept only if it cites a real item and every number it
+    states appears in the items it cites. The headline is kept only if its numbers appear in the kept bullets'
+    sources. Anything else is removed and counted, never shown. A reply that is not structured JSON is refused,
+    because free prose carries no citations to check.
+    """
     text = str(text or "").strip()
     if not text:
         return None
@@ -392,22 +413,30 @@ def parse_brief(text, ids):
         except ValueError:
             parsed = None
     if not isinstance(parsed, dict):
-        prose = _plain(re.sub(r"https?://\S+", "", text), 1200)
-        return {"headline": "", "bullets": [], "text": prose} if prose else None
-    bullets = []
+        return None
+    bullets, dropped, sources = [], 0, set()
     for row in parsed.get("bullets") or []:
-        if not isinstance(row, dict) or not isinstance(row.get("text"), str):
+        if not isinstance(row, dict) or not isinstance(row.get("text"), str) or not row["text"].strip():
+            dropped += 1
             continue
         refs = []
         for ref in row.get("refs") or []:
             if isinstance(ref, str) and ref in ids and ref not in refs:
                 refs.append(ref)
-        if refs and row["text"].strip():
-            bullets.append({"topic": _plain(row.get("topic"), 30), "text": _plain(re.sub(r"https?://\S+", "", row["text"]), 320), "refs": refs})
-    headline = _plain(parsed.get("headline"), 120) if isinstance(parsed.get("headline"), str) else ""
-    if not bullets and not headline:
+        clean = _plain(re.sub(r"https?://\S+", "", row["text"]), 320)
+        allowed = set().union(*(_figures(ids[ref]) for ref in refs)) if refs else set()
+        if not refs or not _figures(clean) <= allowed:
+            dropped += 1
+            continue
+        bullets.append({"topic": _plain(row.get("topic"), 30), "text": clean, "refs": refs})
+        sources |= allowed
+    bullets = bullets[:6]
+    if not bullets:
         return None
-    return {"headline": headline, "bullets": bullets[:6], "text": ""}
+    headline = _plain(parsed.get("headline"), 120) if isinstance(parsed.get("headline"), str) else ""
+    headline_removed = bool(headline) and not _figures(headline) <= sources
+    return {"headline": "" if headline_removed else headline, "bullets": bullets, "text": "",
+            "dropped": dropped, "headline_removed": headline_removed}
 
 
 class BriefStore:
@@ -423,7 +452,8 @@ class BriefStore:
                 self._memory = json.loads(self.path.read_text(encoding="utf-8"))
             except (OSError, ValueError):
                 self._memory = None
-        return self._memory if isinstance(self._memory, dict) else None
+        ok = isinstance(self._memory, dict) and self._memory.get("version") == BRIEF_VERSION
+        return self._memory if ok else None
 
     def age(self, now=None):
         saved = self.load()
@@ -433,7 +463,7 @@ class BriefStore:
             return None
 
     def save(self, brief, model, links):
-        self._memory = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "model": model, "brief": brief, "links": links}
+        self._memory = {"version": BRIEF_VERSION, "at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "model": model, "brief": brief, "links": links}
         if self.path is not None:
             try:
                 self.path.parent.mkdir(parents=True, exist_ok=True)
