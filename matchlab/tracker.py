@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import calibration
-from .cricket_sim import team_key
+from .live import team_key
 
 FILE = "data/local/predictions.json"
 _LOCK = threading.Lock()
@@ -35,37 +35,33 @@ def at_checkpoint(start, now):
     return start is not None and PRE_MATCH_WINDOW - CHECKPOINT_TOLERANCE <= start - now <= PRE_MATCH_WINDOW
 
 
+# The hosted mirror reads a published copy of the log and never writes: MATCHLAB_TRACKER_FILE points at the copy and
+# MATCHLAB_READ_ONLY=1 turns every save into a no-op, so a public visitor can never add, replace or grade a forecast.
+def _path(root):
+    return Path(root) / (os.environ.get("MATCHLAB_TRACKER_FILE") or FILE)
+
+
+def read_only():
+    return os.environ.get("MATCHLAB_READ_ONLY") == "1"
+
+
 def _read(root):
     try:
-        from . import supabase_db
-        db_preds = supabase_db.get_all_predictions()
-        if db_preds:
-            return db_preds
-    except Exception:
-        pass
-    try:
-        data = json.loads((Path(root) / FILE).read_text(encoding="utf-8"))
+        data = json.loads(_path(root).read_text(encoding="utf-8"))
         return data if isinstance(data, dict) else {}
     except (OSError, ValueError):
         return {}
 
 
 def _write(root, data):
-    try:
-        from . import supabase_db
-        for mid, entry in list(data.items())[-10:]:
-            sport = entry.get("fixture", {}).get("sport") or (entry.get("pre", {}).get("sport")) or "cricket"
-            supabase_db.save_prediction(mid, sport, entry)
-    except Exception:
-        pass
-    try:
-        path = Path(root) / FILE
-        path.parent.mkdir(parents=True, exist_ok=True)
-        temporary = path.with_suffix(f".{os.getpid()}.tmp")
-        temporary.write_text(json.dumps(data, indent=1), encoding="utf-8")
-        temporary.replace(path)
-    except Exception:
-        pass
+    if read_only():
+        return
+    path = _path(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_suffix(f".{os.getpid()}.tmp")
+    temporary.write_text(json.dumps(data, indent=1), encoding="utf-8")
+    temporary.replace(path)
+    _SUMMARY.clear()
 
 
 def _win(team):
@@ -321,8 +317,12 @@ def grade_race(root, match_id, winner):
 
 def graded_pairs(root, sport):
     """(favourite's raw model win chance, favourite won) for each counted, graded forecast of a sport."""
+    return graded_pairs_from(_read(root), sport)
+
+
+def graded_pairs_from(data, sport):
     pairs = []
-    for item in _read(root).values():
+    for item in data.values():
         pre, result = item.get("pre"), item.get("result")
         if (pre and result and result.get("saved_before_start") and "winner_pick" in result
                 and pre.get("sport", "cricket") == sport and len(pre.get("teams") or []) == 2):
@@ -330,43 +330,134 @@ def graded_pairs(root, sport):
     return pairs
 
 
-def track_record(root):
+CALIBRATION_BINS = ((0.5, 0.6), (0.6, 0.7), (0.7, 0.8), (0.8, 0.9), (0.9, 1.0001))
+TABLE_ROWS = 25          # rows of the saved-forecast table sent per sport; the rest are fetched on request
+_SUMMARY = {}            # (path, mtime, size) -> the computed record; cleared on every write
+
+
+def calibration_bins(pairs):
+    """Reliability table: favourites grouped by the chance they were given, with how often they won.
+    Every bin reports its own n; empty bins are kept so the table always has the same rows."""
     rows = []
-    for match_id, item in _read(root).items():
+    for low, high in CALIBRATION_BINS:
+        inside = [(p, won) for p, won in pairs if low <= p < high]
+        rows.append({"low": low, "high": min(high, 1.0), "n": len(inside),
+                     "predicted": round(sum(p for p, _ in inside) / len(inside), 3) if inside else None,
+                     "won": sum(1 for _, won in inside if won),
+                     "observed": round(sum(1 for _, won in inside if won) / len(inside), 3) if inside else None})
+    return rows
+
+
+def _shown_pairs(rows):
+    """(favourite's chance as shown when saved, favourite won) for counted, graded rows with two sides."""
+    return [(max(t["win"] for t in row["teams"]), bool(row["result"]["winner_pick"]["correct"])) for row in rows
+            if row["result"] and row["result"].get("saved_before_start") and "winner_pick" in row["result"] and len(row["teams"]) == 2]
+
+
+def track_record(root, limit=TABLE_ROWS):
+    """Summary of every saved forecast. Computed once per version of the log file and kept until the next write."""
+    path = _path(root)
+    try:
+        info = path.stat()
+        version = (str(path), info.st_mtime_ns, info.st_size, limit)
+    except OSError:
+        version = (str(path), None, None, limit)
+    cached = _SUMMARY.get(version)
+    if cached is None:
+        _SUMMARY.clear()
+        cached = _SUMMARY[version] = _build_record(_read(root), limit)
+    return cached
+
+
+def record_rows(root, sport, offset=0, limit=TABLE_ROWS):
+    """One page of the saved-forecast table for a sport, newest first."""
+    rows = [row for row in _rows(_read(root)) if row["sport"] == sport]
+    return {"sport": sport, "offset": offset, "total": len(rows), "matches": rows[offset:offset + limit]}
+
+
+def _rows(data):
+    rows = []
+    for match_id, item in data.items():
         if "pre" not in item:
             continue
         result = item.get("result")
+        # A forecast counts only if its saved copy says it was made before the start. The grade carries the same flag;
+        # if the two ever disagree the forecast is not counted.
+        before = bool(item["pre"].get("saved_before_start", False)) and (not result or bool(result.get("saved_before_start")))
         rows.append({"id": match_id, "fixture": item["fixture"], "stage": item["pre"]["stage"], "saved_at": item["pre"]["saved_at"],
-                     "saved_before_start": item["pre"].get("saved_before_start", False),
+                     "saved_before_start": before,
                      "sport": item["pre"].get("sport", "cricket"),
                      "teams": [{"name": t["name"], "win": t["win"], "first_innings": (t.get("first_innings") or {}).get("mean")} for t in item["pre"]["teams"]],
                      "result": result})
     rows.sort(key=lambda row: row["fixture"].get("start") or "", reverse=True)
+    return rows
+
+
+def _build_record(data, limit):
+    rows = _rows(data)
     summary = _record_summary(rows)
-    summary["calibration"] = {sport: calibration.fit(graded_pairs(root, sport)) for sport in ("cricket", "tennis")}
+    summary["calibration"] = {sport: calibration.fit(graded_pairs_from(data, sport)) for sport in ("cricket", "tennis")}
     groups = {}
     for sport in ("cricket", "tennis", "f1"):
         group = [row for row in rows if row["sport"] == sport]
-        groups[sport] = {"summary": _record_summary(group), "matches": group[:100]}
-    return {"summary": summary, "matches": rows[:100], "sports": groups}
+        groups[sport] = {"summary": _record_summary(group), "bins": calibration_bins(_shown_pairs(group)),
+                         "total": len(group), "matches": group[:limit]}
+    return {"summary": summary, "sports": groups, "generated_at": _now()}
 
 
 def _record_summary(rows):
-    graded = [row["result"] for row in rows if row["result"] and row["result"].get("saved_before_start")]
+    graded = [row["result"] for row in rows if row["result"] and row["saved_before_start"]]
 
     def rate(items):
         return {"n": len(items), "correct": sum(items)} if items else {"n": 0, "correct": 0}
     winners = [r["winner_pick"]["correct"] for r in graded if "winner_pick" in r]
+    with_ai = [r for r in graded if "ai_pick" in r and "winner_pick" in r]
     firsts = [r["first_innings"] for r in graded if "first_innings" in r]
     picks = [p for r in graded for p in r.get("picks", [])]
     return {
         "saved": len(rows), "graded": len(graded),
         "waiting": sum(1 for row in rows if row["saved_before_start"] and not row["result"]),
+        "after_start": sum(1 for row in rows if not row["saved_before_start"]),
         "winner": rate(winners),
-        "ai_winner": rate([r["ai_pick"]["correct"] for r in graded if "ai_pick" in r]),
+        "ai_winner": rate([r["ai_pick"]["correct"] for r in with_ai]),
+        # The model alone on exactly the forecasts that had an AI check, so the two rates share one denominator.
+        "model_on_ai_sample": rate([r["winner_pick"]["correct"] for r in with_ai]),
         "first_innings": {"n": len(firsts), "mean_error": round(sum(abs(f["actual"] - f["predicted"]) for f in firsts) / len(firsts), 1) if firsts else None,
                           "in_range": sum(f["in_range"] for f in firsts)},
         "top_batter": rate([p["correct"] for p in picks if p["kind"] == "top_batter"]),
         "top_bowler": rate([p["correct"] for p in picks if p["kind"] == "top_bowler"]),
         "set_score": rate([r["set_score"]["correct"] for r in graded if "set_score" in r]),
     }
+
+
+def locks(root):
+    """{match id: what was saved before the start} for the schedule: when, at which stage, and the favourite."""
+    out = {}
+    for match_id, item in _read(root).items():
+        pre = item.get("pre") or {}
+        if not pre.get("saved_before_start") or not pre.get("teams"):
+            continue
+        favourite = max(pre["teams"], key=lambda t: t["win"])
+        out[match_id] = {"saved_at": pre.get("saved_at"), "stage": pre.get("stage"), "at_checkpoint": bool(pre.get("at_checkpoint")),
+                         "favourite": favourite["name"], "win": favourite["win"], "graded": bool(item.get("result"))}
+    return out
+
+
+def public_entry(entry):
+    """What the dashboard may show about one saved event: the fixture, the saved forecast, the grade and the live
+    timeline. AI check texts are reduced to their stage, shift and time."""
+    if not entry:
+        return None
+    ai = {name: {k: check.get(k) for k in ("shift", "win", "at", "model", "score")} for name, check in (entry.get("ai") or {}).items()}
+    return {"fixture": entry.get("fixture") or {}, "pre": entry.get("pre"), "result": entry.get("result"),
+            "timeline": (entry.get("timeline") or [])[-60:], "ai": ai}
+
+
+def attach_locks(schedule, saved):
+    """Mark every fixture whose forecast was saved before the start, so the schedule can say "locked" at a glance."""
+    for rows in (schedule.get("sports") or {}).values():
+        for row in rows:
+            lock = saved.get(row.get("id"))
+            if lock:
+                row["lock"] = lock
+    return schedule

@@ -59,6 +59,7 @@ class LocalServer(ThreadingHTTPServer):
         self.grid_cache = {}
         self.f1_timing_cache = {}
         self.f1_timing_lock = threading.Lock()
+        self.grading_lock = threading.Lock()
         self.openrouter_key = OpenRouterKey(ROOT / "data/local/openrouter-key.dpapi")
         self.openrouter_lock = threading.Lock()
         self.preview_lock = threading.Lock()
@@ -215,6 +216,7 @@ class Handler(BaseHTTPRequestHandler):
             data, problem = empty, problem or f"Saved schedule could not be read: {exc}"
         if problem:
             data["refresh_error"] = problem
+        tracker.attach_locks(data, tracker.locks(ROOT))
         data["budget"] = budget.status(ROOT)
         return data
 
@@ -378,12 +380,22 @@ class Handler(BaseHTTPRequestHandler):
         return {"summary": self.server.summaries[key], "budget": budget.status(ROOT), "cached": False}
 
     def _track_record(self):
-        for match_id, fixture in tracker.pending(ROOT)[:6]:
-            intel = self._intel(fixture.get("espn"), max_age=600)
-            tracker.grade(ROOT, match_id, intel)
-        with ThreadPoolExecutor(max_workers=3) as pool:
-            list(pool.map(self._grade_race, tracker.pending_races(ROOT)[:6]))
-        return tracker.track_record(ROOT)
+        """The record as it stands, at once. Finished events that still need a grade are graded in the background
+        (each needs a feed read of about two seconds), and the page asks again when `grading` says work is under way."""
+        pending = tracker.pending(ROOT)[:6]
+        races = tracker.pending_races(ROOT)[:6]
+        if (pending or races) and self.server.grading_lock.acquire(blocking=False):
+            def grade():
+                try:
+                    with ThreadPoolExecutor(max_workers=3) as pool:
+                        list(pool.map(lambda item: tracker.grade(ROOT, item[0], self._intel(item[1].get("espn"), max_age=600)), pending))
+                        list(pool.map(self._grade_race, races))
+                except Exception:
+                    pass
+                finally:
+                    self.server.grading_lock.release()
+            threading.Thread(target=grade, name="grade-finished", daemon=True).start()
+        return {**tracker.track_record(ROOT), "grading": self.server.grading_lock.locked(), "pending": len(pending) + len(races)}
 
     def _grade_race(self, fixture):
         engine = self.server.engine.race_engine
@@ -433,7 +445,7 @@ class Handler(BaseHTTPRequestHandler):
     # revalidated on every load (a 304 costs almost nothing); fonts and images change rarely.
     STATIC_CACHE = {".html": "no-cache", ".js": "no-cache", ".css": "no-cache", ".svg": "no-cache",
                     ".woff2": "public, max-age=604800, immutable", ".jpg": "public, max-age=86400",
-                    ".jpeg": "public, max-age=86400", ".png": "public, max-age=86400", ".webp": "public, max-age=86400"}
+                    ".jpeg": "public, max-age=86400", ".png": "public, max-age=86400", ".webp": "public, max-age=86400", ".json": "no-cache"}
 
     def _send_static(self, path, mime):
         body = path.read_bytes()
@@ -489,7 +501,21 @@ class Handler(BaseHTTPRequestHandler):
         if route == "/api/world-brief":
             return self._send(200, self._brief_state())
         if route == "/api/track-record":
+            query = parse_qs(urlsplit(self.path).query)
+            sport = (query.get("sport") or [""])[0]
+            if sport:
+                if sport not in ("cricket", "tennis", "f1"):
+                    return self._send(400, {"error": "Choose cricket, tennis or f1."})
+                try:
+                    offset = max(0, int((query.get("offset") or ["0"])[0]))
+                except ValueError:
+                    return self._send(400, {"error": "Offset must be a whole number."})
+                return self._send(200, tracker.record_rows(ROOT, sport, offset))
             return self._send(200, self._track_record())
+        if route == "/api/saved-forecast":
+            match_id = (parse_qs(urlsplit(self.path).query).get("id") or [""])[0]
+            entry = tracker.entry(ROOT, match_id) if match_id else None
+            return self._send(200, tracker.public_entry(entry)) if entry else self._send(404, {"error": "No forecast was saved for this event."})
         files = {"/": ("dash.html", "text/html; charset=utf-8"), "/dash.js": ("dash.js", "text/javascript; charset=utf-8"),
                  "/dash.css": ("dash.css", "text/css; charset=utf-8"),
                  "/astryx.css": ("astryx.css", "text/css; charset=utf-8"),
@@ -505,7 +531,8 @@ class Handler(BaseHTTPRequestHandler):
             web_dir = (ROOT / "web").resolve()
             if img_target.is_file() and img_target.is_relative_to(web_dir):
                 ext = img_target.suffix.lower()
-                mime = "image/jpeg" if ext in (".jpg", ".jpeg") else "image/png" if ext == ".png" else "image/webp" if ext == ".webp" else "application/octet-stream"
+                mime = {".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp",
+                        ".json": "application/json; charset=utf-8"}.get(ext, "application/octet-stream")
                 return self._send_static(img_target, mime)
         if route not in files:
             return self._send(404, {"error": "Not found"})
