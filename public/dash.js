@@ -709,19 +709,27 @@ async function renderRecord() {
     const { summary, sports } = await api("/api/track-record");
     if (request !== state.request) return;
     const rate = (record) => record.n ? `${record.correct} of ${record.n}` : "—";
+    // Wilson 95% interval: with a handful of graded forecasts the honest answer is a wide range, not one number.
+    const spread = (record) => {
+      if (!record.n) return "none graded yet";
+      const z = 1.96, p = record.correct / record.n, d = 1 + z * z / record.n, c = p + z * z / (2 * record.n);
+      const m = z * Math.sqrt(p * (1 - p) / record.n + z * z / (4 * record.n * record.n));
+      return `${pct(record.correct / record.n)} · 95% range ${pct(Math.max(0, (c - m) / d))} to ${pct(Math.min(1, (c + m) / d))} · n = ${record.n}`;
+    };
+    const counted = (summary) => summary.graded + summary.waiting;
     const detail = h("section", { id: "sport-record", "aria-labelledby": "sport-record-title" });
     const filters = h("div", { class: "row record-filters", role: "group", "aria-label": "Sport" });
     function select(sport) {
       const { summary: stats, matches } = sports[sport];
       for (const button of filters.children) button.setAttribute("aria-pressed", String(button.value === sport));
       const calibration = summary.calibration[sport];
-      const metrics = [stat("Winner picked", rate(stats.winner), `${stats.graded} graded · ${stats.waiting} waiting`)];
-      if (sport !== "f1") metrics.push(stat("Winner with AI check", rate(stats.ai_winner)));
-      if (sport === "tennis") metrics.push(stat("Exact set score", rate(stats.set_score)));
+      const metrics = [stat("Winner picked", rate(stats.winner), `${spread(stats.winner)} · ${stats.waiting} waiting`)];
+      if (sport !== "f1") metrics.push(stat("Winner with AI check", rate(stats.ai_winner), spread(stats.ai_winner)));
+      if (sport === "tennis") metrics.push(stat("Exact set score", rate(stats.set_score), spread(stats.set_score)));
       if (sport === "cricket") metrics.push(
         stat("First-innings error", stats.first_innings.mean_error == null ? "—" : `${stats.first_innings.mean_error} runs`,
-          `${stats.first_innings.in_range} of ${stats.first_innings.n} inside the range`),
-        stat("Top batter", rate(stats.top_batter)), stat("Top wicket-taker", rate(stats.top_bowler)));
+          `n = ${stats.first_innings.n} · ${stats.first_innings.in_range} inside the range`),
+        stat("Top batter", rate(stats.top_batter), spread(stats.top_batter)), stat("Top wicket-taker", rate(stats.top_bowler), spread(stats.top_bowler)));
       const table = h("div", { class: "scroll" }, h("table", {},
         h("thead", {}, h("tr", {}, ["Event", "Forecast", "Saved", "Result"].map((label) => h("th", { scope: "col" }, label)))),
         h("tbody", {}, matches.map((match) => {
@@ -734,7 +742,7 @@ async function renderRecord() {
               : `#match/${encodeURIComponent(match.id)}` }, title), h("div", { class: "sub" }, day(match.fixture.start))),
             h("td", {}, `${favourite.name} ${pct(favourite.win)}`),
             h("td", {}, time(match.saved_at), stage ? h("div", { class: "sub" }, stage) : null,
-              match.saved_before_start ? null : h("div", { class: "sub" }, "Opened after start")),
+              match.saved_before_start ? null : h("div", { class: "sub" }, "Opened after start · not counted")),
             h("td", {}, !result ? "Waiting for result" : !result.winner_pick ? (result.status || "No winner") :
               h("span", { class: result.winner_pick.correct ? "good" : "bad" }, `${result.winner} won · ${result.winner_pick.correct ? "Correct" : "Missed"}`),
               result?.first_innings ? h("div", { class: "sub" }, `First innings ${result.first_innings.actual} vs forecast ${result.first_innings.predicted}`) : null,
@@ -743,9 +751,10 @@ async function renderRecord() {
       detail.replaceChildren(
         h("h2", { id: "sport-record-title" }, SPORTS[sport]),
         h("div", { class: "stats record-stats" }, metrics),
+        h("p", { class: "sub" }, `${counted(stats)} forecasts counted (saved before the start), ${stats.graded} graded. ${stats.saved - counted(stats)} more were opened after the start and are not counted.`),
         calibration ? h("p", { class: "sub" }, calibration.graded < calibration.needed
-          ? `Win chance calibration needs ${calibration.needed} graded forecasts. ${calibration.graded} available.`
-          : `Favourites won ${pct(calibration.favourite_won)} of ${calibration.graded} graded forecasts. Average predicted chance was ${pct(calibration.favourite_expected)}.`) : null,
+          ? `Not calibrated yet: that needs ${calibration.needed} graded forecasts and ${calibration.graded} are available, so the win chances shown are the model's own.`
+          : `Favourites won ${pct(calibration.favourite_won)} of ${calibration.graded} graded forecasts (n = ${calibration.graded}). Their average predicted chance was ${pct(calibration.favourite_expected)}.`) : null,
         h("section", { class: "panel" }, h("h3", {}, "Saved forecasts"),
           matches.length ? table : h("p", { class: "note" }, sport === "f1"
             ? "Run a Formula 1 forecast before the race to start tracking it."
@@ -754,19 +763,19 @@ async function renderRecord() {
     }
     for (const [sport, label] of Object.entries(SPORTS)) {
       filters.append(h("button", { class: "chip", type: "button", value: sport, "aria-controls": "sport-record",
-        onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${sports[sport].summary.saved}`));
+        onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${counted(sports[sport].summary)} counted`));
     }
-    const totalSaved = Object.values(sports).reduce((acc, s) => acc + (s.summary?.saved || 0), 0);
+    const totals = Object.values(sports).reduce((acc, s) => ({ counted: acc.counted + counted(s.summary), graded: acc.graded + s.summary.graded, after: acc.after + (s.summary.saved - counted(s.summary)) }), { counted: 0, graded: 0, after: 0 });
     const recordHero = h("section", { class: "record-hero", "aria-label": "Track record overview" },
       h("div", { class: "record-hero-copy" },
-        h("p", { class: "eyebrow" }, "VERIFIED ACCURACY & RIGOR"),
-        h("h1", {}, "The science behind", h("br"), h("span", {}, "every forecast.")),
-        h("p", {}, "Every probability is mathematically calibrated, saved before match start, and graded against ground-truth outcomes."),
-        h("span", { class: "hero-date" }, "Transparent, reproducible, and strictly auditable.")),
+        h("p", { class: "eyebrow" }, "TRACK RECORD"),
+        h("h1", {}, "What the model said,", h("br"), h("span", {}, "and how it did.")),
+        h("p", {}, "A forecast counts only if it was saved before the event began. Results are graded from final scores, and every rate shows how many forecasts it rests on."),
+        h("span", { class: "hero-date" }, "Forecasts opened after the start are listed, never counted.")),
       h("div", { class: "record-hero-stat" },
-        h("span", {}, "Tracked Forecasts"),
-        h("strong", { class: "num" }, `${totalSaved}`),
-        h("p", { class: "sub" }, "saved forecasts across all sports")));
+        h("span", {}, "Forecasts counted"),
+        h("strong", { class: "num" }, `${totals.counted}`),
+        h("p", { class: "sub" }, `${totals.graded} graded so far · ${totals.after} opened after the start and excluded`)));
     show(recordHero, filters, detail);
     select(state.recordSport || "cricket");
   } catch (error) {
