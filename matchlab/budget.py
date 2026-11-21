@@ -1,8 +1,8 @@
-"""Daily request budgets for metered services (CricketData.org, OpenRouter).
+"""Request budgets for metered services (CricketData.org, OpenRouter daily; AcesAPI credits monthly).
 
 One small ledger file, shared by the server and the short-lived network workers.
 A call is allowed only if it keeps a reserve for the half hour before a match.
-Days are counted in UTC, which is when both providers reset.
+Days and months are counted in UTC, which is when the providers reset.
 """
 import json
 import os
@@ -13,12 +13,15 @@ from pathlib import Path
 DEFAULTS = {
     "cricketdata": {"limit": 100, "reserve": 5, "label": "CricketData.org"},
     "openrouter": {"limit": 50, "reserve": 2, "label": "OpenRouter free models"},
+    # AcesAPI's free key carries 500 credits a month; a call costs 1 to 5 credits.
+    "acesapi": {"limit": 500, "reserve": 20, "label": "AcesAPI credits", "period": "month"},
 }
 LEDGER = "data/local/api_budget.json"
 
 
-def _today():
-    return datetime.now(timezone.utc).date().isoformat()
+def _today(service=None):
+    today = datetime.now(timezone.utc).date().isoformat()
+    return today[:7] if DEFAULTS.get(service, {}).get("period") == "month" else today
 
 
 def _read(root):
@@ -45,8 +48,8 @@ def _write(root, data):
 def _entry(data, service):
     entry = data.get(service) if isinstance(data.get(service), dict) else {}
     limit = entry.get("limit") if isinstance(entry.get("limit"), int) and entry["limit"] > 0 else DEFAULTS[service]["limit"]
-    if entry.get("day") != _today():
-        entry = {"day": _today(), "used": 0, "calls": []}
+    if entry.get("day") != _today(service):
+        entry = {"day": _today(service), "used": 0, "calls": []}
     entry["limit"] = limit
     entry.setdefault("used", 0)
     entry.setdefault("calls", [])
@@ -61,6 +64,7 @@ def status(root):
         entry = _entry(data, service)
         report[service] = {"label": defaults["label"], "day": entry["day"], "used": entry["used"], "limit": entry["limit"],
                            "remaining": max(0, entry["limit"] - entry["used"]), "reserve": defaults["reserve"],
+                           "period": defaults.get("period", "day"),
                            "last_call": entry["calls"][-1] if entry["calls"] else None}
     return report
 
@@ -69,18 +73,21 @@ def remaining(root, service):
     return status(root)[service]["remaining"]
 
 
-def spend(root, service, purpose, priority=False):
-    """Record one request. Returns False (and records nothing) when the budget is spent.
+def spend(root, service, purpose, priority=False, cost=1):
+    """Record one request costing `cost` units. Returns False (and records nothing) when the budget is spent.
 
     Ordinary calls stop at the reserve; priority calls (the pre-match window) may use it.
     """
     data = _read(root)
     entry = _entry(data, service)
     floor = 0 if priority else DEFAULTS[service]["reserve"]
-    if entry["limit"] - entry["used"] <= floor:
+    if entry["limit"] - entry["used"] - cost < floor:
         return False
-    entry["used"] += 1
-    entry["calls"] = (entry["calls"] + [{"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "purpose": purpose}])[-40:]
+    entry["used"] += cost
+    call = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "purpose": purpose}
+    if cost != 1:
+        call["cost"] = cost
+    entry["calls"] = (entry["calls"] + [call])[-40:]
     _write(root, data)
     return True
 

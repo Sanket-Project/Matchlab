@@ -660,6 +660,45 @@ function tennisPlayer(t) {
       h("ul", { class: "why" }, t.recent.map((m) => h("li", {}, `${day(m.date)} · ${m.won ? "beat" : "lost to"} ${m.opponent} ${m.score} · ${m.event} (${m.surface})`)))) : null);
 }
 
+// The case for the pick: each player's last 6, their last 6 meetings, win ratios and the reasons. `win` is the
+// chance shown on the page right now (live, AI-checked or pre-match), so the pick follows the score.
+function tennisCase(c, win, live) {
+  if (!c || !c.form || c.form.length !== 2) return null;
+  const names = c.form.map((f) => f.name), pick = win[0] >= win[1] ? 0 : 1, other = 1 - pick;
+  const surname = (name) => name.split(" ").slice(-1)[0];
+  const ratio = (won, played) => played ? `${won}–${played - won} · ${pct(won / played)}` : "none on record";
+  const dots = (items, label) => h("ol", { class: "form-dots", "aria-label": label }, items.map((m) =>
+    h("li", { class: m.cls, title: m.title }, h("span", { "aria-hidden": "true" }, m.mark), h("span", { class: "vh" }, m.title))));
+  const formRow = (f) => h("div", { class: "case-row" },
+    h("div", { class: "case-label" }, h("strong", {}, f.name), h("span", { class: "sub num" }, `Last ${f.played || 6}: ${ratio(f.won, f.played)}`)),
+    f.played ? dots(f.last.map((m) => ({ cls: m.won ? "w" : "l", mark: m.won ? "W" : "L",
+      title: `${day(m.date)}: ${m.won ? "beat" : "lost to"} ${m.opponent} ${m.score} (${m.event})` })), `${f.name}, last ${f.played} results, newest first`)
+      : h("p", { class: "sub" }, "No recent matches on record."));
+  const meets = c.h2h.last || [], tally = c.h2h.last_wins || [0, 0];
+  const h2hRow = h("div", { class: "case-row" },
+    h("div", { class: "case-label" }, h("strong", {}, "Head to head"),
+      h("span", { class: "sub num" }, meets.length ? `Last ${meets.length}: ${surname(names[0])} ${tally[0]} – ${tally[1]} ${surname(names[1])}` : "No meeting on record since 2020")),
+    meets.length ? dots(meets.map((m) => ({ cls: m.winner === names[pick] ? "w" : "l", mark: surname(m.winner).slice(0, 3),
+      title: `${day(m.date)}: ${m.winner} won ${m.score} (${m.event}, ${m.surface})` })), `Their last ${meets.length} meetings, newest first`) : null);
+  const mark = { pick: ["For", "ok"], other: ["Against", "warn"], even: ["Level", "off"] };
+  const label = (side) => side === "pick" ? mark.pick : side === "other" ? mark.other : mark.even;
+  // Reasons are written from the model's favourite; if the live score has turned it, swap their meaning.
+  const flipped = c.pick !== names[pick];
+  return h("section", { class: "panel case", "aria-labelledby": "case-title" },
+    h("div", { class: "section-head" }, h("h2", { id: "case-title" }, "Who wins and why"),
+      h("span", { class: "tag" }, live ? "Live" : "Before the match")),
+    h("p", { class: "case-pick" }, h("strong", {}, names[pick]), ` to win · `, h("span", { class: "num" }, pct(win[pick])),
+      h("span", { class: "sub" }, ` (${names[other]} ${pct(win[other])})`)),
+    formRow(c.form[0]), formRow(c.form[1]), h2hRow,
+    h("h3", {}, `Why ${names[pick]}`),
+    h("ul", { class: "case-reasons" }, c.reasons.map((r) => {
+      const side = flipped ? ({ pick: "other", other: "pick" }[r.for] || r.for) : r.for;
+      const [word, cls] = label(side);
+      return h("li", {}, h("span", { class: `tag ${cls}` }, word), h("span", {}, r.text));
+    })),
+    h("p", { class: "sub" }, "Results come from the recorded match archive, so a match played in the last few days may be missing."));
+}
+
 function tennisLive(f) {
   const live = f.live, timeline = (f.saved && f.saved.timeline) || [], names = f.teams.map((t) => t.name), win = nowWin(f);
   return h("section", { class: "panel live" },
@@ -675,6 +714,99 @@ function tennisLive(f) {
       h("li", {}, h("time", {}, time(t.at)), h("span", {}, `${t.score}. ${t.note}`)))) : null);
 }
 
+// ---- Free and keyed extra feeds: Open-Meteo weather, AcesAPI tennis, OpenF1 weekend --------------
+// Each panel renders from a cache at once; on a miss it shows a loading state, fetches once and swaps itself in,
+// so the frequent live re-renders never refetch.
+state.extra = {};
+function lazyPanel(key, path, render, title) {
+  const domId = `extra-${key.replace(/[^a-z0-9]+/gi, "-")}`;
+  const saved = state.extra[key];
+  if (saved && saved !== "loading") return render(saved, domId);
+  if (!saved) {
+    state.extra[key] = "loading";
+    api(path).then((data) => data, (error) => ({ ok: false, error: error.message })).then((data) => {
+      state.extra[key] = data;
+      const node = document.getElementById(domId);
+      if (node) node.replaceWith(render(data, domId));
+    });
+  }
+  return h("section", { class: "panel", id: domId, "aria-busy": "true" }, h("h2", {}, title), h("p", { class: "sub" }, "Loading…"));
+}
+
+const num = (v, digits = 0) => typeof v === "number" ? v.toFixed(digits) : "—";
+function weatherPanel(key, path, sport) {
+  if (state.hosted) return null;
+  return lazyPanel(key, path, (w, domId) => {
+    const head = h("div", { class: "section-head" }, h("h2", { id: `${domId}-t` }, "Weather at the start"), h("span", { class: "tag off" }, "Context only"));
+    if (!w.ok) return h("section", { class: "panel", id: domId, "aria-labelledby": `${domId}-t` }, head, h("p", { class: "sub" }, w.error || "No forecast available."),
+      h("button", { class: "btn", type: "button", onclick: () => { delete state.extra[key]; document.getElementById(domId).replaceWith(weatherPanel(key, path, sport)); } }, "Try again"));
+    const s = w.at_start || {}, rain = Math.max(...w.hours.map((r) => r.rain_chance ?? 0));
+    return h("section", { class: "panel", id: domId, "aria-labelledby": `${domId}-t` }, head,
+      h("div", { class: "stats" },
+        stat("Temperature", `${num(s.temp)}°C`, `around ${time(s.time)}`),
+        stat("Rain chance", `${num(rain)}%`, "highest hour, from 1 h before to 4 h after"),
+        sport === "cricket" ? stat("Humidity", `${num(s.humidity)}%`, `dew point ${num(s.dew_point)}°C`) : stat("Wind", `${num(s.wind)} km/h`, `cloud ${num(s.cloud)}%`)),
+      h("ul", { class: "why" }, w.notes.map((n) => h("li", {}, n)),
+        sport === "tennis" ? h("li", {}, "Indoor courts are not affected by the weather.") : null),
+      h("p", { class: "note", style: "margin-top:12px" }, `Forecast for ${[w.place?.name, w.place?.country].filter(Boolean).join(", ")} from `,
+        external(w.source_url, w.source), `${w.stale ? " (last good reading; the feed could not be updated)" : ""}. ${w.disclaimer}`));
+  }, "Weather at the start");
+}
+
+function acesPanel(f, id) {
+  if (state.hosted) return null;
+  const key = `aces|${id}`;
+  return lazyPanel(key, `/api/acesapi-check?id=${encodeURIComponent(id)}`, (data, domId) => {
+    const title = h("div", { class: "section-head" }, h("h2", { id: `${domId}-t` }, "Second view from AcesAPI"), h("span", { class: "tag off" }, "Not used by the model"));
+    const wrap = (...body) => h("section", { class: "panel", id: domId, "aria-labelledby": `${domId}-t` }, title, ...body);
+    const c = data.check;
+    if (c) {
+      const [a, b] = c.players;
+      return wrap(
+        h("div", { class: "stats" },
+          stat(`${a.name}`, a.surface_elo ? num(a.surface_elo.rating) : "—", a.surface_elo ? `${c.surface} Elo, #${a.surface_elo.rank}` : `not in the ${c.surface} top 200`),
+          stat(`${b.name}`, b.surface_elo ? num(b.surface_elo.rating) : "—", b.surface_elo ? `${c.surface} Elo, #${b.surface_elo.rank}` : `not in the ${c.surface} top 200`),
+          stat("Elo win chance", c.elo_win == null ? "—" : pct(c.elo_win), c.elo_win == null ? "needs both ratings" : `for ${a.name}`)),
+        c.h2h ? h("p", { class: "sub" }, c.h2h.matches ? `Head to head: ${a.name} ${c.h2h.wins[0]}–${c.h2h.wins[1]} ${b.name} (${c.h2h.surface_wins[0]}–${c.h2h.surface_wins[1]} on ${c.surface}).` : "They have not met on the tour.") : null,
+        c.h2h?.last?.length ? h("details", { class: "more", "data-key": "aces-h2h" }, h("summary", {}, "Their meetings according to AcesAPI"),
+          h("ul", { class: "why" }, c.h2h.last.map((m) => h("li", {}, `${m.date} · ${m.winner || "?"} won ${m.score} · ${m.round} (${m.surface})`)))) : null,
+        c.notes.length ? h("ul", { class: "why" }, c.notes.map((n) => h("li", {}, n))) : null,
+        h("p", { class: "note", style: "margin-top:12px" }, "From ", external(c.source_url, c.source), `, checked ${day(c.checked_at)} ${time(c.checked_at)}. Saved for a day so it is never paid for twice.`));
+    }
+    if (data.ok === false) return wrap(h("p", { class: "note warn" }, data.error));
+    if (!data.has_key) return wrap(h("p", { class: "sub" }, "Add a free AcesAPI key in ", h("a", { href: "#settings" }, "Settings"), " to compare both players' surface Elo and full head-to-head (500 free credits a month)."));
+    const left = data.budget.remaining - data.budget.reserve;
+    const message = h("p", { class: "sub", role: "status" });
+    const button = h("button", { class: "btn primary", type: "button", disabled: left < data.credits }, `Check AcesAPI (${data.credits} credits)`);
+    bind(button, "click", async () => {
+      button.disabled = true; message.textContent = "Asking AcesAPI…";
+      try {
+        const out = await api("/api/acesapi-check", { match_id: id, surface: f.surface?.name || "" });
+        state.extra[key] = { check: out.check };
+        document.getElementById(domId).replaceWith(acesPanel(f, id));
+      } catch (error) { message.textContent = error.message; button.disabled = false; }
+    });
+    return wrap(h("p", { class: "sub" }, `Asked only when you press the button. ${Math.max(0, left)} credits left this month after the reserve.`), button, message);
+  }, "Second view from AcesAPI");
+}
+
+function f1WeekendPanel(next) {
+  if (state.hosted || !next?.time) return null;
+  const start = `${next.date}T${next.time}`;
+  return lazyPanel(`openf1|${start}`, `/api/f1-weekend?start=${encodeURIComponent(start)}`, (w, domId) => {
+    const head = h("div", {}, h("p", { class: "f1-label" }, "RACE WEEKEND SO FAR"), h("h2", { id: `${domId}-t` }, w.location ? `${w.location}: practice and qualifying` : "Practice and qualifying"));
+    if (!w.ok) return h("section", { class: "panel", id: domId, "aria-labelledby": `${domId}-t` }, head, h("p", { class: "sub" }, w.error || "OpenF1 could not be read."));
+    const done = w.sessions.filter((s) => s.state === "done" && s.top?.length);
+    return h("section", { class: "panel", id: domId, "aria-labelledby": `${domId}-t` }, head,
+      h("ul", { class: "why" }, w.sessions.map((s) => h("li", {}, `${s.name}: ${s.state === "done" ? "finished" : s.state === "live" ? "running now (shown when it ends)" : `${day(s.start)} ${time(s.start)}`}`,
+        s.weather ? ` · air ${num(s.weather.air)}°C, track ${num(s.weather.track)}°C${s.weather.rain ? ", rain" : ""}` : ""))),
+      done.map((s) => h("details", { class: "more", "data-key": `openf1-${s.name}`, open: s === done[done.length - 1] }, h("summary", {}, `${s.name}: top ${s.top.length}`),
+        h("div", { class: "scroll" }, h("table", {}, h("thead", {}, h("tr", {}, ["Pos", "Driver", "Team", "Best lap", "Laps"].map((x) => h("th", {}, x)))),
+          h("tbody", {}, s.top.map((r) => h("tr", {}, h("td", { class: "num" }, r.position), h("td", {}, r.name), h("td", {}, r.team), h("td", { class: "num" }, r.time || (r.out ? "out" : "—")), h("td", { class: "num" }, r.laps ?? "—")))))))),
+      h("p", { class: "note", style: "margin-top:12px" }, "From ", external(w.source_url, w.source), ` (unofficial). ${w.note}${w.stale ? " Showing the last good reading." : ""}`));
+  }, "Practice and qualifying");
+}
+
 function renderTennis(f, id) {
   const [a, b] = f.teams, fx = f.fixture, bt = f.analysis.backtest;
   showMorph(
@@ -688,12 +820,15 @@ function renderTennis(f, id) {
     f.intel.available ? null : h("p", { class: "note warn" }, "The live score feed could not be read just now, so this is the pre-match forecast."),
     f.result ? resultPanel(f.result) : null,
     f.live ? tennisLive(f) : null,
+    tennisCase(f.case, nowWin(f), Boolean(f.live)),
     winPanel(f, f.live ? "Pre-match win chance" : "Win chance"),
     aiPanel(f, id, "tennis"),
+    weatherPanel(`wx|${id}`, `/api/conditions?id=${encodeURIComponent(id)}`, "tennis"),
     h("section", { class: "panel" }, h("h2", {}, "Why this forecast"),
       h("ul", { class: "why" }, f.notes.map((n) => h("li", {}, n)), h("li", {}, f.surface.note)),
       f.h2h.last.length ? h("details", { class: "more", style: "margin-top:8px" }, h("summary", {}, "Their recorded meetings"),
         h("ul", { class: "why" }, f.h2h.last.map((m) => h("li", {}, `${day(m.date)} · ${m.winner} won ${m.score} · ${m.event} (${m.surface})`)))) : null),
+    acesPanel(f, id),
     h("section", { class: "panel" }, h("h2", {}, "Set score chances (before the match)"), setRows(f.set_scores),
       h("div", { class: "stats", style: "margin-top:12px" },
         h("div", { class: "stat" }, h("div", { class: "k" }, "Goes to a deciding set"), h("div", { class: "v" }, pct(f.deciding_set)), h("div", { class: "s" }, f.format.toLowerCase())),
@@ -725,6 +860,7 @@ function renderForecast(f, id) {
     ...(f.scoreboard.state === "in" ? [livePart, preMatchPart] : [preMatchPart, livePart]),
     f.result && f.result.saved_before_start ? resultPanel(f.result) : null,
     supported && f.ai ? aiPanel(f, id, "cricket") : null,
+    weatherPanel(`wx|${id}`, `/api/conditions?id=${encodeURIComponent(id)}`, "cricket"),
     supported ? analysisPanel(f) : null);
 }
 
@@ -804,7 +940,7 @@ async function openMatch(id, manual, forceRefresh = false) {
     const status = forecast.intel?.state || forecast.scoreboard?.state;
     state.liveMatch = status === "in" ? id : null;
     if (status === "in" || status === "pre" && (sport === "cricket" || startsIn < 75 * 60000)) {
-      const delay = sport === "cricket" && status === "in" ? 12000 : 60000;
+      const delay = status === "in" ? (sport === "cricket" ? 12000 : 10000) : 60000;
       if (forecast.has_feed || sport === "cricket") {
         state.timer = setTimeout(async () => {
           if (sport === "cricket" && !forecast.has_feed) await refreshSchedule();
@@ -866,10 +1002,47 @@ async function renderSaved(id, match, request) {
     : h("section", { class: "panel" }, h("h2", {}, "No saved forecast"),
       h("p", { class: "sub" }, problem || "The owner's MatchLab has not saved a forecast for this match yet. Forecasts are saved when the match is opened there before it starts."));
   const timeline = (saved?.timeline || []).slice(-8).reverse();
-  show(...head(), board, lockPanel, saved?.result ? resultPanel(saved.result) : null,
+  const tennis = match?.sport === "tennis" || id.startsWith("tennis-");
+  const liveBox = tennis ? h("section", { class: "panel live", id: "tennis-live", "aria-live": "polite", hidden: true }) : null;
+  const caseBox = tennis && pre?.case ? h("div", { id: "tennis-case" }, tennisCase(pre.case, pre.teams.map((t) => t.win), false)) : null;
+  show(...head(), liveBox || board, caseBox, lockPanel, saved?.result ? resultPanel(saved.result) : null,
     timeline.length ? h("section", { class: "panel" }, h("h2", {}, "Live checks saved"), h("ul", { class: "timeline" }, timeline.map((t) =>
       h("li", {}, h("time", { datetime: t.at }, time(t.at)), h("span", {}, `${t.score}${t.note ? ". " + t.note : ""}`))))) : null,
     h("p", { class: "note" }, "This public copy shows what the owner's MatchLab saved. The full live analysis and AI checks run on the owner's computer."));
+  if (tennis) followTennis(id, request, pre);
+}
+
+// Hosted copy: follow a tennis match score by score from ESPN's free feed. The server recomputes the win chance
+// from the saved forecast's serve-point model; nothing is saved. Every 10 seconds while live, every minute before.
+async function followTennis(id, request, pre, last = "") {
+  const isCurrent = () => request === state.request && location.hash === `#match/${encodeURIComponent(id)}`;
+  let data = null;
+  try { data = await api(`/api/tennis-live?id=${encodeURIComponent(id)}`); } catch (_) { /* tried again below */ }
+  if (!isCurrent()) return;
+  const box = document.getElementById("tennis-live");
+  if (box && data && data.ok && (data.state !== "pre" || data.sets.length)) {
+    const [a, b] = data.names, sets = data.sets || [], win = data.live?.win;
+    const scoreText = sets.map((s) => `${s.a}-${s.b}`).join(", ") || "0-0";
+    box.hidden = false;
+    box.replaceChildren(
+      h("div", { class: "section-head" }, h("h2", {}, data.state === "post" ? "Final score" : "Live score"),
+        h("span", { class: `tag${data.state === "in" ? " live" : ""}` }, data.state === "in" ? "Live" : data.state === "post" ? "Finished" : "Upcoming")),
+      h("div", { class: "scroll" }, h("table", { class: "set-table" },
+        h("caption", { class: "vh" }, `Set scores: ${a} v ${b}`),
+        h("thead", {}, h("tr", {}, h("th", { scope: "col" }, "Player"), sets.map((_, i) => h("th", { scope: "col", class: "num" }, `Set ${i + 1}`)))),
+        h("tbody", {}, [a, b].map((name, side) => h("tr", { class: data.winner === side ? "won" : "" }, h("th", { scope: "row" }, name),
+          sets.map((s) => h("td", { class: "num" }, side ? s.b : s.a))))))),
+      win ? h("div", { class: "winbar", role: "img", "aria-label": `${a} ${pct(win[0])}, ${b} ${pct(win[1])}` },
+        h("div", { class: "a", style: `width:${(win[0] * 100).toFixed(1)}%` }), h("div", { class: "b", style: `width:${(win[1] * 100).toFixed(1)}%` })) : null,
+      win ? h("div", { class: "winlabels" }, h("span", { class: "num" }, `${a} ${pct(win[0])}`), h("span", { class: "num" }, `${b} ${pct(win[1])}`)) : null,
+      win && data.pre_win ? h("p", { class: "sub num" }, `Win chance now, from the saved forecast and this score. Before the match: ${a} ${pct(data.pre_win[0])}.`) : null,
+      h("p", { class: "sub" }, `${data.status || ""}${data.status ? " · " : ""}Score checked ${time(data.fetched_at)}.${data.state === "in" ? " Updates every 10 seconds." : ""}`));
+    if (win && pre?.case) document.getElementById("tennis-case")?.replaceChildren(tennisCase(pre.case, win, true));
+    if (last && last !== scoreText) announce(`Score update. ${scoreText}`);
+    last = scoreText;
+  }
+  const delay = !data || !data.ok ? 30000 : data.state === "in" ? 10000 : data.state === "post" ? 0 : 60000;
+  if (delay) state.timer = setTimeout(() => { if (isCurrent()) followTennis(id, request, pre, last); }, delay);
 }
 
 // ---- track record and settings --------------------------------------------------------
@@ -909,11 +1082,11 @@ function recordRow(match, sport) {
   const title = [match.fixture.team, match.fixture.opponent].filter(Boolean).join(" v ");
   const href = sport === "f1" ? (state.hosted ? "#f1" : `/lab?sport=f1&season=${match.fixture.season}&round=${match.fixture.round}`) : `#match/${encodeURIComponent(match.id)}`;
   return h("tr", { "data-k": match.id },
-    h("td", {}, h("a", { href }, title), h("div", { class: "sub" }, day(match.fixture.start))),
-    h("td", { class: "num" }, `${favourite.name} ${pct(favourite.win)}`),
-    h("td", {}, time(match.saved_at), STAGES[match.stage] ? h("div", { class: "sub" }, STAGES[match.stage]) : null,
+    h("td", { "data-label": "Event" }, h("a", { href }, title), h("div", { class: "sub" }, day(match.fixture.start))),
+    h("td", { class: "num", "data-label": "Forecast" }, `${favourite.name} ${pct(favourite.win)}`),
+    h("td", { "data-label": "Saved" }, time(match.saved_at), STAGES[match.stage] ? h("div", { class: "sub" }, STAGES[match.stage]) : null,
       match.saved_before_start ? null : h("div", { class: "sub" }, "Opened after the start · not counted")),
-    h("td", {}, !result ? "Waiting for result" : !result.winner_pick ? (result.status || "No winner") :
+    h("td", { "data-label": "Result" }, !result ? "Waiting for result" : !result.winner_pick ? (result.status || "No winner") :
       h("span", { class: result.winner_pick.correct ? "good" : "bad" }, `${result.winner} won · ${result.winner_pick.correct ? "Correct" : "Missed"}`),
       result?.first_innings ? h("div", { class: "sub" }, `First innings ${result.first_innings.actual} vs forecast ${result.first_innings.predicted}`) : null,
       result?.set_score ? h("div", { class: "sub" }, `Sets ${result.set_score.actual} vs forecast ${result.set_score.pick}`) : null));
@@ -1030,10 +1203,35 @@ function renderSettings() {
         h("li", {}, `CricketData.org: ${b ? `${b.cricketdata.used} of ${b.cricketdata.limit} used today` : "unknown"}. Only the fixture list uses it, cached for 15 minutes (longer as the budget runs down), and 5 requests are always held back.`),
         h("li", {}, `OpenRouter: ${b ? `${b.openrouter.used} of ${b.openrouter.limit} used today` : "unknown"}. Used for AI checks: one request per match and stage (before the toss or start, after the toss, then a few times as the score moves), at most 12 per match, saved so nothing is asked twice. Checks start by themselves 45 minutes before a match you have open.`),
         h("li", {}, "The toss, playing XIs and live scores come from ESPN's free feed and cost nothing, so the half hour before a match is never rationed."),
-        h("li", {}, "Daily limits can be edited in data/local/api_budget.json if your plan differs."))),
+        h("li", {}, `AcesAPI: ${b?.acesapi ? `${b.acesapi.used} of ${b.acesapi.limit} credits used this month` : "unknown"}. Spent only when you press Check AcesAPI on a tennis match (7 credits), saved for a day, and 20 credits are held back.`),
+        h("li", {}, "Weather (Open-Meteo) and the F1 practice and qualifying results (OpenF1) are free and need no key. They are cached for 30 and 10 minutes."),
+        h("li", {}, "Limits can be edited in data/local/api_budget.json if your plan differs."))),
     h("section", { class: "panel" }, h("h2", {}, "OpenRouter key (optional)"),
       h("div", { class: "row" }, input, h("button", { class: "btn primary", type: "button", onclick: () => send("save") }, "Save key"),
-        h("button", { class: "btn", type: "button", onclick: () => send("clear") }, "Remove key")), message));
+        h("button", { class: "btn", type: "button", onclick: () => send("clear") }, "Remove key")), message),
+    acesKeyPanel());
+}
+
+function acesKeyPanel() {
+  const input = h("input", { type: "password", autocomplete: "off", "aria-label": "AcesAPI key", placeholder: "Paste your AcesAPI key" });
+  const has = state.acesKeyStatus && state.acesKeyStatus !== "missing";
+  const where = { file: "A key is read from the .env file in the MatchLab folder.", environment: "A key is read from the ACESAPI_KEY environment variable." };
+  const message = h("p", { class: "sub", role: "status", style: "margin-top:8px" }, where[state.acesKeyStatus] || (has ? "A key is saved on this computer." : "No key saved yet. You can also put ACESAPI_KEY=… in a .env file in the MatchLab folder (see .env.example)."));
+  const send = async (action) => {
+    try {
+      const out = await api("/api/acesapi-key", action === "save" ? { action, key: input.value } : { action });
+      state.acesKeyStatus = out.acesapi_key_status;
+      input.value = "";
+      Object.keys(state.extra).filter((k) => k.startsWith("aces|")).forEach((k) => delete state.extra[k]);
+      message.textContent = action === "save" ? "Key saved on this computer."
+        : where[out.acesapi_key_status] ? `Saved key removed. ${where[out.acesapi_key_status]}` : "Key removed.";
+    } catch (error) { message.textContent = error.message; }
+  };
+  return h("section", { class: "panel" }, h("h2", {}, "AcesAPI key for tennis (optional)"),
+    h("p", { class: "sub" }, "Adds surface Elo and a full head-to-head to tennis matches. A free key from ", external("https://acesapi.com/signup", "acesapi.com"),
+      " carries 500 credits a month. It is kept on this computer only."),
+    h("div", { class: "row" }, input, h("button", { class: "btn primary", type: "button", onclick: () => send("save") }, "Save key"),
+      h("button", { class: "btn", type: "button", onclick: () => send("clear") }, "Remove key")), message);
 }
 
 function f1LapPanel(season, last, next, request) {
@@ -1153,6 +1351,8 @@ async function renderF1() {
           avatar(driverName(d), 56), h("div", {}, h("span", { class: "f1-pos num" }, `P${d.position}`), h("strong", {}, driverName(d)),
             h("span", { class: "sub" }, (d.Constructors || []).map((c) => c.name).join(" / "))),
           h("span", { class: "f1-driver-points num" }, `${d.points}`, h("span", { class: "sub" }, " pts")))))) : null,
+      next?.Circuit?.Location && next.time ? weatherPanel(`wx|f1|${next.date}`, `/api/conditions?sport=f1&start=${encodeURIComponent(`${next.date}T${next.time}`)}&lat=${encodeURIComponent(next.Circuit.Location.lat)}&lon=${encodeURIComponent(next.Circuit.Location.long)}&name=${encodeURIComponent(next.Circuit.Location.locality || "")}`, "f1") : null,
+      f1WeekendPanel(next),
       f1LapPanel(data.schedule?.RaceTable?.Races || [], last, next, request),
       h("div", { class: "f1-grid" },
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, `${driversList?.season || "CURRENT"} SEASON · ROUND ${driversList?.round || "—"}`), h("h2", {}, "Driver standings"), drivers.length ? table(["Pos", "Driver", "Team", "Wins", "Points"], drivers.map(d => h("tr", {}, h("td", { class: "num" }, d.position), h("td", {}, h("span", { class: "driver-cell" }, avatar(driverName(d), 28), driverName(d))), h("td", {}, (d.Constructors || []).map(c => c.name).join(" / ")), h("td", {}, d.wins), h("td", {}, h("strong", {}, d.points))))) : unavailable()),
@@ -1562,6 +1762,7 @@ function markHosted(app) {
     const [app, schedule] = await Promise.all([api("/api/session"), api("/api/today-matches"), photosReady]);
     state.token = app.token;
     state.keyStatus = app.openrouter_key_status;
+    state.acesKeyStatus = app.acesapi_key_status;
     state.hosted = Boolean(app.hosted);
     state.schedule = schedule;
     showBudgets(schedule.budget);

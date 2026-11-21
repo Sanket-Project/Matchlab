@@ -30,14 +30,14 @@ os.environ["MATCHLAB_TRACKER_FILE"] = "data/public/predictions.json"
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from matchlab import tracker, world  # noqa: E402  (light imports only: no numpy, no models)
+from matchlab import tennis_forecast, tracker, world  # noqa: E402  (light imports only: no numpy, no models)
 
 READ_ONLY = ("This public copy of MatchLab is read-only. Forecasts, AI checks and settings run on the owner's "
              "computer; this page shows what that MatchLab saved.")
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; "
        "font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
 # Seconds a response may be served from the CDN, then for how long a stale copy may be served while it refreshes.
-CDN = {"snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 600), "world": (300, 1800)}
+CDN = {"live": (5, 20), "snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 600), "world": (300, 1800)}
 WORKERS = threading.BoundedSemaphore(2)       # feed workers running at once in one instance
 LIMIT, WINDOW = 60, 60.0                       # requests per client per minute
 _hits, _hits_lock = {}, threading.Lock()
@@ -111,6 +111,39 @@ def brief_state():
             "has_key": False, "hosted": True, "budget": None}
 
 
+def tennis_live(match_id):
+    """The live set score from ESPN's free scoreboard, and the in-play win chance from the saved forecast's serve-point
+    model. Read-only: nothing is saved here. Cached for a few seconds so many viewers cost one feed read."""
+    if not str(match_id).startswith("tennis-"):
+        return None
+    schedule = _json("today_matches.json") or {}
+    entry = tracker.entry(ROOT, match_id) or {}
+    fixture = next((m for m in (schedule.get("sports") or {}).get("tennis") or [] if m.get("id") == match_id), None) or entry.get("fixture")
+    if not fixture:
+        return None
+    tour = "wta" if str(fixture.get("tournament", "")).upper().startswith("WTA") else "atp"
+    event, day = str(match_id).rpartition("-")[2], str(fixture.get("start", ""))[:10].replace("-", "")
+    if not (event.isdecimal() and day.isdecimal()):
+        return None
+    intel = _worker("fetch_tennis_intel.py", tour, event, day, timeout=20, ttl=lambda d: 3600 if d.get("state") == "post" else 8)
+    if not intel or not intel.get("ok"):
+        return {"ok": False, "error": "The live score feed could not be read just now."}
+    names = [fixture.get("team"), fixture.get("opponent")]
+    intel = tennis_forecast.orient(intel, names)
+    pre = entry.get("pre") or {}
+    model = pre.get("model")
+    teams = pre.get("teams") or []
+    if not model and len(teams) == 2 and teams[0].get("win") is not None:
+        # Saved before the serve model was stored: rebuild it from the saved win chance and the tour's average serve.
+        need = 3 if "5" in str(pre.get("format", "")) else 2
+        pa, pb = tennis_forecast.serve_points(teams[0]["win"], 2 * tennis_forecast.SERVE_AVERAGE[tour], need)
+        model = {"pa": pa, "pb": pb, "need": need}
+    return {"ok": True, "state": intel.get("state"), "status": intel.get("status"), "fetched_at": intel.get("fetched_at"),
+            "names": names, "sets": intel.get("sets") or [], "winner": intel.get("winner"),
+            "live": tennis_forecast.live_win(model, intel),
+            "pre_win": [t.get("win") for t in pre.get("teams") or []] or None}
+
+
 class handler(BaseHTTPRequestHandler):
     server_version = "MatchLab-mirror"
 
@@ -144,6 +177,10 @@ class handler(BaseHTTPRequestHandler):
         if body:
             self.wfile.write(body)
 
+    def _tennis_live(self, match_id):
+        data = tennis_live(match_id)
+        return self._send(200, data, cdn="live") if data else self._send(404, {"error": "No tennis match with that id."})
+
     def do_GET(self):
         ok, retry = _allowed(self._client())
         if not ok:
@@ -173,6 +210,8 @@ class handler(BaseHTTPRequestHandler):
         if route == "/api/saved-forecast":
             entry = tracker.entry(ROOT, arg("id"))
             return self._send(200, tracker.public_entry(entry), cdn="snapshot") if entry else self._send(404, {"error": "No forecast was saved for this event."})
+        if route == "/api/tennis-live":
+            return self._tennis_live(arg("id"))
         if route == "/api/world-brief":
             return self._send(200, brief_state(), cdn="snapshot")
         if route == "/api/world":

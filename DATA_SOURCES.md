@@ -121,3 +121,14 @@ License: CC0 (publisher DESCRIPTION)
 The badminton sources (ShuttleSet plus its ShuttleSet22 extension) identify player A as the match winner. Import orientation is alphabetical, and historical contexts include both orientations; winner-coded A/B is never an input feature. Duplicate date/player fixtures across releases are removed. Only the men's singles subset enters this context. Point totals come from observed legal terminal scoreboards, checked against the last-point and match winners; missing stroke rows are never fabricated. Original annotations are retained unchanged.
 
 Cricsheet JSON uses ODC Attribution 1.0. Tennis derived data is for noncommercial use under the terms listed above. Retrosheet attribution is displayed in the dashboard. Rugby's publisher declares CC0 in DESCRIPTION. ShuttleSet root MIT notice is retained; no video footage is downloaded or reused.
+
+## Live context feeds (not used by the models)
+
+- [Open-Meteo](https://open-meteo.com/) forecast and geocoding APIs: hourly temperature, humidity, dew point, rain
+  chance, wind and cloud from one hour before to four hours after a start. Free for non-commercial use, no key.
+  Venues are geocoded from the published venue name, town first. Shown as context; no forecast uses it.
+- [OpenF1](https://openf1.org/) (CC BY-NC-SA 4.0, unofficial): finished-session classifications and track weather for
+  the current race weekend. The free tier serves finished sessions only (30 requests a minute); live timing is paid.
+- [AcesAPI](https://acesapi.com/) (optional, user's own key): surface Elo and head-to-head for a tennis match.
+  500 free credits a month; each check costs 7 and is metered in `data/local/api_budget.json`. Terms allow showing
+  and storing the data in your own app; redistribution as a feed or dataset is not allowed.

@@ -19,3 +19,6 @@ dist/
 # Owner photo originals (about 2 MB each); the dashboard uses web/images/players/, made by tools/process_player_photos.py
 web/images/Formula 1 Drivers/
 web/images/Tennis Players/
+
+# Local API keys (see .env.example)
+.env

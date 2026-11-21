@@ -2,6 +2,18 @@
 
 ## 2026-11-21
 
+### New data feeds (chosen from the public-apis list)
+- **Weather at the start** on cricket, tennis and Formula 1 pages, from [Open-Meteo](https://open-meteo.com/) (free, no
+  key, non-commercial). Shown as context only; the forecast models do not use it. `tools/fetch_weather.py`,
+  `matchlab/conditions.py`, `GET /api/conditions`, cached 30 minutes.
+- **Race weekend so far** on the F1 page: finished practice and qualifying classifications and track weather from
+  [OpenF1](https://openf1.org/) (free tier; live timing during a session is paid, so a session shows once it ends).
+  `tools/fetch_openf1.py`, `matchlab/openf1.py`, `GET /api/f1-weekend`, cached 10 minutes.
+- **AcesAPI second view** on tennis pages: both players' surface Elo and full head-to-head from
+  [AcesAPI](https://acesapi.com/), with your own key (Settings; saved with Windows DPAPI). Asked only on a button
+  press, 7 credits, saved for a day. The budget ledger now meters monthly credits (`acesapi`: 500, 20 held back).
+- SportScore was left out: its site refuses automated access.
+
 ### Hosting
 - The Vercel site now serves the real dashboard at `/` as a **read-only public mirror** of the owner's MatchLab.
   Previously `/` was the legacy lab and every API call returned 403 (Vercel ran `app.py` and its localhost guard).

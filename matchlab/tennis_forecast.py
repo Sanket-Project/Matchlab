@@ -313,14 +313,79 @@ def _live_state(intel, need):
     return {"sets": won, "games": current, "text": ", ".join(f"{s['a']}-{s['b']}" for s in sets) or "0-0"}
 
 
+def orient(intel, names):
+    """Put the feed's sides in the fixture's order (the feed sometimes lists them the other way round)."""
+    listed = [name_key(n) for n in (intel or {}).get("names") or []]
+    if len(listed) == 2 and listed[0] == name_key(names[1]) and listed[1] == name_key(names[0]):
+        return {**intel, "sets": [{**one, "a": one["b"], "b": one["a"]} for one in intel.get("sets") or []],
+                "winner": None if intel.get("winner") is None else 1 - intel["winner"], "names": names}
+    return intel
+
+
+def live_win(model, intel):
+    """In-play win chance from the saved serve-point model and a live set score. Standard library only, so the
+    hosted copy can follow the score without the results archive. None when the match is not in play."""
+    if not model or (intel or {}).get("state") != "in":
+        return None
+    need, pa, pb = model["need"], model["pa"], model["pb"]
+    live = _live_state(intel, need)
+    if not live:
+        return None
+    current = set_from(pa, pb, *live["games"])
+    now = match_outcomes(set_from(pa, pb), need, live["sets"][0], live["sets"][1], current)
+    first = sum(c for (a, _), c in now.items() if a == need)
+    return {"score": live["text"], "sets": live["sets"], "games": list(live["games"]), "set_number": sum(live["sets"]) + 1,
+            "win": [round(first, 3), round(1 - first, 3)], "current_set": round(current, 3)}
+
+
+def case(names, teams, h2h, surface):
+    """The plain case for the pick: each player's last 6 results, their last 6 meetings, and the reasons the
+    favourite is favoured (and any that point the other way). Built only from the model's own inputs."""
+    pick = 0 if teams[0]["win"] >= teams[1]["win"] else 1
+    other = 1 - pick
+    form = []
+    for t in teams:
+        last = (t.get("recent") or [])[:6]
+        won = sum(1 for m in last if m["won"])
+        form.append({"name": t["name"], "won": won, "played": len(last),
+                     "last": [{"won": m["won"], "opponent": m["opponent"], "score": m["score"], "date": m["date"], "event": m["event"]} for m in last]})
+    meets = (h2h.get("last") or [])[:6]
+    meet_wins = [sum(1 for m in meets if m["winner"] == names[i]) for i in (0, 1)]
+    reasons = []
+
+    def add(text, side):
+        reasons.append({"text": text, "for": side})
+
+    gap = teams[pick]["rating"]["blended"] - teams[other]["rating"]["blended"]
+    add(f"{names[pick]} is rated {abs(gap)} points {'higher' if gap >= 0 else 'lower'} on {surface.lower()} courts "
+        f"({teams[pick]['rating']['blended']} v {teams[other]['rating']['blended']}).", "pick" if gap >= 0 else "other")
+    fp, fo = form[pick], form[other]
+    if fp["played"] and fo["played"]:
+        side = "pick" if fp["won"] > fo["won"] else "other" if fp["won"] < fo["won"] else "even"
+        add(f"Form: {names[pick]} won {fp['won']} of the last {fp['played']}; {names[other]} won {fo['won']} of the last {fo['played']}.", side)
+    if meets:
+        side = "pick" if meet_wins[pick] > meet_wins[other] else "other" if meet_wins[pick] < meet_wins[other] else "even"
+        latest = meets[0]
+        add(f"Head to head: {names[pick]} {meet_wins[pick]}, {names[other]} {meet_wins[other]} in their last {len(meets)} meeting{'s' if len(meets) != 1 else ''}. "
+            f"Most recent: {latest['winner']} won {latest['score']} at {latest['event']}.", side)
+    else:
+        add("Head to head: no earlier meeting on record since 2020.", "even")
+    hp, ho = teams[pick]["hold"], teams[other]["hold"]
+    if abs(hp - ho) >= 0.01:
+        add(f"Serve: {names[pick]} holds {100 * hp:.0f}% of service games here, {names[other]} {100 * ho:.0f}%.", "pick" if hp > ho else "other")
+    ranks = [t.get("rank") for t in teams]
+    if ranks[pick] and ranks[other]:
+        add(f"Ranking: {names[pick]} No. {ranks[pick]}, {names[other]} No. {ranks[other]}.", "pick" if ranks[pick] < ranks[other] else "other")
+    return {"pick": names[pick], "chance": teams[pick]["win"], "form": form,
+            "h2h": {"meetings": h2h.get("meetings", 0), "wins": h2h.get("wins", [0, 0]), "last": meets, "last_wins": meet_wins},
+            "reasons": reasons}
+
+
 def build(root, fixture, intel=None):
     tour = "wta" if str(fixture.get("tournament", "")).upper().startswith("WTA") else "atp"
     table = ratings(root, tour)
     names = [fixture["team"], fixture["opponent"]]
-    listed = [name_key(n) for n in (intel or {}).get("names") or []]
-    if len(listed) == 2 and listed[0] == name_key(names[1]) and listed[1] == name_key(names[0]):      # feed lists the sides the other way round
-        intel = {**intel, "sets": [{**one, "a": one["b"], "b": one["a"]} for one in intel.get("sets") or []],
-                 "winner": None if intel.get("winner") is None else 1 - intel["winner"], "names": names}
+    intel = orient(intel, names)
     if any(not name or name_key(name) in ("tbd", "bye") for name in names):
         return {"supported": False, "reason": "The players for this match are not decided yet."}
     event = str(fixture.get("tournament", "")).partition("·")[2].strip() or str(fixture.get("tournament", ""))
@@ -342,7 +407,7 @@ def build(root, fixture, intel=None):
     first_wins = sum(m["winner"] == sides[0]["pid"] for m in meetings)
     h2h = {"meetings": len(meetings), "wins": [first_wins, len(meetings) - first_wins],
            "last": [{"date": str(date.fromordinal(m["day"])), "winner": names[0] if m["winner"] == sides[0]["pid"] else names[1],
-                     "score": m["score"], "event": m["event"], "surface": m["surface"]} for m in reversed(meetings[-4:])]}
+                     "score": m["score"], "event": m["event"], "surface": m["surface"]} for m in reversed(meetings[-6:])]}
     gap = round(sides[0]["rating"] - sides[1]["rating"])
     stale = (date.today().toordinal() - table.last_day)
     notes = [f"{names[0] if gap >= 0 else names[1]} is rated {abs(gap)} points higher on {surface.lower()} courts, which is worth a {100 * max(rated, 1 - rated):.0f}% win chance."]
@@ -379,6 +444,8 @@ def build(root, fixture, intel=None):
             "backtest": backtest(root, tour),
         },
     }
+    payload["model"] = {"pa": pa, "pb": pb, "need": need}
+    payload["case"] = case(names, teams, h2h, surface)
     live = _live_state(intel, need) if state == "in" else None
     if live:
         current = set_from(pa, pb, *live["games"])

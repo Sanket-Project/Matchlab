@@ -75,6 +75,37 @@ class Forecast(unittest.TestCase):
             self.assertEqual(flipped["live"]["win"], behind["live"]["win"])
             self.assertFalse(tf.build(root, {**FIXTURE, "team": "TBD"}, None)["supported"])
 
+    def test_case_shows_last_six_form_and_meetings_and_live_win_matches_the_full_model(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            archive(root)
+            pre = tf.build(root, FIXTURE, None)
+            case = pre["case"]
+            self.assertEqual(case["pick"], "Ann Strong")
+            self.assertEqual([f["played"] for f in case["form"]], [6, 6])
+            self.assertEqual(case["form"][0]["won"], 6)
+            self.assertEqual(len(case["h2h"]["last"]), 6)
+            self.assertEqual(case["h2h"]["last_wins"], [6, 0])
+            self.assertEqual(case["h2h"]["meetings"], 30)
+            self.assertTrue(all(r["for"] in ("pick", "other", "even") for r in case["reasons"]))
+            self.assertIn("Head to head", " ".join(r["text"] for r in case["reasons"]))
+            intel = {"ok": True, "state": "in", "names": ["Bea Weak", "Ann Strong"], "winner": None,
+                     "sets": [{"a": 6, "b": 3, "done": True}, {"a": 4, "b": 1, "done": False}]}
+            full = tf.build(root, FIXTURE, intel)["live"]["win"]
+            light = tf.live_win(pre["model"], tf.orient(intel, [FIXTURE["team"], FIXTURE["opponent"]]))
+            self.assertEqual(light["win"], full)
+            self.assertIsNone(tf.live_win(pre["model"], {"state": "pre"}))
+            saved = tracker._compact(pre)
+            self.assertEqual(saved["case"]["pick"], "Ann Strong")
+            self.assertIn("pa", saved["model"])
+
+    def test_an_echoed_reply_template_is_not_accepted_as_an_ai_check(self):
+        echoed = ('{"favours": "neither", "points": 0, "headline": "<one sentence on where the match stands>", '
+                  '"reasons": ["<short reason>", "<short reason>"], "watch": "<the one thing most likely to change this>"}')
+        self.assertFalse(ai_check.parse(echoed, ["Ann Strong", "Bea Weak"])["readable"])
+        real = '{"favours": "Ann Strong", "points": 2, "headline": "Ann is serving well.", "reasons": ["Held every game."], "watch": "Her first serve."}'
+        self.assertTrue(ai_check.parse(real, ["Ann Strong", "Bea Weak"])["readable"])
+
     def test_forecast_is_saved_then_graded_with_the_ai_pick(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)

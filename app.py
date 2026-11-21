@@ -20,8 +20,8 @@ from matchlab.engine import Engine, FEATURES, default_config
 from matchlab.cricket import validate_post_toss
 from matchlab.cricket_preview import build_context
 from matchlab.live import annotate
-from matchlab.openrouter_key import OpenRouterKey
-from matchlab import ai_check, budget, calibration, cricket_forecast, tennis_forecast, tracker, world
+from matchlab.openrouter_key import AcesApiKey, OpenRouterKey
+from matchlab import acesapi, ai_check, budget, calibration, cricket_forecast, tennis_forecast, tracker, world
 
 ROOT = Path(__file__).resolve().parent
 SUMMARY_INSTRUCTIONS = """You explain a cricket forecast to a fan in plain English.
@@ -62,6 +62,10 @@ class LocalServer(ThreadingHTTPServer):
         self.grading_lock = threading.Lock()
         self.openrouter_key = OpenRouterKey(ROOT / "data/local/openrouter-key.dpapi")
         self.openrouter_lock = threading.Lock()
+        self.acesapi_key = AcesApiKey(ROOT / "data/local/acesapi-key.dpapi")
+        self.acesapi_lock = threading.Lock()
+        self.feed_cache = {}
+        self.feed_lock = threading.Lock()
         self.preview_lock = threading.Lock()
         self.intel_cache = {}
         self.cricket_intel_lock = threading.Lock()
@@ -270,7 +274,7 @@ class Handler(BaseHTTPRequestHandler):
 
     def _tennis_forecast(self, payload, parts=False):
         match = self._fixture(payload.get("match_id"), "tennis")
-        intel = self._tennis_intel(match, max_age=0 if payload.get("refresh") is True else 45)
+        intel = self._tennis_intel(match, max_age=0 if payload.get("refresh") is True else 8 if payload.get("live") is True else 45)
         with self.server.forecast_lock:
             forecast = tennis_forecast.build(ROOT, match, intel)
         forecast["fixture"] = {k: match.get(k) for k in ("id", "team", "opponent", "tournament", "start", "venue", "state", "status", "detail")}
@@ -285,6 +289,100 @@ class Handler(BaseHTTPRequestHandler):
         if forecast.get("supported"):
             self._attach_ai(forecast, match)
         return (forecast, match) if parts else forecast
+
+    def _worker(self, key, max_age, args, timeout=30):
+        """Run a free network worker and keep its answer for `max_age` seconds (a failed read is retried after a minute)."""
+        with self.server.feed_lock:
+            saved = self.server.feed_cache.get(key)
+        if saved and time.monotonic() - saved[0] < (max_age if saved[1].get("ok") and not saved[1].get("stale") else 60):
+            return saved[1]
+        try:
+            done = subprocess.run([sys.executable, *args], capture_output=True, text=True, timeout=timeout)
+            data = json.loads(done.stdout)
+        except (OSError, ValueError, subprocess.SubprocessError):
+            data = {"ok": False, "error": "The feed could not be read."}
+        if not data.get("ok") and saved and saved[1].get("ok"):
+            data = {**saved[1], "stale": True}
+        with self.server.feed_lock:
+            self.server.feed_cache[key] = (time.monotonic(), data)
+        return data
+
+    def _conditions(self, query):
+        """Open-Meteo forecast for a fixture's venue (cricket, tennis) or given coordinates (Formula 1). Free; cached 30 minutes."""
+        def one(name):
+            return (query.get(name) or [""])[0]
+        sport, start = one("sport"), one("start")
+        if one("id"):
+            sport = one("id").split("-", 1)[0]
+            if sport not in ("cricket", "tennis"):
+                raise ValueError("Choose a cricket or tennis fixture.")
+            match = self._fixture(one("id"), sport)
+            start, venue = match.get("start"), str(match.get("venue") or "").strip()
+            if not venue:
+                return {"ok": False, "error": "The fixture list gives no venue for this match."}
+            where = ["--venue", venue[:200]]
+        elif sport == "f1":
+            try:
+                lat, lon = float(one("lat")), float(one("lon"))
+            except ValueError:
+                raise ValueError("Choose a circuit.") from None
+            where = ["--at", f"{lat:.4f}", f"{lon:.4f}", one("name")[:80]]
+        else:
+            raise ValueError("Choose a fixture.")
+        try:
+            moment = datetime.fromisoformat(str(start).replace("Z", "+00:00"))
+        except ValueError:
+            return {"ok": False, "error": "The match has no start time yet."}
+        if moment.tzinfo is None:
+            moment = moment.replace(tzinfo=timezone.utc)
+        ahead = (moment - datetime.now(timezone.utc)).total_seconds() / 86400
+        if ahead < -2:
+            return {"ok": False, "error": "This match started more than two days ago, so no match-time forecast is shown."}
+        if ahead > 15:
+            return {"ok": False, "error": "Open-Meteo forecasts reach about two weeks ahead. Check again nearer the start."}
+        stamp = moment.isoformat().replace("+00:00", "Z")
+        return self._worker(("weather", sport, *where, stamp), 1800, [str(ROOT / "tools/fetch_weather.py"), sport, stamp, *where])
+
+    def _f1_weekend(self, query):
+        """Finished practice and qualifying sessions from OpenF1 (free tier; live timing is paid). Cached 10 minutes."""
+        try:
+            moment = datetime.fromisoformat((query.get("start") or [""])[0].replace("Z", "+00:00"))
+        except ValueError:
+            raise ValueError("Choose a race start time.") from None
+        if moment.tzinfo is None:
+            moment = moment.replace(tzinfo=timezone.utc)
+        stamp = moment.isoformat().replace("+00:00", "Z")
+        return self._worker(("openf1", stamp), 600, [str(ROOT / "tools/fetch_openf1.py"), stamp], timeout=40)
+
+    def _acesapi_check(self, payload):
+        """Surface Elo and head-to-head from AcesAPI. Asked only on request, metered in credits, saved for a day."""
+        match = self._fixture(payload.get("match_id"), "tennis")
+        event = str(match.get("id", "")).rpartition("-")[2]
+        if not event.isdecimal():
+            raise ValueError("Choose a tennis match.")
+        cache = budget.Cache(ROOT, f"acesapi-tennis-{event}")
+        saved = cache.get(86400)
+        if saved:
+            return {"check": saved, "budget": budget.status(ROOT)["acesapi"], "cached": True}
+        if self.server.acesapi_key.status() == "missing":
+            raise ValueError("Save an AcesAPI key in Settings first.")
+        tour = "wta" if str(match.get("tournament", "")).upper().startswith("WTA") else "atp"
+        surface = acesapi.surface(payload.get("surface")) or "hard"
+        with self.server.acesapi_lock:
+            secret = self.server.acesapi_key.get()
+            if not budget.spend(ROOT, "acesapi", f"AcesAPI {match.get('team')} v {match.get('opponent')}", cost=acesapi.CREDITS):
+                raise ValueError("This month's AcesAPI credits are used up (a reserve is kept back).")
+            try:
+                done = subprocess.run([sys.executable, str(ROOT / "tools/fetch_acesapi.py")], capture_output=True, text=True, timeout=60,
+                                      input=json.dumps({"key": secret, "tour": tour, "names": [match.get("team"), match.get("opponent")],
+                                                        "surface": surface}))
+                check = json.loads(done.stdout)
+            except (OSError, ValueError, subprocess.SubprocessError):
+                check = {"ok": False, "error": "AcesAPI could not be reached."}
+        if not check.get("ok"):
+            raise ValueError(check.get("error") or "AcesAPI could not be reached.")
+        cache.put(check)
+        return {"check": check, "budget": budget.status(ROOT)["acesapi"], "cached": False}
 
     def _ai_check(self, payload):
         """One AI second opinion per match and checkpoint, from a free OpenRouter model. Metered and saved."""
@@ -465,12 +563,14 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, {"catalog": self.server.engine.catalog(), "config": self.server.engine.config,
                                         "features": FEATURES, "token": self.server.token, "offline": True,
                                         "demo_config": default_config(), "real_config": self.server.real_config,
-                                        "openrouter_key_status": self.server.openrouter_key.status()})
+                                        "openrouter_key_status": self.server.openrouter_key.status(),
+                                        "acesapi_key_status": self.server.acesapi_key.status()})
         if route == "/api/session":
             # What the dashboard needs to start: the request token and whether a key is saved. /api/state also
             # carries the full model catalogue (several MB) for the lab page and should not gate the first paint.
             return self._send(200, {"token": self.server.token, "offline": True,
-                                    "openrouter_key_status": self.server.openrouter_key.status()})
+                                    "openrouter_key_status": self.server.openrouter_key.status(),
+                                    "acesapi_key_status": self.server.acesapi_key.status()})
         if route == "/api/health":
             return self._send(200, {"ok": True, "offline": True})
         if route == "/api/today-matches":
@@ -492,6 +592,17 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(400, {"error": "Choose a season and round."})
             data = self._f1_timing(season, round_number)
             return self._send(200, data) if data is not None else self._send(503, {"error": "Lap timing is temporarily unavailable."})
+        if route in ("/api/conditions", "/api/f1-weekend"):
+            try:
+                read = self._conditions if route == "/api/conditions" else self._f1_weekend
+                return self._send(200, read(parse_qs(urlsplit(self.path).query)))
+            except ValueError as exc:
+                return self._send(400, {"error": str(exc)})
+        if route == "/api/acesapi-check":
+            event = (parse_qs(urlsplit(self.path).query).get("id") or [""])[0].rpartition("-")[2]
+            saved = budget.Cache(ROOT, f"acesapi-tennis-{event}").get(86400) if event.isdecimal() else None
+            return self._send(200, {"check": saved, "has_key": self.server.acesapi_key.status() != "missing",
+                                    "budget": budget.status(ROOT)["acesapi"], "credits": acesapi.CREDITS})
         if route == "/api/world":
             query = parse_qs(urlsplit(self.path).query)
             name = (query.get("section") or [""])[0]
@@ -704,6 +815,17 @@ class Handler(BaseHTTPRequestHandler):
                 return self._cricket_preview(payload, route == "/api/cricket-preview")
             if route == "/api/world-brief":
                 return self._send(200, self._world_brief(payload))
+            if route == "/api/acesapi-check":
+                return self._send(200, self._acesapi_check(payload))
+            if route == "/api/acesapi-key":
+                with self.server.acesapi_lock:
+                    if payload.get("action") == "save":
+                        self.server.acesapi_key.save(payload.get("key"))
+                    elif payload.get("action") == "clear":
+                        self.server.acesapi_key.clear()
+                    else:
+                        raise ValueError("Choose whether to save or remove the AcesAPI key.")
+                    return self._send(200, {"acesapi_key_status": self.server.acesapi_key.status()})
             if route == "/api/openrouter-key":
                 with self.server.openrouter_lock:
                     if payload.get("action") == "save":

@@ -1069,3 +1069,59 @@ table.calibration td,table.calibration th[scope=row]{font-variant-numeric:tabula
 .btn:disabled{opacity:1;color:var(--color-text-secondary);border-style:dashed;cursor:progress}
 .btn.primary:disabled{color:var(--color-on-accent, #fff)}
 #sport-record>h2{margin-top:var(--ml-s4)}
+
+/* ---- Tennis: who wins and why (form, head to head, reasons) and the hosted live score ---- */
+.case .section-head,.live .section-head{display:flex;align-items:center;justify-content:space-between;gap:var(--ml-s3);flex-wrap:wrap}
+.case-pick{font-size:20px;margin:var(--ml-s2) 0 var(--ml-s4);line-height:1.35}
+.case-pick strong{font-family:var(--font-family-heading);font-weight:700}
+.case-row{display:flex;align-items:center;justify-content:space-between;gap:var(--ml-s2) var(--ml-s4);flex-wrap:wrap;padding:var(--ml-s3) 0;border-top:1px solid var(--color-border)}
+.case-label{display:flex;flex-direction:column;gap:2px;min-width:0}
+.case-label .sub{margin:0}
+.form-dots{display:flex;gap:6px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.form-dots li{min-width:34px;height:34px;padding:0 6px;border-radius:var(--radius-inner);display:grid;place-items:center;font-size:12px;font-weight:700;cursor:default}
+.form-dots .w{background:var(--color-background-green);color:var(--color-text-green)}
+.form-dots .l{background:var(--color-background-red);color:var(--color-text-red)}
+.case h3{margin:var(--ml-s4) 0 var(--ml-s2)}
+.case-reasons{list-style:none;margin:0;padding:0;display:grid;gap:var(--ml-s2)}
+.case-reasons li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:var(--ml-s3);align-items:baseline;line-height:1.5}
+.case-reasons .tag{justify-self:start;text-align:center}
+.tag.warn{background:var(--color-background-red);color:var(--color-text-red)}
+.set-table{width:100%;border-collapse:collapse;margin:var(--ml-s2) 0}
+.set-table th,.set-table td{padding:10px 8px;border-bottom:1px solid var(--color-border);text-align:left}
+.set-table td{text-align:center;font-size:18px;font-weight:700}
+.set-table tr.won th::after{content:" ✓";color:var(--color-text-green)}
+
+/* ---- Phone fixes: 44px targets, two-up stat tiles, stacked tables, no broken tiles ---- */
+h1[tabindex="-1"]:focus{outline:none}
+@media (max-width:760px){
+  .bar nav{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;gap:2px}
+  .bar nav::-webkit-scrollbar{display:none}
+  .bar nav a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;flex:1 0 auto}
+  .chip,.match-search,.ticker-marquee-item{min-height:44px}
+  .foot a{display:inline-block;padding:12px 0}
+  .back{display:inline-flex;align-items:center;min-height:44px}
+  .stats:not(.forecast-stats){grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stats:not(.forecast-stats)>.stat:last-child:nth-child(odd){grid-column:1/-1}
+  .terminal-metrics-deck{grid-template-columns:minmax(0,1fr)}
+  .terminal-stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stat-tile-v{overflow-wrap:break-word}
+  .broker-terminal{padding:18px}
+}
+@media (max-width:640px){
+  .record-table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .record-table,.record-table tbody,.record-table tr,.record-table td{display:block;width:100%}
+  .record-table tr{padding:var(--ml-s3) 0;border-bottom:1px solid var(--color-border)}
+  .record-table td{position:relative;padding:4px 0 4px 84px;border:0;min-height:0;white-space:normal}
+  .record-table td.num{white-space:normal}
+  .record-table td::before{content:attr(data-label);position:absolute;left:0;top:4px;font-size:12px;font-weight:600;color:var(--ink2)}
+  .record-table td a{display:inline-flex;align-items:center;min-height:44px}
+}
+@media (max-width:480px){
+  .utility-bar>span:first-child{display:none}
+  .stat{padding:12px}
+  .stat .v{font-size:24px}
+  #refresh-match{width:100%}
+  .saved-head{flex-wrap:wrap}
+  .case-pick{font-size:18px}
+  .case-reasons li{grid-template-columns:64px minmax(0,1fr);gap:var(--ml-s2)}
+}

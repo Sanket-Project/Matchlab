@@ -74,6 +74,10 @@ def parse(text, names):
     except (TypeError, ValueError):
         points = 0
     reasons = [clean(r, 240) for r in raw.get("reasons") or [] if isinstance(r, str)] if isinstance(raw.get("reasons"), list) else []
+    # Some free models echo the reply template ("<short reason>") instead of filling it in: that is not an answer.
+    template = re.compile(r"^<[^<>]*>$")
+    if any(template.match(part) for part in [clean(raw.get("headline"), 300), clean(raw.get("watch"), 240), *reasons] if part):
+        raw = {}
     return {"shift": 0 if side is None else (points if side == 0 else -points),      # points toward the first side
             "headline": clean(raw.get("headline"), 300), "reasons": [r for r in reasons if r][:4], "watch": clean(raw.get("watch"), 240),
             "readable": bool(raw)}

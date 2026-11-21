@@ -72,7 +72,8 @@ def _win(team):
 def _compact(forecast):
     if forecast.get("sport") == "tennis":
         return {"saved_at": _now(), "sport": "tennis", "stage": forecast["stage"], "format": forecast["format"], "lineups_confirmed": True,
-                "teams": [{"name": t["name"]} | _win(t) for t in forecast["teams"]], "set_score": forecast["set_scores"][0]}
+                "teams": [{"name": t["name"]} | _win(t) for t in forecast["teams"]], "set_score": forecast["set_scores"][0]} | {
+                    key: forecast[key] for key in ("case", "model") if key in forecast}
     return {"saved_at": _now(), "stage": forecast["stage"], "format": forecast["format"],
             "lineups_confirmed": all(t["lineup_confirmed"] for t in forecast["teams"]),
             "teams": [{"name": t["name"]} | _win(t) | {"first_innings": t["first_innings"], "wickets_taken": t["wickets_taken"],

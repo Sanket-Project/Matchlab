@@ -147,10 +147,18 @@ class BudgetSpent(Exception):
 
 
 def fetch_cricketdata(today):
-    try:
-        key = CRICKETDATA_KEY_FILE.read_text(encoding="utf-8-sig").strip()
-    except FileNotFoundError:
-        return None
+    key = os.environ.get("CRICKETDATA_API_KEY", "").strip()
+    if not key:
+        try:
+            from matchlab.openrouter_key import env_file_value
+            key = env_file_value("CRICKETDATA_API_KEY")
+        except Exception:
+            pass
+    if not key and CRICKETDATA_KEY_FILE.is_file():
+        try:
+            key = CRICKETDATA_KEY_FILE.read_text(encoding="utf-8-sig").strip()
+        except OSError:
+            key = ""
     if not key:
         return None
 

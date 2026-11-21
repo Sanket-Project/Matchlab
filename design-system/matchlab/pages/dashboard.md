@@ -59,3 +59,29 @@ MatchLab implements a physically grounded, mathematically calibrated motion syst
   - **Probability Meters & Forecasts**: Fluid width expansion via `--ease-out-expo` with specular algorithmic gradient sweep (`@keyframes bar-sweep`), accompanied by smooth numeric counter roll-ups.
   - **Financial Terminal & Charts**: SVG path stroke-dash progressive trace (`@keyframes chart-stroke-draw`) and area mountain fade-in.
   - **Strict Accessibility**: Zero motion latency override under `@media (prefers-reduced-motion: reduce)` guaranteeing safety for motion-sensitive users.
+
+## Tennis: "Who wins and why" (#match/tennis-*)
+
+Sits under the live score and above the win chance, on the local app and on the hosted copy. It shows the pick
+and its chance (following the live score), each player's last 6 results as W/L badges with "won–lost · %", their
+last 6 meetings as badges named by the winner (green when the pick won), then the reasons, each tagged For,
+Against or Level. Every badge has a title and visually hidden text with the date, opponent and score. Built
+server-side by `tennis_forecast.case()` from the model's own inputs, and saved with the locked forecast so the
+hosted copy can show it. The hosted copy follows the score through `/api/tennis-live` (ESPN, free, cached 8 s)
+every 10 s while live; the server recomputes the win chance from the saved serve-point model.
+
+## Phones (≤760 px)
+
+Nav, chips, search, ticker items, back links and table links are at least 44 px tall. Stat tiles sit two to a row
+(a lone last tile spans the row). The Track record table becomes one stacked card per forecast with labelled
+fields (`data-label`). Market range cards stack and the market stat tiles sit two to a row. Programmatic focus on
+the page `h1` draws no outline. Checked at 375 px with Playwright: no horizontal scroll on any view.
+
+## Extra feed panels (weather, OpenF1, AcesAPI)
+
+`lazyPanel()` in dash.js renders a `.panel` from `state.extra` at once; on a miss it shows a loading state
+(`aria-busy`), fetches once and swaps itself in by id, so live re-renders never refetch. "Weather at the start"
+(cricket, tennis, F1) uses `.stats` tiles and a `.note` naming Open-Meteo and stating the model does not use it.
+"Race weekend so far" (F1) lists sessions and puts each classification in a `details.more` with a `.scroll` table.
+"Second view from AcesAPI" (tennis) spends credits only on a button press and says how many remain. All three are
+hidden on the hosted copy. Each has an error state; weather has Try again.
