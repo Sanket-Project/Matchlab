@@ -885,57 +885,6 @@ function f1LapPanel(season, last, next, request) {
   return panel;
 }
 
-const F1_GRID_CARS = [
-  { team: "Red Bull Racing", chassis: "RB20", img: "/images/f1-car-redbull.jpg", engine: "Honda RBPT", color: "#001A30", accent: "#CC1E4A", secondary: "#FCD700", drivers: "Verstappen · Pérez", aero: "Aggressive undercut sidepods & inverted shark-inlets" },
-  { team: "Ferrari", chassis: "SF-24", img: "/images/f1-hero.jpg", engine: "Ferrari 066/12", color: "#E80020", accent: "#FFF200", secondary: "#FFFFFF", drivers: "Leclerc · Sainz", aero: "Reworked downwash gulley & push-rod rear suspension" },
-  { team: "McLaren", chassis: "MCL38", img: "/images/f1-grid-lineup.jpg", engine: "Mercedes-AMG", color: "#FF8000", accent: "#141414", secondary: "#47C7FC", drivers: "Norris · Piastri", aero: "Low-drag beam wing & optimized floor venturi channels" },
-  { team: "Mercedes", chassis: "W15", img: "/images/f1-hero.jpg", engine: "Mercedes-AMG", color: "#00A19B", accent: "#C0C0C0", secondary: "#0A0A0A", drivers: "Hamilton · Russell", aero: "Anti-dive front wishbones & twin-plane rear wing" },
-  { team: "Aston Martin", chassis: "AMR24", img: "/images/f1-car-astonmartin.jpg", engine: "Mercedes-AMG", color: "#00665E", accent: "#CEDC00", secondary: "#071D18", drivers: "Alonso · Stroll", aero: "Deep slide-channel sidepod slide & slim nosecone" },
-  { team: "Alpine", chassis: "A524", img: "/images/f1-car-alpine.jpg", engine: "Renault E-Tech", color: "#0090FF", accent: "#FD4BC7", secondary: "#111111", drivers: "Gasly · Ocon", aero: "Wide-span front cascade & compact cooling package" },
-  { team: "Williams", chassis: "FW46", img: "/images/f1-grid-lineup.jpg", engine: "Mercedes-AMG", color: "#00A0DE", accent: "#041E42", secondary: "#B05B1B", drivers: "Albon · Colapinto", aero: "Forward-shifted aero pressure & low-drag rear wing" },
-  { team: "RB", chassis: "VCARB 01", img: "/images/f1-car-vcarb.jpg", engine: "Honda RBPT", color: "#6692FF", accent: "#FFFFFF", secondary: "#CC1E4A", drivers: "Tsunoda · Lawson", aero: "Pull-rod front suspension synergy with Red Bull Technology" },
-  { team: "Sauber", chassis: "C44", img: "/images/f1-car-sauber.jpg", engine: "Ferrari", color: "#52E252", accent: "#0F0F0F", secondary: "#242424", drivers: "Bottas · Zhou", aero: "Fluo-green high-visibility livery & undercut radiator inlets" },
-  { team: "Haas F1 Team", chassis: "VF-24", img: "/images/f1-grid-lineup.jpg", engine: "Ferrari", color: "#B6BABD", accent: "#E6002B", secondary: "#1C1C1C", drivers: "Hülkenberg · Magnussen", aero: "Ferrari-derived suspension & tire degradation management floor" }
-];
-
-function f1CarsGrid(teams) {
-  const pointsMap = Object.fromEntries((teams || []).map((t) => [t.Constructor.name.toLowerCase(), t]));
-  const cards = F1_GRID_CARS.map((car) => {
-    const matched = Object.entries(pointsMap).find(([name]) => car.team.toLowerCase().includes(name) || name.includes(car.team.toLowerCase()))?.[1];
-    return h("article", { class: "f1-car-card", style: `--team-color:${car.color};--team-accent:${car.accent};--team-secondary:${car.secondary}` },
-      h("div", { class: "car-media-wrap" },
-        h("img", { src: car.img, alt: `${car.team} ${car.chassis}`, class: "car-media", loading: "lazy", decoding: "async" })),
-      h("div", { class: "car-livery-bar" },
-        h("div", { class: "bar-primary" }),
-        h("div", { class: "bar-accent" }),
-        h("div", { class: "bar-secondary" })),
-      h("div", { class: "car-card-body" },
-        h("div", { class: "car-header" },
-          h("div", {},
-            h("span", { class: "car-chassis" }, car.chassis),
-            h("h3", {}, car.team)),
-          matched ? h("span", { class: "tag ok" }, `P${matched.position} · ${matched.points} pts`) : null),
-        h("div", { class: "car-specs" },
-          h("div", {}, h("span", { class: "spec-label" }, "Power Unit"), h("strong", {}, car.engine)),
-          h("div", {}, h("span", { class: "spec-label" }, "Drivers"), h("strong", {}, car.drivers))),
-        h("p", { class: "car-aero" }, car.aero)));
-  });
-  return h("section", { class: "panel f1-grid-showcase", "aria-labelledby": "f1-grid-title" },
-    h("div", { class: "section-head" },
-      h("div", {},
-        h("p", { class: "f1-label" }, "THE 2024–2026 GRID"),
-        h("h2", { id: "f1-grid-title" }, "Cars & Constructors on the Grid")),
-      h("span", { class: "tag" }, "10 Teams · 20 Cars")),
-    h("p", { class: "sub", style: "margin-bottom:14px" }, "Chassis architecture, power units, driver lineups and active aerodynamics for every car on the Formula 1 grid."),
-    h("div", { class: "f1-grid-banner" },
-      h("img", { src: "/images/f1-grid-lineup.jpg", alt: "Complete Formula 1 Starting Grid Lineup", class: "grid-banner-img", loading: "lazy" }),
-      h("div", { class: "grid-banner-overlay" },
-        h("span", { class: "venue-kicker" }, "THE STARTING GRID LINEUP"),
-        h("h3", {}, "Every Car on the Grid"),
-        h("p", {}, "All 10 constructor machines in championship formation on the start/finish straight"))),
-    h("div", { class: "f1-cars-container" }, cards));
-}
-
 async function renderF1() {
   const request = ++state.request;
   clearTimeout(state.timer);
@@ -968,7 +917,6 @@ async function renderF1() {
             h("p", { class: "f1-label" }, "CHAMPIONSHIP LEADER"),
             drivers.length ? [h("h2", {}, `${drivers[0].Driver.givenName} ${drivers[0].Driver.familyName}`), h("p", { class: "sub" }, (drivers[0].Constructors || []).map(x => x.name).join(" / ")), h("p", { class: "f1-points" }, `${drivers[0].points} pts`)] : unavailable()))),
       f1LapPanel(data.schedule?.RaceTable?.Races || [], last, next, request),
-      f1CarsGrid(teams),
       h("div", { class: "f1-grid" },
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, `${driversList?.season || "CURRENT"} SEASON · ROUND ${driversList?.round || "—"}`), h("h2", {}, "Driver standings"), drivers.length ? table(["Pos", "Driver", "Team", "Wins", "Points"], drivers.map(d => h("tr", {}, h("td", {}, d.position), h("td", {}, `${d.Driver.givenName} ${d.Driver.familyName}`), h("td", {}, (d.Constructors || []).map(c => c.name).join(" / ")), h("td", {}, d.wins), h("td", {}, h("strong", {}, d.points))))) : unavailable()),
         h("section", { class: "panel" }, h("p", { class: "f1-label" }, "THE TEAMS"), h("h2", {}, "Constructor standings"), teams.length ? table(["Pos", "Team", "Wins", "Points"], teams.map(t => h("tr", {}, h("td", {}, t.position), h("td", {}, t.Constructor.name), h("td", {}, t.wins), h("td", {}, h("strong", {}, t.points))))) : unavailable())),
