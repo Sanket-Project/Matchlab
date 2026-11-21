@@ -57,11 +57,30 @@ function animateNumber(node, target, suffix = "") {
   }
   requestAnimationFrame(step);
 }
+// One polite live region for the whole app. Only deliberate messages go through it (a new view, a score that
+// changed, an error), never the content of a refresh, so a screen reader is not read the page every 12 seconds.
+const statusRegion = document.getElementById("status");
+let announceTimer = 0;
+function announce(message) {
+  if (!statusRegion || !message) return;
+  clearTimeout(announceTimer);
+  statusRegion.textContent = "";
+  announceTimer = setTimeout(() => { statusRegion.textContent = message; }, 60);
+}
 const show = (...nodes) => {
   view.classList.remove("view-enter");
   void view.offsetWidth;
   view.replaceChildren(...nodes.flat().filter((n) => n != null && n !== false));
   view.classList.add("view-enter");
+  if (state.focusHeading) {
+    state.focusHeading = false;
+    const heading = view.querySelector("h1");
+    if (heading) {
+      heading.tabIndex = -1;
+      heading.focus({ preventScroll: true });
+      announce(heading.textContent.replace(/\s+/g, " ").trim());
+    }
+  }
 };
 const pct = (p) => `${Math.round(p * 100)}%`;
 const time = (iso) => iso ? new Date(iso).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" }) : "";
@@ -561,7 +580,7 @@ function renderTennis(f, id) {
       h("div", {}, h("h1", {}, `${a.name} v ${b.name}`),
         h("p", { class: "sub" }, [fx.tournament, fx.detail, f.format, `${f.surface.name} court`, `${day(fx.start)} ${time(fx.start)}`, f.intel.state === "pre" ? countdown(fx.start) : f.intel.status].filter(Boolean).join(" · "))),
       h("button", { id: "refresh-match", class: "btn primary", type: "button", onclick: () => openMatch(id, true, true) }, "Refresh now")),
-    h("p", { id: "match-refresh-error", class: "note", role: "status", hidden: true }),
+    h("p", { id: "match-refresh-error", class: "note", hidden: true }),
     f.intel.available ? null : h("p", { class: "note warn" }, "The live score feed could not be read just now, so this is the pre-match forecast."),
     f.result ? resultPanel(f.result) : null,
     f.live ? tennisLive(f) : null,
@@ -600,7 +619,7 @@ function renderForecast(f, id) {
         h("p", { class: "sub" }, [fx.tournament, supported ? `${f.category}’s ${f.format}` : fx.detail,
           fx.venue, start].filter(Boolean).join(" · "))),
       h("button", { id: "refresh-match", class: "btn primary", type: "button", onclick: () => openMatch(id, true, true) }, "Refresh now")),
-    h("p", { id: "match-refresh-error", class: "note warn", role: "status", hidden: true }),
+    h("p", { id: "match-refresh-error", class: "note warn", hidden: true }),
     matchScoreboard(f.scoreboard),
     supported ? preMatchPanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Forecast unavailable"), h("p", { class: "sub" }, f.reason)),
     supported ? livePanel(f, id) : h("section", { class: "panel" }, h("h2", {}, "Live analysis"), h("p", { class: "sub" }, f.reason)),
@@ -666,6 +685,12 @@ async function openMatch(id, manual, forceRefresh = false) {
       }
       window.scrollTo(0, scroll);
     }
+    const board = forecast.scoreboard;
+    const scoreLine = sport === "tennis" ? (forecast.live ? `Score ${forecast.live.score}` : "")
+      : board ? board.teams.map((team) => `${team.name} ${team.score || ""}`.trim()).join(", ") : "";
+    state.lastScore = state.lastScore || {};
+    if (scoreLine && state.lastScore[id] && state.lastScore[id] !== scoreLine) announce(`Score update. ${scoreLine}`);
+    state.lastScore[id] = scoreLine;
     const startsIn = Date.parse(forecast.fixture.start) - Date.now();
     const status = forecast.intel?.state || forecast.scoreboard?.state;
     state.liveMatch = status === "in" ? id : null;
@@ -687,6 +712,7 @@ async function openMatch(id, manual, forceRefresh = false) {
       refreshError.hidden = false;
       refreshError.className = "note warn";
       refreshError.textContent = `Could not refresh the match. Showing the last available update. ${error.message}`;
+      announce(refreshError.textContent);
       state.timer = setTimeout(() => { if (isCurrent()) openMatch(id, true); }, 60000);
       return;
     }
@@ -834,7 +860,7 @@ function f1LapPanel(season, last, next, request) {
   const group = (title, races) => races.length ? h("optgroup", { label: title }, races.map((race) => h("option", { value: key(race) }, label(race)))) : null;
   const select = h("select", { id: "f1-lap-race" }, group(`Completed or under way (${started.length})`, started), group(`Upcoming (${upcoming.length})`, upcoming));
   select.value = key(preferred);
-  const status = h("p", { class: "note", role: "status" });
+  const status = h("p", { class: "note" });
   const rows = h("div", { class: "scroll lap-table", tabindex: "0", role: "region", "aria-label": "Lap timing" });
   const refresh = h("button", { class: "btn", type: "button", onclick: load }, "Refresh laps");
   let captured = new Map(), generation = 0;
@@ -1300,6 +1326,8 @@ function route() {
   const hash = location.hash.slice(1) || "matches";
   const tab = hash.startsWith("match/") ? "matches" : hash;
   document.querySelectorAll("nav a").forEach((a) => a.dataset.tab === tab ? a.setAttribute("aria-current", "page") : a.removeAttribute("aria-current"));
+  state.focusHeading = state.routed === true;   // keep the natural first tab stop on the initial load
+  state.routed = true;
   if (hash.startsWith("match/")) openMatch(decodeURIComponent(hash.slice(6)));
   else if (hash === "world") renderWorld();
   else if (hash === "f1") renderF1();
