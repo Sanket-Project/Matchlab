@@ -281,27 +281,29 @@ function card(match, index = 0) {
 }
 
 // How old the data is, in words, with a level the page can style. Thresholds are minutes.
-function freshness(iso, limits = [20, 60]) {
+// kind "snapshot": the owner's published forecasts (hosted copy). Otherwise a schedule or score check, which the page
+// repeats by itself (every 30-60 s on the hosted copy, every 2-5 min on the owner's MatchLab).
+function freshness(iso, kind = "") {
   const minutes = Math.round((Date.now() - Date.parse(iso)) / 60000);
   if (!Number.isFinite(minutes)) return { level: "unknown", text: "Check time unknown" };
   const age = minutes < 2 ? "just now" : minutes < 60 ? `${minutes} min ago` : `${Math.floor(minutes / 60)} h ${minutes % 60} min ago`;
-  if (state.hosted) {
-    // The public copy shows a snapshot the owner published; it cannot refresh it.
-    if (minutes <= limits[1]) return { level: "fresh", text: `Snapshot from ${age}` };
-    return { level: "old", text: `Snapshot from ${age}. Scores and match states may be out of date.` };
+  if (kind === "snapshot") return { level: minutes <= 360 ? "fresh" : "stale", text: `Forecasts published ${age}` };
+  if (state.hosted && state.schedule && state.schedule.live_feed === false) {
+    return { level: "old", text: `Published schedule from ${age}. Live scores are retrying.` };
   }
-  if (minutes <= limits[0]) return { level: "fresh", text: `Checked ${age}` };
+  const limits = state.hosted ? [3, 10] : [10, 30];
+  if (minutes <= limits[0]) return { level: "fresh", text: `Live scores · checked ${age}` };
   if (minutes <= limits[1]) return { level: "stale", text: `Checked ${age}. Scores may be a little behind.` };
-  return { level: "old", text: `Checked ${age}. Scores may be out of date: press Refresh.` };
+  return { level: "old", text: `Checked ${age}. Scores may be out of date; it retries by itself.` };
 }
-function freshnessChip(iso) {
-  const info = freshness(iso);
-  return h("span", { class: `freshness ${info.level}`, "data-freshness": iso }, info.text);
+function freshnessChip(iso, kind = "") {
+  const info = freshness(iso, kind);
+  return h("span", { class: `freshness ${info.level}`, "data-freshness": iso, "data-kind": kind }, info.text);
 }
 // Ages are re-worded in place every 30 seconds, so a page left open never claims old data is fresh.
 function updateFreshness() {
   document.querySelectorAll("[data-freshness]").forEach((node) => {
-    const info = freshness(node.dataset.freshness);
+    const info = freshness(node.dataset.freshness, node.dataset.kind || "");
     if (node.textContent !== info.text) node.textContent = info.text;
     const next = `freshness ${info.level}`;
     if (node.className !== next) node.className = next;
@@ -319,7 +321,7 @@ function renderMatches() {
   const filters = h("div", { class: "row", role: "group", "aria-label": "Sport" },
     ["all", ...Object.keys(SPORTS)].map((key) => h("button", { class: "chip", type: "button", "aria-pressed": String(state.filter === key),
       onclick: () => { state.filter = key; state.limit = {}; renderMatches(); } }, key === "all" ? "All sports" : SPORTS[key])));
-  const refresh = state.hosted ? null : h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: refreshSchedule },
+  const refresh = h("button", { class: "btn", type: "button", disabled: state.refreshing, onclick: () => refreshSchedule() },
     state.refreshing ? "Checking..." : "Refresh");
   // Long lists are capped at 12 cards with a "show more" button, so the schedule stays scannable and the DOM small.
   const cards = (key, rows) => {
@@ -353,23 +355,38 @@ function renderMatches() {
     done.length ? h("details", { class: "section more", "data-k": "done" }, h("summary", {}, `Finished today (${done.length})`), h("div", { style: "margin-top:10px" }, cards("done", done))) : null);
 }
 
-async function refreshSchedule() {
+async function refreshSchedule(quiet = false) {
   if (state.refreshing) return;
-  if (state.hosted) {
-    try { state.schedule = await api("/api/today-matches"); } catch (_) { /* keep the copy on screen */ }
-    if (!location.hash || location.hash === "#matches") renderMatches();
-    return;
-  }
+  const onList = () => !location.hash || location.hash === "#matches";
+  state.refreshing = !quiet;
+  if (onList() && !quiet) renderMatches();
   state.refreshing = true;
-  if (!location.hash || location.hash === "#matches") renderMatches();
   try {
-    state.schedule = await api("/api/refresh-today-matches", {});
-    showBudgets(state.schedule.budget);
+    // The hosted copy reads ESPN's live scoreboards on each request (cached for seconds at the edge); the owner's
+    // MatchLab runs its feed worker, which keeps CricketData.org within its daily budget.
+    state.schedule = state.hosted ? await api("/api/today-matches") : await api("/api/refresh-today-matches", {});
+    if (!state.hosted) showBudgets(state.schedule.budget);
   } catch (error) {
-    if (state.schedule) state.schedule.refresh_error = `${String(error.message).replace(/[.\s]*$/, ".")} Showing the last saved schedule. Try Refresh again in a moment.`;
+    if (state.schedule) state.schedule.refresh_error = `${String(error.message).replace(/[.\s]*$/, ".")} Showing the last schedule. It tries again by itself.`;
   }
+  state.scheduleAt = Date.now();
   state.refreshing = false;
-  if (!location.hash || location.hash === "#matches") renderMatches();
+  if (onList()) renderMatches();
+}
+
+// How often the schedule is checked again by itself: faster while anything is live.
+function scheduleDelay() {
+  const live = Object.values(state.schedule?.sports || {}).some((rows) => rows.some((m) => m.state === "in"));
+  return state.hosted ? (live ? 30000 : 60000) : (live ? 2 * 60000 : 5 * 60000);
+}
+function autoRefresh() {
+  clearTimeout(state.scheduleTimer);
+  state.scheduleTimer = setTimeout(async () => {
+    // A hidden tab waits; the owner's MatchLab only re-reads its feeds while the schedule is on screen.
+    const due = document.visibilityState === "visible" && (state.hosted || !location.hash || location.hash === "#matches");
+    if (due && Date.now() - (state.scheduleAt || 0) >= scheduleDelay() - 1000) await refreshSchedule(true);
+    autoRefresh();
+  }, 15000);
 }
 
 // ---- match page -----------------------------------------------------------------------
@@ -996,7 +1013,7 @@ async function renderSaved(id, match, request) {
   let saved = null, problem = "";
   try { saved = await api(`/api/saved-forecast?id=${encodeURIComponent(id)}`); } catch (error) { if (!/No forecast/.test(error.message)) problem = error.message; }
   if (request !== state.request) return;
-  const board = match ? matchScoreboard({ state: match.state, status: match.status, source: "Published schedule", checked_at: state.schedule?.last_updated,
+  const board = match ? matchScoreboard({ state: match.state, status: match.status, source: "Live schedule", checked_at: state.schedule?.last_updated,
     teams: [{ name: match.team, score: match.team_score }, { name: match.opponent, score: match.opponent_score }].filter((t) => t.name) }) : null;
   const pre = saved?.pre, counted = Boolean(pre?.saved_before_start);
   const innings = pre ? pre.teams.filter((t) => t.first_innings).map((t) =>
@@ -1013,13 +1030,49 @@ async function renderSaved(id, match, request) {
       h("p", { class: "sub" }, problem || "The owner's MatchLab has not saved a forecast for this match yet. Forecasts are saved when the match is opened there before it starts."));
   const timeline = (saved?.timeline || []).slice(-8).reverse();
   const tennis = match?.sport === "tennis" || id.startsWith("tennis-");
-  const liveBox = tennis ? h("section", { class: "panel live", id: "tennis-live", "aria-live": "polite", hidden: true }) : null;
+  const liveBox = tennis ? h("section", { class: "panel live", id: "tennis-live", "aria-live": "polite", hidden: true })
+    : h("div", { id: "cricket-live" }, board);
   const caseBox = tennis && pre?.case ? h("div", { id: "tennis-case" }, tennisCase(pre.case, pre.teams.map((t) => t.win), false)) : null;
-  show(...head(), liveBox || board, caseBox, lockPanel, saved?.result ? resultPanel(saved.result) : null,
+  show(...head(), liveBox, caseBox, lockPanel, saved?.result ? resultPanel(saved.result) : null,
     timeline.length ? h("section", { class: "panel" }, h("h2", {}, "Live checks saved"), h("ul", { class: "timeline" }, timeline.map((t) =>
       h("li", {}, h("time", { datetime: t.at }, time(t.at)), h("span", {}, `${t.score}${t.note ? ". " + t.note : ""}`))))) : null,
-    h("p", { class: "note" }, "This public copy shows what the owner's MatchLab saved. The full live analysis and AI checks run on the owner's computer."));
+    h("p", { class: "note" }, "Live scores update by themselves. Forecasts are the ones the owner's MatchLab saved; the full analysis and AI checks run on the owner's computer."));
   if (tennis) followTennis(id, request, pre);
+  else followCricket(id, request, match);
+}
+
+// Hosted copy: the cricket score, toss and playing XIs from ESPN's free match summary. Every 15 seconds while live,
+// every minute before the start, once after the finish. Without an ESPN feed the schedule's score is used instead.
+async function followCricket(id, request, match, last = "") {
+  const isCurrent = () => request === state.request && location.hash === `#match/${encodeURIComponent(id)}`;
+  let data = null;
+  try { data = await api(`/api/cricket-live?id=${encodeURIComponent(id)}`); } catch (error) { data = { ok: false, error: error.message }; }
+  if (!isCurrent()) return;
+  const box = document.getElementById("cricket-live");
+  const fresh = findMatch(id) || match;
+  if (box && data && data.ok) {
+    const xi = (data.teams || []).filter((t) => t.xi && t.xi.length);
+    const scoreText = (data.teams || []).map((t) => `${t.name} ${t.score || ""}`.trim()).join(", ");
+    const xiOpen = Boolean(box.querySelector("details[data-key='xi']")?.open);   // a poll must not close what the reader opened
+    box.replaceChildren(
+      matchScoreboard({ state: data.state, status: data.status_text, source: "ESPN live feed", checked_at: data.fetched_at,
+        teams: (data.teams || []).map((t) => ({ name: t.name, score: t.score, winner: t.winner })) }),
+      data.toss || data.venue?.name ? h("section", { class: "panel" }, h("h2", {}, "Match details"),
+        h("div", { class: "stats" },
+          data.toss ? stat("Toss", data.toss.winner, data.toss.text) : stat("Toss", "Not yet", "Shown here once ESPN reports it"),
+          data.venue?.name ? stat("Venue", data.venue.name, [data.venue.city, data.venue.country].filter(Boolean).join(", ")) : null)) : null,
+      xi.length ? h("details", { class: "panel", "data-key": "xi" }, h("summary", {}, "Playing XIs"),
+        xi.map((t) => h("p", { class: "sub lineup" }, h("strong", {}, `${t.name}: `), t.xi.map((p) => `${p.name}${p.captain ? " (c)" : ""}`).join(", ")))) : null);
+    if (xiOpen) box.querySelector("details[data-key='xi']")?.setAttribute("open", "");
+    if (last && last !== scoreText) announce(`Score update. ${scoreText}`);
+    last = scoreText;
+  } else if (box && fresh) {
+    box.replaceChildren(matchScoreboard({ state: fresh.state, status: fresh.status, source: "Live schedule", checked_at: state.schedule?.last_updated,
+      teams: [{ name: fresh.team, score: fresh.team_score }, { name: fresh.opponent, score: fresh.opponent_score }].filter((t) => t.name) }));
+  }
+  const live = (data && data.ok ? data.state : fresh?.state) || "pre";
+  const delay = live === "in" ? 15000 : live === "post" && data?.ok ? 0 : 60000;
+  if (delay) state.timer = setTimeout(() => { if (isCurrent()) followCricket(id, request, match, last); }, delay);
 }
 
 // Hosted copy: follow a tennis match score by score from ESPN's free feed. The server recomputes the win chance
@@ -1163,7 +1216,7 @@ async function renderRecord(again = false) {
     Object.entries(SPORTS).map(([sport, label]) => h("button", { class: "chip", type: "button", value: sport, "aria-controls": "sport-record",
       "aria-pressed": String((state.recordSport || "cricket") === sport), onclick: () => { state.recordSport = sport; select(sport); } }, `${label} · ${counted(sports[sport].summary)} counted`)));
   const note = record.grading ? "Grading finished events now; the numbers update by themselves."
-    : state.hosted && record.published_at ? freshness(record.published_at).text : "Forecasts opened after the start are listed, never counted.";
+    : state.hosted && record.published_at ? freshness(record.published_at, "snapshot").text : "Forecasts opened after the start are listed, never counted.";
   const recordHero = h("section", { class: "record-hero", "aria-label": "Track record overview" },
     h("div", { class: "record-hero-copy" },
       h("p", { class: "eyebrow" }, "TRACK RECORD"),
@@ -1764,7 +1817,7 @@ function markHosted(app) {
   document.documentElement.dataset.hosted = "true";
   const bar = document.getElementById("budgets");
   bar.replaceChildren(h("span", { class: "hosted-note", title: app.note || "" }, "Public read-only copy",
-    app.published_at ? [" · ", h("span", { "data-freshness": app.published_at }, freshness(app.published_at).text)] : null));
+    app.published_at ? [" · ", h("span", { "data-freshness": app.published_at, "data-kind": "snapshot" }, freshness(app.published_at, "snapshot").text)] : null));
   document.querySelector(".foot a[href='/lab']")?.remove();
 }
 
@@ -1789,7 +1842,12 @@ function markHosted(app) {
   }
   window.addEventListener("hashchange", route);
   route();
+  state.scheduleAt = Date.now();
   if (!state.hosted) refreshSchedule();
-  setInterval(() => { if (!location.hash || location.hash === "#matches") refreshSchedule(); }, 5 * 60 * 1000);
+  autoRefresh();
+  // A tab left in the background is brought up to date as soon as it is looked at again.
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible" && Date.now() - (state.scheduleAt || 0) > scheduleDelay() / 2) refreshSchedule(true);
+  });
   setInterval(updateFreshness, 30 * 1000);
 })();

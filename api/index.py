@@ -1,8 +1,9 @@
 """MatchLab public mirror: the API behind https://matchlab-ten.vercel.app/.
 
-This is not the owner's MatchLab. It serves the same dashboard (web/dash.html) from a published snapshot of the
-owner's saved schedule and prediction log (data/public/, written by tools/publish_snapshot.py), plus the free public
-feeds the dashboard reads directly (Formula 1, World Pulse headlines and quotes).
+This is not the owner's MatchLab. It serves the same dashboard (web/dash.html) with a live schedule and live scores
+read from ESPN's free scoreboards on request (cached for seconds), joined to a published snapshot of the owner's
+prediction log (data/public/, written by tools/publish_snapshot.py), plus the free public feeds the dashboard reads
+directly (Formula 1, World Pulse headlines and quotes). The published schedule is only a fallback when ESPN fails.
 
 What it never does, by design:
 - write anything: the prediction log is read-only (MATCHLAB_READ_ONLY=1), so nobody can add, replace or grade a forecast;
@@ -37,12 +38,14 @@ READ_ONLY = ("This public copy of MatchLab is read-only. Forecasts, AI checks an
 CSP = ("default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; "
        "font-src 'self'; object-src 'none'; base-uri 'none'; frame-ancestors 'none'; form-action 'self'")
 # Seconds a response may be served from the CDN, then for how long a stale copy may be served while it refreshes.
-CDN = {"live": (5, 20), "snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 600), "world": (300, 1800)}
+CDN = {"live": (5, 20), "schedule": (20, 60), "snapshot": (300, 3600), "f1": (120, 600), "timing": (20, 600), "world": (300, 1800)}
 WORKERS = threading.BoundedSemaphore(2)       # feed workers running at once in one instance
 LIMIT, WINDOW = 60, 60.0                       # requests per client per minute
 _hits, _hits_lock = {}, threading.Lock()
 _cache, _cache_lock = {}, threading.Lock()
 WORLD = world.Cache()
+# "Today" on the schedule is the owner's calendar day, not the server's (Vercel runs in UTC).
+SCHEDULE_ENV = {"MATCHLAB_HOSTED": "1", "TZ": os.environ.get("MATCHLAB_TZ", "Asia/Kolkata")}
 
 
 def _allowed(client):
@@ -71,7 +74,7 @@ def _meta():
     return _json("meta.json", {}) or {}
 
 
-def _worker(script, *args, ttl=60, timeout=25):
+def _worker(script, *args, ttl=60, timeout=25, env=None):
     """Run one feed reader from tools/ (they print JSON and write nothing), cached for ttl seconds."""
     key = (script, args)
     with _cache_lock:
@@ -82,7 +85,7 @@ def _worker(script, *args, ttl=60, timeout=25):
         return hit[1] if hit else None
     try:
         done = subprocess.run([sys.executable, str(ROOT / "tools" / script), *map(str, args)], capture_output=True,
-                              encoding="utf-8-sig", timeout=timeout, env={**os.environ, "MATCHLAB_ALLOW_NETWORK": "1"})
+                              encoding="utf-8-sig", timeout=timeout, env={**os.environ, "MATCHLAB_ALLOW_NETWORK": "1", **(env or {})})
         data = json.loads(done.stdout)
     except (OSError, ValueError, subprocess.SubprocessError):
         data = None
@@ -96,12 +99,93 @@ def _worker(script, *args, ttl=60, timeout=25):
     return data
 
 
+def _snapshot_schedule():
+    return _json("today_matches.json") or {"date": "", "sports": {"cricket": [], "tennis": [], "f1": []}, "total_matches": 0, "sources": []}
+
+
+def _espn_event(row):
+    return str((row.get("espn") or {}).get("event") or "")
+
+
+def _merge(live, published, saved):
+    """The live ESPN schedule, keeping the owner's match ids so saved forecasts still attach.
+
+    The owner's MatchLab may list a cricket fixture under its CricketData id with the ESPN event alongside; such a
+    fixture keeps that id here. Published fixtures that ESPN does not list are kept only while they cannot be stale:
+    upcoming ones that have not started yet, and ones that finished in the last day. A published "live" row is dropped,
+    because its score would be hours old."""
+    now = time.time()
+    by_event = {}
+    for row in [*(r for rows in (published.get("sports") or {}).values() for r in rows),
+                *(((item or {}).get("fixture") or {}) for item in saved.values())]:
+        if _espn_event(row) and row.get("id"):
+            by_event.setdefault(_espn_event(row), row)
+    out = {}
+    for sport in ("cricket", "tennis", "f1"):
+        rows = []
+        for row in (live.get("sports") or {}).get(sport) or []:
+            twin = by_event.get(_espn_event(row)) if sport == "cricket" and _espn_event(row) else None
+            rows.append({**row, "id": twin["id"]} if twin and twin.get("id") != row["id"] else row)
+        ids, events = {r["id"] for r in rows}, {_espn_event(r) for r in rows} - {""}
+        for row in (published.get("sports") or {}).get(sport) or []:
+            if row.get("id") in ids or (_espn_event(row) and _espn_event(row) in events):
+                continue
+            start = tracker.start_time(row)
+            upcoming = row.get("state") == "pre" and start is not None and start.timestamp() > now
+            finished = row.get("state") == "post" and start is not None and now - start.timestamp() < 24 * 3600
+            if upcoming or finished:
+                rows.append({**row, "from_snapshot": True})
+        order = {"in": 0, "pre": 1, "post": 2}
+        rows.sort(key=lambda m: (order.get(m.get("state"), 1), m.get("start") or "", m.get("id") or ""))
+        out[sport] = rows
+    return out
+
+
 def today():
-    schedule = _json("today_matches.json") or {"date": "", "sports": {"cricket": [], "tennis": [], "f1": []}, "total_matches": 0, "sources": []}
+    """Today's fixtures with live scores (ESPN, cached 20-45 s), or the published schedule if ESPN cannot be read."""
+    published = _snapshot_schedule()
+    live = _worker("fetch_today_matches.py", "--stdout", timeout=40, env=SCHEDULE_ENV,
+                   ttl=lambda d: 20 if any(m.get("state") == "in" for rows in (d.get("sports") or {}).values() for m in rows) else 45)
+    if isinstance(live, dict) and live.get("sports") and live.get("connected_to_internet"):
+        schedule = {**live, "sports": _merge(live, published, tracker._read(ROOT)), "live_feed": True}
+        everything = [m for rows in schedule["sports"].values() for m in rows]
+        schedule["total_matches"] = len(everything)
+        schedule["counts"] = {state: sum(m.get("state") == state for m in everything) for state in ("in", "pre", "post")}
+        schedule["status"] = f"{len(everything)} matches today" if everything else "No matches found for today"
+    else:
+        schedule = {**published, "live_feed": False,
+                    "refresh_error": "The live scoreboards could not be read just now, so this is the last published schedule. It retries by itself."}
     tracker.attach_locks(schedule, tracker.locks(ROOT))
     schedule["hosted"] = {"published_at": _meta().get("published_at"), "note": READ_ONLY}
     schedule["budget"] = None
     return schedule
+
+
+def _fixture(match_id):
+    """One fixture by id: the live schedule first, then the published schedule, then the saved forecast."""
+    for schedule in (today(), _snapshot_schedule()):
+        for rows in (schedule.get("sports") or {}).values():
+            hit = next((m for m in rows if m.get("id") == match_id), None)
+            if hit:
+                return hit
+    return (tracker.entry(ROOT, match_id) or {}).get("fixture") or None
+
+
+def cricket_live(match_id):
+    """Toss, playing XIs and the live score from ESPN's free match summary. Read-only; cached for seconds."""
+    if not str(match_id).startswith("cricket-"):
+        return None
+    fixture = _fixture(match_id)
+    if not fixture:
+        return None
+    ref = fixture.get("espn") or {}
+    league, event = str(ref.get("league") or ""), str(ref.get("event") or "")
+    if not (league.isalnum() and event.isdecimal()):
+        return {"ok": False, "no_feed": True, "error": "ESPN has no live feed for this fixture."}
+    intel = _worker("fetch_match_intel.py", league, event, timeout=20, ttl=lambda d: 1800 if d.get("state") == "post" else 10)
+    if not intel or not intel.get("ok"):
+        return {"ok": False, "error": "The live score feed could not be read just now."}
+    return intel
 
 
 def brief_state():
@@ -116,9 +200,8 @@ def tennis_live(match_id):
     model. Read-only: nothing is saved here. Cached for a few seconds so many viewers cost one feed read."""
     if not str(match_id).startswith("tennis-"):
         return None
-    schedule = _json("today_matches.json") or {}
     entry = tracker.entry(ROOT, match_id) or {}
-    fixture = next((m for m in (schedule.get("sports") or {}).get("tennis") or [] if m.get("id") == match_id), None) or entry.get("fixture")
+    fixture = _fixture(match_id)
     if not fixture:
         return None
     tour = "wta" if str(fixture.get("tournament", "")).upper().startswith("WTA") else "atp"
@@ -177,6 +260,10 @@ class handler(BaseHTTPRequestHandler):
         if body:
             self.wfile.write(body)
 
+    def _cricket_live(self, match_id):
+        data = cricket_live(match_id)
+        return self._send(200, data, cdn="live") if data else self._send(404, {"error": "No cricket match with that id."})
+
     def _tennis_live(self, match_id):
         data = tennis_live(match_id)
         return self._send(200, data, cdn="live") if data else self._send(404, {"error": "No tennis match with that id."})
@@ -192,9 +279,9 @@ class handler(BaseHTTPRequestHandler):
             return self._send(200, {"ok": True, "hosted": True, "published_at": _meta().get("published_at")})
         if route == "/api/session":
             return self._send(200, {"token": "", "offline": False, "hosted": True, "read_only": True, "note": READ_ONLY,
-                                    "published_at": _meta().get("published_at"), "openrouter_key_status": "missing"})
+                                    "published_at": _meta().get("published_at"), "openrouter_key_status": "missing", "live_feed": True})
         if route == "/api/today-matches":
-            return self._send(200, today(), cdn="snapshot")
+            return self._send(200, today(), cdn="schedule")
         if route == "/api/track-record":
             sport = arg("sport")
             if sport:
@@ -210,6 +297,8 @@ class handler(BaseHTTPRequestHandler):
         if route == "/api/saved-forecast":
             entry = tracker.entry(ROOT, arg("id"))
             return self._send(200, tracker.public_entry(entry), cdn="snapshot") if entry else self._send(404, {"error": "No forecast was saved for this event."})
+        if route == "/api/cricket-live":
+            return self._cricket_live(arg("id"))
         if route == "/api/tennis-live":
             return self._tennis_live(arg("id"))
         if route == "/api/world-brief":

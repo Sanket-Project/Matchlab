@@ -117,6 +117,10 @@ class LocalServer(ThreadingHTTPServer):
 
     def refresh_fixtures(self):
         if not self.schedule_lock.acquire(blocking=False):
+            # A refresh is already running (the checkpoint watcher, or another tab). Wait for it and serve its result,
+            # instead of answering at once with the old file, which left the page hours behind until its next check.
+            if self.schedule_lock.acquire(timeout=70):
+                self.schedule_lock.release()
             return None
         try:
             done = subprocess.run([sys.executable, str(ROOT / "tools/fetch_today_matches.py")],

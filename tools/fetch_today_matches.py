@@ -21,7 +21,7 @@ from urllib.parse import urlencode
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from matchlab import budget  # noqa: E402
-from matchlab.cricket_sim import team_key  # noqa: E402
+from matchlab.live import team_key  # noqa: E402  (standard library only, so the hosted copy can run this file)
 sys.path.insert(0, str(ROOT / "tools"))
 import fetch_ai_scores  # noqa: E402
 OUTPUT_FILE = ROOT / "data" / "today_matches.json"
@@ -35,6 +35,9 @@ TIMEOUT = 10
 SPORTS = ["cricket", "tennis", "f1"]
 SPORT_LABELS = {"cricket": "Cricket", "tennis": "Tennis", "f1": "Formula 1"}
 AHEAD = timedelta(hours=30)  # also list fixtures starting within this window
+# The hosted public copy (api/index.py) runs this file with MATCHLAB_HOSTED=1: free feeds only (no CricketData key,
+# no AI search, no budget ledger) and nothing written to disk. Its read-only filesystem would refuse the write anyway.
+HOSTED = os.environ.get("MATCHLAB_HOSTED") == "1"
 
 # (sport, label, path, parser). Team scoreboards share one layout; tennis nests
 # matches inside tournaments.
@@ -153,6 +156,8 @@ class BudgetSpent(Exception):
 
 
 def fetch_cricketdata(today):
+    if HOSTED:
+        return None
     key = os.environ.get("CRICKETDATA_API_KEY", "").strip()
     if not key:
         try:
@@ -417,7 +422,7 @@ def fetch_matches(now=None):
         sources.extend(cricket_sources)
 
     for sport in SPORTS:
-        if not ai_needed(sport, sources):
+        if HOSTED or not ai_needed(sport, sources):
             continue
         try:
             found, source = fetch_ai(sport, today, schedule[sport])
@@ -450,9 +455,11 @@ def fetch_matches(now=None):
         "counts": {state: sum(m["state"] == state for m in everything) for state in ("in", "pre", "post")},
         "failed_sources": failed,
         "sources": sources,
-        "budget": budget.status(ROOT),
+        "budget": None if HOSTED else budget.status(ROOT),
         "sports": schedule,
     }
+    if HOSTED:
+        return payload
     OUTPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     temporary = OUTPUT_FILE.with_suffix(".json.tmp")
     temporary.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -461,6 +468,13 @@ def fetch_matches(now=None):
 
 
 if __name__ == "__main__":
+    if "--stdout" in sys.argv:
+        # JSON on stdout for the hosted copy's feed worker; a failure is reported as data, never as a traceback.
+        try:
+            print(json.dumps(fetch_matches()))
+        except Exception as exc:
+            print(json.dumps({"ok": False, "error": f"{type(exc).__name__}"}))
+        sys.exit(0)
     result = fetch_matches()
     print(f"{result['date']}: {result['status']}")
     for sport, matches in result["sports"].items():

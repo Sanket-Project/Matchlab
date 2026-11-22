@@ -176,6 +176,59 @@ class GenAIGuards(unittest.TestCase):
 class HostedMirror(unittest.TestCase):
     """api/index.py in its own process (it switches the tracker to read-only for the whole process)."""
 
+    def test_live_schedule_keeps_saved_ids_drops_stale_live_rows_and_falls_back(self):
+        script = textwrap.dedent(r'''
+            import json, sys, time
+            sys.path.insert(0, ROOT)
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("mirror", ROOT + "/api/index.py")
+            mirror = importlib.util.module_from_spec(spec); spec.loader.exec_module(mirror)
+            soon = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() + 7200))
+            past = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(time.time() - 7200))
+            published = {"sports": {"cricket": [
+                {"id": "cricket-cricapi-a", "state": "pre", "start": soon, "espn": {"league": "1", "event": "111"}},
+                {"id": "cricket-cricapi-b", "state": "in", "start": past, "team": "Old", "team_score": "10/1"},
+                {"id": "cricket-cricapi-c", "state": "pre", "start": soon, "team": "Later"}], "tennis": [], "f1": []},
+                "last_updated": "2026-01-01T00:00:00+00:00"}
+            live = {"connected_to_internet": True, "last_updated": "now", "sports": {"cricket": [
+                {"id": "cricket-111", "state": "in", "start": past, "team_score": "55/2", "espn": {"league": "1", "event": "111"}}],
+                "tennis": [{"id": "tennis-9", "state": "pre", "start": soon}], "f1": []}}
+            mirror._snapshot_schedule = lambda: published
+            mirror.tracker._read = lambda root: {}
+            mirror.tracker.locks = lambda root: {"cricket-cricapi-a": {"favourite": "A", "win": 0.6}}
+            mirror._worker = lambda *a, **k: live
+            ok = mirror.today()
+            mirror._worker = lambda *a, **k: None
+            down = mirror.today()
+            print(json.dumps({"ok": ok, "down": down}))
+        ''')
+        done = subprocess.run([sys.executable, "-c", f"ROOT = {str(ROOT)!r}\n" + script], capture_output=True, text=True, timeout=60)
+        self.assertEqual(done.returncode, 0, done.stderr)
+        out = json.loads(done.stdout)
+        cricket = {m["id"]: m for m in out["ok"]["sports"]["cricket"]}
+        self.assertTrue(out["ok"]["live_feed"])
+        self.assertEqual(cricket["cricket-cricapi-a"]["team_score"], "55/2")          # live score, owner's id
+        self.assertEqual(cricket["cricket-cricapi-a"]["lock"]["favourite"], "A")       # saved forecast still attached
+        self.assertNotIn("cricket-cricapi-b", cricket)                                 # stale "live" row dropped
+        self.assertTrue(cricket["cricket-cricapi-c"]["from_snapshot"])                 # upcoming row kept
+        self.assertEqual(out["ok"]["counts"], {"in": 1, "pre": 2, "post": 0})
+        self.assertFalse(out["down"]["live_feed"])
+        self.assertIn("refresh_error", out["down"])
+        self.assertIn("cricket-cricapi-b", {m["id"] for m in out["down"]["sports"]["cricket"]})
+
+    def test_hosted_schedule_worker_uses_free_feeds_only_and_writes_nothing(self):
+        sys.path.insert(0, str(ROOT / "tools"))
+        import fetch_today_matches as feed
+        with TemporaryDirectory() as temp, patch.object(feed, "HOSTED", True), \
+                patch.object(feed, "OUTPUT_FILE", Path(temp) / "today.json"), \
+                patch.object(feed, "get_json", return_value={}), \
+                patch.object(feed, "fetch_ai", side_effect=AssertionError("AI search must not run when hosted")), \
+                patch.object(feed.budget, "spend", side_effect=AssertionError("no metered call when hosted")):
+            payload = feed.fetch_matches()
+            self.assertFalse((Path(temp) / "today.json").exists())
+        self.assertIsNone(payload["budget"])
+        self.assertNotIn("CricketData.org", [s["name"] for s in payload["sources"]])
+
     def test_mirror_serves_the_snapshot_refuses_writes_and_rate_limits(self):
         script = textwrap.dedent(r'''
             import json, sys, threading, http.client

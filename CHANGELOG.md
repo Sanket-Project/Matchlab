@@ -2,6 +2,23 @@
 
 ## 2026-11-22
 
+### The public site is live, not a snapshot
+- **Why it was 11–12 hours behind:** the hosted site only served `data/public/today_matches.json`, which changed only
+  when the owner ran `tools/publish_snapshot.py` and pushed. Nothing on the site refreshed it.
+- `/api/today-matches` on the hosted site now reads ESPN's free cricket, tennis and F1 scoreboards on request
+  (`tools/fetch_today_matches.py --stdout` with `MATCHLAB_HOSTED=1`: free feeds only, no keys, no AI search, nothing
+  written). Cached 20 s while anything is live, 45 s otherwise, and at the CDN for 20 s. "Today" is the owner's day
+  (`MATCHLAB_TZ`, default Asia/Kolkata). Saved forecasts still attach: a fixture the owner's MatchLab listed under a
+  CricketData id keeps that id. If ESPN fails, the published schedule is shown with a note and it retries.
+- New `/api/cricket-live`: score, toss, venue and playing XIs from ESPN's free match summary, every 15 s while live.
+  Tennis live scores now work for matches that are not in the published snapshot too.
+- The dashboard checks the schedule by itself: every 30 s (60 s with nothing live) on the hosted site, every 2–5 min
+  on the owner's MatchLab, and again when a background tab is opened. The hosted site has a Refresh button again.
+  Freshness labels say "Live scores · checked …"; the header says when forecasts were last published.
+- Fixed (local): when the background watcher and the page refreshed at the same time, the page got the old schedule
+  back and kept it until its next check. It now waits for the refresh that is already running.
+- Forecasts on the hosted site still come from the published prediction log (`tools/publish_snapshot.py`).
+
 ### AI web search when sports feeds hit their limit
 - When CricketData.org reaches its daily limit (or every feed for a sport fails), Gemini with Google Search grounding
   looks up today's fixtures and scores. It only adds missing fixtures and fills blank scores, keeps only answers that
