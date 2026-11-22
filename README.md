@@ -143,9 +143,15 @@ Run `.\.venv\Scripts\python.exe tools\evaluate_models.py --sports cricket badmin
 
 ## Public read-only copy (Vercel)
 
-https://matchlab-ten.vercel.app/ serves this dashboard as a read-only mirror: the schedule and forecasts this
-MatchLab saved, as last published, plus the free F1 and World feeds. It holds no keys and cannot make forecasts or
-spend any budget. To update it:
+https://matchlab-ten.vercel.app/ serves this dashboard as a read-only mirror: live scores from ESPN's free feeds,
+the forecasts this MatchLab saved, and the free F1 and World feeds. It holds no keys and cannot make forecasts or
+spend any budget.
+
+**Forecasts publish themselves.** While `app.py` runs, it checks every minute and pushes new or graded forecasts
+(`data/public/` only, in a commit named `data: publish snapshot (automatic)`) at most every 15 minutes; live
+timelines alone go out every 3 hours. It never pushes your own unpushed commits and does nothing off `main` or during
+a merge or rebase. Status and **Publish now** are under Settings → Public site (`matchlab/autopublish.py`). Turn it off
+with `app.py --no-publish` or `MATCHLAB_AUTO_PUBLISH=0`. By hand:
 
 ```
 python tools/publish_snapshot.py

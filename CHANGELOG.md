@@ -17,7 +17,12 @@
   Freshness labels say "Live scores · checked …"; the header says when forecasts were last published.
 - Fixed (local): when the background watcher and the page refreshed at the same time, the page got the old schedule
   back and kept it until its next check. It now waits for the refresh that is already running.
-- Forecasts on the hosted site still come from the published prediction log (`tools/publish_snapshot.py`).
+- **Forecasts publish themselves.** While MatchLab runs, `matchlab/autopublish.py` checks every minute and, when a
+  forecast is saved or graded (or the World briefing changes), runs `tools/publish_snapshot.py`, commits only
+  `data/public/` and pushes: at most every 15 minutes, live timelines alone every 3 hours (Vercel's free plan allows
+  100 deployments a day). It never pushes your own unpushed commits, does nothing off `main` or during a merge or
+  rebase, never prompts for credentials, and retries a failed push after 5 minutes. Settings → Public site shows the
+  status and has **Publish now**. Off with `app.py --no-publish` or `MATCHLAB_AUTO_PUBLISH=0`.
 
 ### AI web search when sports feeds hit their limit
 - When CricketData.org reaches its daily limit (or every feed for a sport fails), Gemini with Google Search grounding

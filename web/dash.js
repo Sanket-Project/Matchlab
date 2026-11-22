@@ -1255,7 +1255,7 @@ function renderSettings() {
     return show(h("h1", {}, "Settings"), appearance,
       h("section", { class: "panel" }, h("h2", {}, "About this copy"),
         h("ul", { class: "why" },
-          h("li", {}, "This is a public, read-only copy of the owner's MatchLab. It shows the schedule and the forecasts that MatchLab saved, as last published."),
+          h("li", {}, "This is a public, read-only copy of the owner's MatchLab. Live scores are read from free public feeds as you watch. Forecasts appear here shortly after MatchLab saves them, while the owner's MatchLab is running."),
           h("li", {}, "It cannot make forecasts, ask the AI, or spend any API budget. Keys and request budgets stay on the owner's computer."),
           h("li", {}, "Formula 1 standings and the World headlines are read live from free public feeds."))));
   }
@@ -1273,7 +1273,36 @@ function renderSettings() {
     h("section", { class: "panel" }, h("h2", {}, "OpenRouter key (optional)"),
       h("div", { class: "row" }, input, h("button", { class: "btn primary", type: "button", onclick: () => send("save") }, "Save key"),
         h("button", { class: "btn", type: "button", onclick: () => send("clear") }, "Remove key")), message),
-    acesKeyPanel());
+    acesKeyPanel(),
+    publishPanel());
+}
+
+// The owner's MatchLab pushes new forecasts to the public site by itself (matchlab/autopublish.py).
+function publishLine(p) {
+  if (!p || !p.enabled) return "Automatic publishing is off. MatchLab was started with --no-publish or MATCHLAB_AUTO_PUBLISH=0.";
+  const when = p.published_at ? `Last published ${ago(p.published_at)}.` : "Not published yet.";
+  if (p.error) return `${when} The last attempt did not go through: ${p.error}. It tries again in a few minutes.`;
+  if (p.pending === "forecasts") return `${when} New forecasts are waiting and go out within 15 minutes.`;
+  if (p.pending === "timelines") return `${when} Only live timelines changed; those go out every 3 hours.`;
+  return `${when} The public site has every saved forecast.`;
+}
+
+function publishPanel() {
+  const p = state.schedule && state.schedule.publish;
+  const message = h("p", { class: "sub", role: "status", style: "margin-top:8px" }, publishLine(p));
+  const button = h("button", { class: "btn", type: "button", disabled: !p || !p.enabled }, "Publish now");
+  bind(button, "click", async () => {
+    button.disabled = true; button.setAttribute("aria-busy", "true"); message.textContent = "Publishing to the public site…";
+    try {
+      const out = await api("/api/publish-now", {});
+      if (state.schedule) state.schedule.publish = out.publish;
+      message.textContent = out.result === "busy" ? "A publish is already running. Check back in a minute." : publishLine(out.publish);
+    } catch (error) { message.textContent = error.message; }
+    button.disabled = false; button.removeAttribute("aria-busy");
+  });
+  return h("section", { class: "panel", "aria-labelledby": "publish-title" }, h("h2", { id: "publish-title" }, "Public site"),
+    h("p", { class: "sub" }, "While MatchLab runs, new and graded forecasts are pushed to the public site by themselves: at most every 15 minutes, and only the published files (data/public). Nothing is pushed if you have unpushed commits of your own or are not on the main branch."),
+    h("div", { class: "row" }, button), message);
 }
 
 function acesKeyPanel() {

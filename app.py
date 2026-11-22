@@ -2,6 +2,7 @@
 import argparse
 import errno
 import json
+import os
 import secrets
 import socket
 import subprocess
@@ -21,7 +22,7 @@ from matchlab.cricket import validate_post_toss
 from matchlab.cricket_preview import build_context
 from matchlab.live import annotate
 from matchlab.openrouter_key import AcesApiKey, OpenRouterKey
-from matchlab import acesapi, ai_check, budget, calibration, cricket_forecast, tennis_forecast, tracker, world
+from matchlab import acesapi, ai_check, autopublish, budget, calibration, cricket_forecast, tennis_forecast, tracker, world
 
 ROOT = Path(__file__).resolve().parent
 SUMMARY_INSTRUCTIONS = """You explain a cricket forecast to a fan in plain English.
@@ -52,7 +53,7 @@ class LocalServer(ThreadingHTTPServer):
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
         super().server_bind()
 
-    def __init__(self, address, engine, *, monitor_fixtures=False):
+    def __init__(self, address, engine, *, monitor_fixtures=False, auto_publish=False):
         self.engine, self.token = engine, secrets.token_urlsafe(32)
         self.real_config = engine.config
         self.lock = threading.RLock()
@@ -82,6 +83,8 @@ class LocalServer(ThreadingHTTPServer):
         super().__init__(address, Handler)
         if monitor_fixtures:
             threading.Thread(target=self._watch_cricket, name="cricket-checkpoints", daemon=True).start()
+        # Pushes new forecasts to the public site (see matchlab/autopublish.py for the safety rules).
+        self.publisher = autopublish.Publisher(ROOT, self.stop_forecasts).start() if auto_publish else None
 
     def server_close(self):
         self.stop_forecasts.set()
@@ -226,6 +229,7 @@ class Handler(BaseHTTPRequestHandler):
             data["refresh_error"] = problem
         tracker.attach_locks(data, tracker.locks(ROOT))
         data["budget"] = budget.status(ROOT)
+        data["publish"] = self.server.publisher.status() if self.server.publisher else {"enabled": False}
         return data
 
     def _intel(self, reference, max_age=45):
@@ -813,6 +817,11 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, self._ai_check(payload))
             if route == "/api/cricket-summary":
                 return self._send(200, self._cricket_summary(payload))
+            if route == "/api/publish-now":
+                if not self.server.publisher:
+                    return self._send(400, {"error": "Automatic publishing is off. Start MatchLab without --no-publish."})
+                result = self.server.publisher.tick(force=True)
+                return self._send(200, {"result": result or "busy", "publish": self.server.publisher.status()})
             if route == "/api/refresh-today-matches":
                 return self._send(200, self._today_payload(self.server.refresh_fixtures()))
             if route in ("/api/cricket-preview-context", "/api/cricket-preview"):
@@ -879,6 +888,8 @@ def main():
     parser.add_argument("--port", type=int, default=8765)
     parser.add_argument("--config", type=Path, default=ROOT / "config.local.json")
     parser.add_argument("--open", action="store_true", help="Open your default browser")
+    parser.add_argument("--no-publish", action="store_true",
+                        help="Do not push new forecasts to the public site (also MATCHLAB_AUTO_PUBLISH=0)")
     args = parser.parse_args()
     try:
         config = json.loads(args.config.read_text(encoding="utf-8")) if args.config.exists() else default_config()
@@ -886,7 +897,8 @@ def main():
     except (OSError, ValueError) as exc:
         parser.exit(1, f"Could not start MatchLab: {exc}\n")
     try:
-        server = LocalServer(("127.0.0.1", args.port), engine, monitor_fixtures=True)
+        publish = not args.no_publish and os.environ.get("MATCHLAB_AUTO_PUBLISH", "1") != "0"
+        server = LocalServer(("127.0.0.1", args.port), engine, monitor_fixtures=True, auto_publish=publish)
     except (OSError, ValueError) as exc:
         if isinstance(exc, OSError) and (exc.errno == errno.EADDRINUSE or getattr(exc, "winerror", None) == 10048):
             parser.exit(1, f"Could not start MatchLab: port {args.port} is already in use.\n"
