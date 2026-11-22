@@ -125,8 +125,8 @@ class Publisher:
         self.root, self.stop, self.publish_fn, self.clock = Path(root), stop_event, publish_fn, clock
         self.lock = threading.Lock()
         meta = _read(self.root / "data/public/meta.json") or {}
-        self.state = {"enabled": True, "published_at": meta.get("published_at"), "error": None, "pending": None,
-                      "checked_at": None}
+        self.state = {"enabled": True, "published_at": meta.get("published_at"), "error": None,
+                      "pending": changes(self.root), "checked_at": None}
         self.last_push = 0.0
         self.retry_at = 0.0
 
